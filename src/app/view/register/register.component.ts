@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators} from '@angular/forms'
+import { AuthService } from 'src/app/service/auth.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -8,7 +10,7 @@ import { FormBuilder, Validators} from '@angular/forms'
 })
 export class RegisterComponent {
 
-  constructor(private _formBuilder: FormBuilder){}
+  constructor(private _formBuilder: FormBuilder,private service: AuthService,private router: Router){}
 
   registerForm = this._formBuilder.group({
     id: this._formBuilder.control('',Validators.compose([Validators.required, Validators.minLength(5)])),
@@ -18,5 +20,16 @@ export class RegisterComponent {
     password: this._formBuilder.control('',Validators.required),
     isactive: this._formBuilder.control(false),
   })
+
+  proceedRegistration(){
+    if(this.registerForm){
+      this.service.userRegister(this.registerForm).subscribe(val => {
+        console.log(val);
+        this.router.navigate(['login']);
+        
+      })
+    }
+  }
+
 
 }
