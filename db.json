@@ -1,19 +1,31 @@
 {
-    "tasks":[
-        {
-            "id":1,
-            "name": "Aashish",
-            "email": "aashish@gmail.com"
-        },
-        {
-            "id":2,
-            "name": "aman",
-            "email": "aman@gmail.com"
-        },
-        {
-            "id":3,
-            "name": "john",
-            "email": "john@gmail.com"
-        }
-    ]
+  "user": [
+    {
+      "username": "Aashish",
+      "email": "Admin@gmail.com",
+      "password": "root",
+      "id": 1
+    },
+    {
+      "username": "none",
+      "email": "none",
+      "password": "none",
+      "id": 2
+    },
+    {
+      "username": "aashish",
+      "email": "sldfjl",
+      "password": "sjkdlfjsl",
+      "isActive": false,
+      "id": 3
+    },
+    {
+      "id": "hello",
+      "name": "hello",
+      "email": "aashishmahato300@gmail.com",
+      "password": "hello",
+      "isActive": true,
+      "role": ""
+    }
+  ]
 }

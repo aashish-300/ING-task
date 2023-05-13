@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { FormBuilder, Validators} from '@angular/forms'
+import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms'
 import { AuthService } from 'src/app/service/auth.service';
-import {Router} from '@angular/router';
+import { Validation } from 'src/app/validation';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -10,25 +11,31 @@ import {Router} from '@angular/router';
 })
 export class RegisterComponent {
 
-  constructor(private _formBuilder: FormBuilder,private service: AuthService,private router: Router){}
-
-  registerForm = this._formBuilder.group({
-    id: this._formBuilder.control('',Validators.compose([Validators.required, Validators.minLength(5)])),
-    name: this._formBuilder.control('',Validators.required),
-    email: this._formBuilder.control('',Validators.compose([Validators.required, Validators.email])),
-    role: this._formBuilder.control(''),
-    password: this._formBuilder.control('',Validators.required),
-    isactive: this._formBuilder.control(false),
+  registerForm = new FormGroup({
+    id : new FormControl(''),
+    name: new FormControl(''),
+    email: new FormControl(''),
+    password: new FormControl(''),
+    isActive: new FormControl(false),
+    role: new FormControl('')
   })
 
-  proceedRegistration(){
-    if(this.registerForm){
-      this.service.userRegister(this.registerForm).subscribe(val => {
-        console.log(val);
+
+
+  constructor(private _formBuilder: FormBuilder, private service: AuthService, private router: Router) { }
+
+  proceedRegistration() {
+    if (this.registerForm.valid) {
+
+      this.service.userRegister(this.registerForm.value).subscribe(res => {
+        console.log(res);
         this.router.navigate(['login']);
-        
       })
+    }else{
+      alert('please enter valid data')
     }
+    console.log('ldjf');
+    console.log(this.registerForm);
   }
 
 

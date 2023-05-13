@@ -1,3 +1,14 @@
-.form__container{
-    
+/* .form__container{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
 }
+
+.form__submit{
+    background-color: blueviolet;
+    color: white;
+    width: 50%;
+    text-align: center;
+} */
