@@ -1,31 +1,33 @@
 {
   "user": [
     {
-      "username": "Aashish",
+      "id": "Aashish",
       "email": "Admin@gmail.com",
       "password": "root",
-      "id": 1
+      "isActive": true,
+      "role": "user"
     },
     {
-      "username": "none",
+      "id": "none",
+      "name": "none",
       "email": "none",
       "password": "none",
-      "id": 2
+      "isActive": true,
+      "role": "user"
     },
     {
-      "username": "aashish",
+      "id": "aashish",
       "email": "sldfjl",
       "password": "sjkdlfjsl",
       "isActive": false,
-      "id": 3
+      "role": "sales person"
     },
     {
       "id": "hello",
-      "name": "hello",
       "email": "aashishmahato300@gmail.com",
       "password": "hello",
       "isActive": true,
-      "role": ""
+      "role": "supervisor"
     }
   ]
 }

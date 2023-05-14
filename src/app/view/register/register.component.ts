@@ -18,7 +18,7 @@ export class RegisterComponent {
     password: new FormControl(''),
     isActive: new FormControl(false),
     role: new FormControl('')
-  })
+  }) 
 
 
 

@@ -65,6 +65,10 @@
             },
             "development": {
               "browserTarget": "ING-task:build:development"
+            },
+            "options": {
+              "browserTarget": "projectname:build",
+              "proxyConfig": "./proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"

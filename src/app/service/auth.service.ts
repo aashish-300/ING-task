@@ -23,7 +23,7 @@ export class AuthService {
   }
 
   updataUser(id: any, data: any) {
-    return this.http.put(`this.apiUrl/${id}`, data);
+    return this.http.put(this.apiUrl+'/'+id, data);
   }
 
   isLoggedIn() {

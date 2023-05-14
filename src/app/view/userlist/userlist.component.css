@@ -1,0 +1,54 @@
+.userList{
+    display: flex;
+    width: 80vw;
+    position: relative;
+    margin: 5vw auto;
+    justify-content: center;
+}
+
+.popup{
+    position: absolute;
+    /* display:none; */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid grey;
+    width: 50vw;
+    padding:50px;
+    background-color:white ;
+}
+
+.user{
+    display:block;
+    width: 100%;
+}
+
+.checkbox{
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+.text{
+    font-weight: bold;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+.mr{
+    padding-right: 50px;
+    padding-bottom: 10px;
+}
+
+.update{
+    margin:5px;
+}
+
+.input__checkbox{
+    width:60px;
+    height: 20px;
+}
+
+.label{
+
+}
