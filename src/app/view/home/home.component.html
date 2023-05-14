@@ -1,1 +1,28 @@
-<p>home works!</p>
+<div class="card" style="width: 80vw;margin:auto">
+    <h3>Sold Items</h3>
+    <!-- <div class="card-header">
+        <a class="btn btn-success" routerLink="/addItems">Add Items</a>
+        <a class="btn btn-danger">Sell Items</a>
+    </div> -->
+    <table datatable class="table table-bordered">
+        <thead class="bg-dark text-white">
+            <tr>
+                <td>Invoice No.</td>
+                <td>customer Name</td>
+                <td>Product name</td>
+                <td>quantity</td>
+                <td>Price</td>
+                <td>NetTotal</td>
+                <!-- <td>Action</td> -->
+            </tr>
+        </thead>
+        <tr *ngFor="let item of products">
+            <td>{{item.invoice}}</td>
+            <td>{{item.customerName}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.quantity}}</td>
+            <td>{{item.price}}</td>
+            <td>{{item.total}}</td>
+        </tr>
+    </table>
+</div>

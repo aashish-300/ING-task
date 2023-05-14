@@ -1,6 +1,24 @@
 <div class="userList">
     <div class="popup" *ngIf="popupmenu" [formGroup] = "registerForm">
         <div class="text">Update User</div>
+        <label class="form__input--label">
+            UserName
+        </label>
+        <input type="text" class="form__input--input" formControlName="id" required placeholder="UserName"/>
+        <label class="form__input--label">
+            Name
+        </label>
+        <input type="text" class="form__input--input" formControlName="name" required placeholder="Name"/>
+        
+        <label for="email" class="form__input--label">
+            Email
+        </label>
+        <input id="email" name="email" type="email" class="form__input--input" formControlName="email" placeholder="Email" required/>
+        <label for="password" class="form__input--label">
+            Password
+        </label>
+        <input id="password" name="password" type="password" class="form__input--input" formControlName="password" placeholder="Password" required/>
+   
         <select id="user" class="user" formControlName="role">
             <option value="supervisor">Supervisor</option>
             <option value="user">User</option>
@@ -13,7 +31,31 @@
         <button type="button" class="btn btn-primary" (click)="updateUser()">Update</button>
         <button type="button" class="btn btn-primary" (click)="closepop()">Close</button>
     </div>
-    <table class="box">
+
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">User Name</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Role</th>
+            <th scope="col">Status</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr class="space" *ngFor="let user of userlist" >
+                <td>{{user.id}}</td>
+                <td>{{user.name}}</td>
+                <td>{{user.email}}</td>
+                <td>{{user.role}}</td>
+                <td>{{user.isActive? 'Active':'Inactive'}}</td>
+                <td *ngIf="user.role!=='admin'" > <button type="button" (click)="onUpdate(user)" class="btn btn-primary update">Update</button><button type="button" (click)="onDelete(user)" class="btn btn-danger">Delete</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- <table class="box">
         <tr class="column">
             <th class="mr">User Name</th>
             <th class="mr">Name</th>
@@ -28,8 +70,8 @@
             <td>{{user.email}}</td>
             <td>{{user.role}}</td>
             <td>{{user.isActive? 'Active':'Inactive'}}</td>
-            <td> <button type="button" (click)="onUpdate(user)" class="btn btn-primary update">Update</button></td>
+            <td *ngIf="user.role!=='admin'" > <button type="button" (click)="onUpdate(user)" class="btn btn-primary update">Update</button><button type="button" (click)="onDelete(user)" class="btn btn-danger">Delete</button></td>
         </tr>
        
-    </table>
+    </table> -->
 </div>

@@ -1,0 +1,8 @@
+.dashboard{
+    display: flex;
+    /* justify-content: center; */
+    /* align-items: center; */
+    width: 80%;
+    border: 1px solid grey;
+    margin:30px  auto;
+}

@@ -11,6 +11,9 @@ import { HomeComponent } from './view/home/home.component';
 import { UserlistComponent } from './view/userlist/userlist.component';
 import { UpdatepopupComponent } from './view/updatepopup/updatepopup.component';
 import { NavbarComponent } from './view/navbar/navbar.component';
+import { ProductsComponent } from './view/products/products.component';
+import { AddItemsComponent } from './view/add-items/add-items.component';
+import { SellItemsComponent } from './view/sell-items/sell-items.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +23,10 @@ import { NavbarComponent } from './view/navbar/navbar.component';
     HomeComponent,
     UserlistComponent,
     UpdatepopupComponent,
-    NavbarComponent
+    NavbarComponent,
+    ProductsComponent,
+    AddItemsComponent,
+    SellItemsComponent
   ],
   imports: [
     BrowserModule,

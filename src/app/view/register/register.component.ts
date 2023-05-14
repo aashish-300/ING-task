@@ -34,7 +34,6 @@ export class RegisterComponent {
     }else{
       alert('please enter valid data')
     }
-    console.log('ldjf');
     console.log(this.registerForm);
   }
 

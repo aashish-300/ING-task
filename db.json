@@ -2,32 +2,75 @@
   "user": [
     {
       "id": "Aashish",
+      "name": "aa",
       "email": "Admin@gmail.com",
       "password": "root",
       "isActive": true,
-      "role": "user"
+      "role": "admin"
     },
     {
-      "id": "none",
-      "name": "none",
-      "email": "none",
-      "password": "none",
+      "id": "admin",
+      "name": "admin",
+      "email": "admin@gmail.com",
+      "password": "admin",
       "isActive": true,
       "role": "user"
+    }
+  ],
+  "role": [
+    {
+      "id": "admin",
+      "name": "admin"
+    }
+  ],
+  "products": [
+    {
+      "id": "bike",
+      "name": "bike",
+      "quantity": 5,
+      "price": 1510
     },
     {
-      "id": "aashish",
-      "email": "sldfjl",
-      "password": "sjkdlfjsl",
-      "isActive": false,
-      "role": "sales person"
+      "id": "car",
+      "name": "car",
+      "description": "this is car",
+      "quantity": "20",
+      "price": "10",
+      "total": 200
     },
     {
-      "id": "hello",
-      "email": "aashishmahato300@gmail.com",
-      "password": "hello",
-      "isActive": true,
-      "role": "supervisor"
+      "id": "bbb",
+      "name": "bbb",
+      "description": "fsdf",
+      "quantity": "2",
+      "price": "6",
+      "total": "12"
+    }
+  ],
+  "sold": [
+    {
+      "id": "102",
+      "invoice":"13fa4",
+      "name": "sdfsdf",
+      "description": "asdfsdf",
+      "quantity": "3",
+      "price": "4",
+      "total": "3",
+      "customerName": "nopne",
+      "address": "sdfsa",
+      "remark": "dsfaf"
+    },
+    {
+      "id": "car",
+      "invoice":"13fa4",
+      "name": "hero",
+      "description": "",
+      "quantity": "20",
+      "price": "10",
+      "total": 200,
+      "customerName": "baymax",
+      "address": "",
+      "remark": ""
     }
   ]
 }

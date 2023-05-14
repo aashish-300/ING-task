@@ -45,15 +45,29 @@ export class UserlistComponent implements OnInit {
     this.popupmenu = true;
     this.registerForm.patchValue({
       id:this.singleuser.id,
-      name: this.singleuser.username,
+      name: this.singleuser.name,
       email: this.singleuser.email,
-      password: this.singleuser.password
+      password: this.singleuser.password,
+      isActive: this.singleuser.isActive,
+      role: this.singleuser.role
     });
+  }
+
+  onDelete(user: any) {
+    console.log(user);
+    this.service.deleteUser(user.id).subscribe(res => {
+      console.log('deleted');
+      this.loadUser();
+    })
   }
 
   updateUser(){
     this.popupmenu = false;
     this.registerForm.patchValue({
+      id:this.registerForm.value.id,
+      name: this.registerForm.value.name,
+      email: this.registerForm.value.email,
+      password: this.registerForm.value.password,
       isActive:this.registerForm.value.isActive,
       role: this.registerForm.value.role
     })
@@ -70,5 +84,7 @@ export class UserlistComponent implements OnInit {
     this.popupmenu = false;
     this.loadUser();
   }
+
+
 
 }

@@ -26,6 +26,10 @@ export class AuthService {
     return this.http.put(this.apiUrl+'/'+id, data);
   }
 
+  deleteUser(id:any){
+    return this.http.delete(this.apiUrl+'/'+id);
+  }
+
   isLoggedIn() {
     return sessionStorage.getItem('username') != null;
   }

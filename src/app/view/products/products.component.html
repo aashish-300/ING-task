@@ -1,0 +1,33 @@
+<div class="card" style="width: 80vw;margin:auto">
+    <h3>List Items</h3>
+    <div class="card-header">
+        <a class="btn btn-success" routerLink="/addItems">Add Items</a>
+        <a class="btn btn-danger" routerLink="/sellItems">Sell Items</a>
+    </div>
+    <table datatable class="table table-bordered">
+        <thead class="bg-dark text-white">
+            <tr>
+                <td>ID</td>
+                <td>Item</td>
+                <td>Description</td>
+                <td>quantity</td>
+                <td>Price</td>
+                <td>NetTotal</td>
+                <td>Action</td>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr *ngFor="let item of products">
+                <td>{{item.id}}</td>
+                <td>{{item.name}}</td>
+                <td>{{item.description}}</td>
+                <td>{{item.quantity}}</td>
+                <td>{{item.price}}</td>
+                <td>{{item.total}}</td>
+                <td><button class="btn btn-primary" routerLink="/addItems"  (click)="onEdit(item)">Edit</button><button class="btn btn-danger"
+                        (click)="onDelete(item)">Delete</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

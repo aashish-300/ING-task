@@ -1,11 +1,24 @@
 .navbar__container{
-    background-color: red;
+    background-color: rgb(77, 53, 53);
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding:20px;
+    font-size: 20px;
+    color: white;
 }
 
 .navbar__menu{
     display: flex;
-    
+    align-items: space-between;
+    width: 100%;
+}
+
+.navbar__menu div {
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.logout{
+    cursor: pointer;
 }
