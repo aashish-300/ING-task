@@ -53,6 +53,9 @@ export class AddItemsComponent {
 
   onAdd() {
     console.log(this.addProducts.value)
+    this.addProducts.patchValue({
+      id: this.addProducts.value.name
+    })
     this.service.addItems(this.addProducts.value).subscribe(res => {
       this.router.navigate(['/product']);
     })

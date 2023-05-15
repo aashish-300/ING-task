@@ -1,10 +1,13 @@
 {
-    "/user": {
-      "target": "http://localhost:5000/user",
-      "secure": false,
-      "changeOrigin": false,
-      "pathRewrite": {
-        "^/api": ""
+    "/api/*": {
+      "target": "http://localhost:5000",
+      "secure": true,
+      "changeOrigin": true,
+      "logLevel": "debug",
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH"
       }
     }
   }
+  

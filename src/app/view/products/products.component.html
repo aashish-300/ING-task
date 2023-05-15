@@ -2,7 +2,7 @@
     <h3>List Items</h3>
     <div class="card-header">
         <a class="btn btn-success" routerLink="/addItems">Add Items</a>
-        <a class="btn btn-danger" routerLink="/sellItems">Sell Items</a>
+        <a class="btn btn-danger" routerLink="/sellItems" *ngIf="role === 'admin' || 'sales person'">Sell Items</a>
     </div>
     <table datatable class="table table-bordered">
         <thead class="bg-dark text-white">

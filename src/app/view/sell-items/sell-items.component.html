@@ -5,7 +5,7 @@
             <div class="input-group-prepend">
                 <span class="input-group-text" id="basic-addon1">Invoice No.</span>
             </div>
-            <input type="text" class="form-control" formControlName="Invoice" placeholder="Invoice Number..."
+            <input type="text" class="form-control" formControlName="invoice" placeholder="Invoice Number..."
                 aria-label="Username" aria-describedby="basic-addon1">
         </div>
         <div class="input-group mb-3">
@@ -49,7 +49,7 @@
                     <td>1</td>
                     <td>
                         <div class="input-group">
-                            <select class="custom-select form-control" aria-placeholder="select" (change)="itemSelected()" formControlName="id" id="inputGroupSelect04">
+                            <select class="custom-select form-control" aria-placeholder="select" (change)="itemSelected()" formControlName="name" id="inputGroupSelect04">
                                 <option *ngFor="let item of products" value={{item.name}}>{{item.name}}</option>
                             </select>
                         </div>
