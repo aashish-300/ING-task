@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ProductsService } from 'src/app/service/products.service';
@@ -8,7 +8,7 @@ import { ProductsService } from 'src/app/service/products.service';
   templateUrl: './add-items.component.html',
   styleUrls: ['./add-items.component.css']
 })
-export class AddItemsComponent {
+export class AddItemsComponent implements OnInit {
 
   constructor(private service: ProductsService ,private router: Router) { 
     console.log('session service')
@@ -18,6 +18,16 @@ export class AddItemsComponent {
       this.edit= true;
      }
   }
+
+  ngOnInit(): void {
+    console.log('session service')
+    console.log(this.service.temp);
+    if(this.service.temp){
+     this.loadData();
+     this.edit= true;
+    }
+  }
+
   sum: any;
   edit: boolean= false;
 
@@ -57,8 +67,9 @@ export class AddItemsComponent {
       id: this.addProducts.value.name
     })
     this.service.addItems(this.addProducts.value).subscribe(res => {
-      this.router.navigate(['/product']);
+      // this.router.navigate(['/product']);
     })
+    this.router.navigate(['/product']);
   }
 
   onEdit(){
@@ -72,8 +83,10 @@ export class AddItemsComponent {
     })
 
     this.service.editItem(this.addProducts.value.id, this.addProducts.value).subscribe(res => {
-      this.router.navigate(['/product']);
+      // this.router.navigate(['/product']);
     })
+    this.router.navigate(['/product']);
+
   }
 
 }

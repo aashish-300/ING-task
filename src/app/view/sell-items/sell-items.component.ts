@@ -41,8 +41,9 @@ export class SellItemsComponent implements OnInit {
     console.log(this.sellItems.value);
     this.service.sellItem(this.sellItems.value).subscribe(res => {
       console.log(res);
-      this.router.navigate(['/product']);
+      // this.router.navigate(['/product']);
     })
+    this.router.navigate(['/product']);
   }
 
   itemSelected() {

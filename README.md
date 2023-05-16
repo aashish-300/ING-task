@@ -1,28 +1,67 @@
-# ING-task
+
+# ING Task
+
+This project is built to show my ability to add roles to each user and give access to website on the basis of role assigned to them by admin.
+
+### Admin login credentials
+#### username: admin
+#### password: admin
 
 
-Requirements
+## Demo
 
-● Must use MVC pattern                     
-● Cannot use external libraries
+### Frontend:
+https://fascinating-halva-f14bbe.netlify.app/
 
-● User Crud
-    ○ Access: Admin
+### Backend
+https://misty-ox-sweater.cyclic.app/
 
-● Role Crud
-    ○ Access: Admin
 
-● Item Crud
-    ○ Access: Admin / Supervisor
+## API Reference
 
-● Dashboard
-    ○ Access: Admin/Supervisor
-    ○ Items sold total
-    ○ Items sold today
-    ○ Most popular Item
+#### Get all user
 
-● Sales System
-    ○ Access: Admin/sales person
-    ○ Sell Item (If Available)
-    ○ Restock Item
-    ○ Search Item
+```http
+  https://misty-ox-sweater.cyclic.app/user
+```
+
+
+#### Get all products
+
+```http
+  https://misty-ox-sweater.cyclic.app/products
+```
+
+
+#### Get all sold products
+
+```http
+  https://misty-ox-sweater.cyclic.app/sold
+```
+
+## Run Locally
+
+Clone the project
+
+```bash
+  git clone https://github.com/aashish-300/ING-task.git
+```
+
+Go to the project directory
+
+```bash
+  cd ING-task
+```
+
+Install dependencies
+
+```bash
+  npm install
+```
+
+Start the server
+
+```bash
+  npm run start
+```
+

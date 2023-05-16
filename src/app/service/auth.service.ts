@@ -6,7 +6,8 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AuthService {
 
-  private apiUrl = 'http://localhost:5000/user';
+  // private apiUrl = 'http://localhost:5000/user';
+  private apiUrl = 'https://misty-ox-sweater.cyclic.app/user';
 
   constructor(private http: HttpClient) { }
 

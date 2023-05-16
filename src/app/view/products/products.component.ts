@@ -22,11 +22,13 @@ export class ProductsComponent implements OnInit {
   role: any;
   
   ngOnInit(): void {
+    // this.getAllProducts();
       this.role = this.authService.getUserRole();
   }
 
   getAllProducts(){
     this.service.getAllProducts().subscribe(res => {
+      console.log(res);
       this.products = res;
     })
   }

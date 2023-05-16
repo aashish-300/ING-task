@@ -23,6 +23,14 @@
       "password": "hello",
       "isActive": true,
       "role": ""
+    },
+    {
+      "id": "aman",
+      "name": "aman",
+      "email": "aman@gmail.com",
+      "password": "aman",
+      "isActive": true,
+      "role": "user"
     }
   ],
   "role": [
@@ -55,20 +63,12 @@
       "total": "12"
     },
     {
-      "id": "laptops",
-      "name": "laptops",
-      "description": "this is laptop",
-      "quantity": "4",
-      "price": "30",
-      "total": 120
-    },
-    {
-      "id": "ssss",
-      "name": "aaa",
-      "description": "ssss",
-      "quantity": "3",
-      "price": "4",
-      "total": 12
+      "id": "aman",
+      "name": "aman",
+      "description": "aman",
+      "quantity": "7",
+      "price": "56",
+      "total": 392
     }
   ],
   "sold": [
@@ -271,6 +271,115 @@
       "customerName": "",
       "address": "",
       "remark": ""
+    },
+    {
+      "id": "222",
+      "invoice": "222",
+      "name": "car",
+      "quantity": "9",
+      "price": "10",
+      "total": 200,
+      "customerName": "hello",
+      "address": "",
+      "remark": ""
+    },
+    {
+      "id": "fdsf",
+      "invoice": "fdsf",
+      "name": "car",
+      "quantity": "8",
+      "price": "10",
+      "total": 200,
+      "customerName": "sdfs",
+      "address": "",
+      "remark": ""
+    },
+    {
+      "id": "sfsfdsdf",
+      "invoice": "sfsfdsdf",
+      "name": "car",
+      "quantity": "12",
+      "price": "10",
+      "total": 200,
+      "customerName": "sdfsdf",
+      "address": "",
+      "remark": ""
+    },
+    {
+      "id": "dsfsadf",
+      "invoice": "dsfsadf",
+      "name": "car",
+      "quantity": "11",
+      "price": "10",
+      "total": 200,
+      "customerName": "sdfsdf",
+      "address": "",
+      "remark": ""
+    },
+    {
+      "id": "dsfasdf",
+      "invoice": "dsfasdf",
+      "name": "car",
+      "quantity": "10",
+      "price": "10",
+      "total": 200,
+      "customerName": "sdf",
+      "address": "",
+      "remark": ""
+    },
+    {
+      "id": "fdasf",
+      "invoice": "fdasf",
+      "name": "bike",
+      "quantity": "2",
+      "price": 1510,
+      "customerName": "fsadf",
+      "address": "",
+      "remark": ""
+    },
+    {
+      "id": "kj_w2CL",
+      "invoice": "",
+      "name": "car",
+      "quantity": "13",
+      "price": "10",
+      "total": 200,
+      "customerName": "",
+      "address": "",
+      "remark": ""
+    },
+    {
+      "id": "fgsf",
+      "invoice": "fgsf",
+      "name": "car",
+      "quantity": "14",
+      "price": "10",
+      "total": 200,
+      "customerName": "dfsdf",
+      "address": "",
+      "remark": ""
+    },
+    {
+      "id": "gfs",
+      "invoice": "gfs",
+      "name": "car",
+      "quantity": "11",
+      "price": "10",
+      "total": 200,
+      "customerName": "fdsf",
+      "address": "",
+      "remark": ""
+    },
+    {
+      "id": "dslkjflk",
+      "invoice": "dslkjflk",
+      "name": "aman",
+      "quantity": "4",
+      "price": "56",
+      "total": 392,
+      "customerName": "aman roy",
+      "address": "gwarko",
+      "remark": "send"
     }
   ]
 }

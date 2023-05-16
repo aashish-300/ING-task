@@ -28,9 +28,10 @@ export class RegisterComponent {
     if (this.registerForm.valid) {
 
       this.service.userRegister(this.registerForm.value).subscribe(res => {
+        console.log('here is registration')
         console.log(res);
-        this.router.navigate(['login']);
       })
+      this.router.navigate(['login']);
     }else{
       alert('please enter valid data')
     }

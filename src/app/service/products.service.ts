@@ -8,7 +8,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class ProductsService {
 
-   private apiUrl = 'http://localhost:5000/products';
+   // private apiUrl = 'http://localhost:5000/products';
+   private apiUrl = 'https://misty-ox-sweater.cyclic.app/products';
 
    constructor(private http: HttpClient) {
    }
@@ -41,7 +42,7 @@ export class ProductsService {
       console.log(data);
       this.decItem(data.name, data.quantity);
       console.log('item sold successfully')
-      return this.http.post("http://localhost:5000/sold", data);
+      return this.http.post("https://misty-ox-sweater.cyclic.app/sold", data);
    }
 
    getAllProductsName() {
@@ -52,20 +53,25 @@ export class ProductsService {
 
    getAllSoldProducts() {
       console.log('all products');
-      return this.http.get("http://localhost:5000/sold");
+      // return this.http.get("http://localhost:5000/sold");
+      return this.http.get("https://misty-ox-sweater.cyclic.app/sold");
    }
 
    decItem(id: any, quantity: any) {
       let item: any;
-      return this.http.get(this.apiUrl + '/' + id).subscribe(data => {
+      let update;
+      this.http.get(this.apiUrl + '/' + id).subscribe(data => {
          item = data;
          item.quantity -= quantity;
          console.log(item);
-         const update = { quantity: item.quantity };
+          update = { quantity: item.quantity };
+          // const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+          // this.http.patch(this.apiUrl + '/' + id, update, { headers });
+         })
          console.log(update);
-         const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-         this.http.put(this.apiUrl + '/' + id, update, { headers });
-      })
+         console.log(id);
+      const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+      return this.http.patch(this.apiUrl + '/' + id, update)
       
    }
 
