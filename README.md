@@ -11,7 +11,7 @@ This project is built to show my ability to add roles to each user and give acce
 ## Demo
 
 ### Frontend:
-https://fascinating-halva-f14bbe.netlify.app/
+https://unique-lebkuchen-858bdd.netlify.app
 
 ### Backend
 https://misty-ox-sweater.cyclic.app/
