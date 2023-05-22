@@ -3,10 +3,10 @@
     {
       "id": "admin",
       "name": "admin",
-      "email": "Admin@gmail.com",
+      "email": "admin@gmail.com",
       "password": "admin",
-      "isActive": true,
-      "role": "admin"
+      "isActive": false,
+      "role": "unAssigned"
     },
     {
       "id": "none",
@@ -31,6 +31,22 @@
       "password": "aman",
       "isActive": true,
       "role": "user"
+    },
+    {
+      "id": "test",
+      "name": "test",
+      "email": "test@gmail.com",
+      "password": "test",
+      "isActive": false,
+      "role": "supervisor"
+    },
+    {
+      "id": "asjf",
+      "name": "alsjl",
+      "email": "aashishmahato224@gmail.com",
+      "password": "root",
+      "isActive": false,
+      "role": ""
     }
   ],
   "role": [

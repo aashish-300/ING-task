@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductsService } from 'src/app/service/products.service';
 import { Router } from '@angular/router';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-sell-items',
@@ -10,52 +10,39 @@ import { FormGroup, FormControl } from '@angular/forms';
 })
 export class SellItemsComponent implements OnInit {
 
-  constructor(private service: ProductsService, private router: Router) { }
+  constructor(private _formBuilder: FormBuilder, private service: ProductsService, private router: Router) {
+    this.sellItems = this._formBuilder.group({
+      id: ['unique', Validators.required],
+      invoice: ['unique', Validators.required],
+      name: ['ing', Validators.required],
+      quantity: [0, Validators.required],
+      price: [0, Validators.required],
+      total: [0, Validators.required],
+      customerName: ['ing', Validators.required],
+      address: ['naxal', Validators.required],
+      remark: ['send', Validators.required],
+    })
+  }
+
+  sellItems!: FormGroup;
 
   products: any;
   selectedItem: any;
 
+
   ngOnInit(): void {
-    this.service.getAllProducts().subscribe(res => {
-      this.products = res;
-    });
+    this.products = this.service.getAllProductName();
   }
 
-  sellItems = new FormGroup({
-    id: new FormControl(''),
-    invoice: new FormControl(''),
-    name: new FormControl(''),
-    // description: new FormControl(''),
-    quantity: new FormControl(0),
-    price: new FormControl(0),
-    total: new FormControl(0),
-    customerName: new FormControl(''),
-    address: new FormControl(''),
-    remark: new FormControl(''),
-  })
 
   onSell() {
     this.sellItems.patchValue({
       id: this.sellItems.value.invoice
     })
-    console.log(this.sellItems.value);
-    this.service.sellItem(this.sellItems.value).subscribe(res => {
-      console.log(res);
-      // this.router.navigate(['/product']);
-    })
-    this.router.navigate(['/product']);
+    this.service.sellItem(this.sellItems.value)
+    this.router.navigate(['/']);
   }
 
-  itemSelected() {
-    this.service.getProduct(this.sellItems.value.name).subscribe(data => {
-      this.selectedItem = data;
-      console.log(this.selectedItem);
-      this.sellItems.patchValue({
-        quantity: this.selectedItem.quantity,
-        price: this.selectedItem.price,
-        total: this.selectedItem.total
-      })
-    })
-  }
+
 
 }

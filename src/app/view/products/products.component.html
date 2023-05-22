@@ -1,7 +1,7 @@
 <div class="card" style="width: 80vw;margin:auto">
     <h3>List Items</h3>
     <div class="card-header">
-        <a class="btn btn-success" routerLink="/addItems">Add Items</a>
+        <a class="btn btn-success" routerLink="/addItems" (click)="onAdd()">Add Items</a>
         <a class="btn btn-danger" routerLink="/sellItems" *ngIf="role === 'admin' || 'sales person'">Sell Items</a>
     </div>
     <table datatable class="table table-bordered">
@@ -25,8 +25,8 @@
                 <td>{{item.quantity}}</td>
                 <td>{{item.price}}</td>
                 <td>{{item.total}}</td>
-                <td><button class="btn btn-primary" routerLink="/addItems"  (click)="onEdit(item)">Edit</button><button class="btn btn-danger"
-                        (click)="onDelete(item)">Delete</button></td>
+                <td><button class="btn btn-primary" routerLink="/addItems" (click)="onEdit(item)">Edit</button><button
+                        class="btn btn-danger" (click)="onDelete(item)">Delete</button></td>
             </tr>
         </tbody>
     </table>

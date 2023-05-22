@@ -10,12 +10,12 @@ import { Observable } from 'rxjs';
   styleUrls: ['./userlist.component.css']
 })
 export class UserlistComponent implements OnInit {
-  constructor(private router: Router, private service: AuthService) { 
+  constructor(private router: Router, private service: AuthService) {
     this.loadUser();
   }
 
   ngOnInit(): void {
-      
+
   }
 
   userlist: any;
@@ -23,28 +23,25 @@ export class UserlistComponent implements OnInit {
   singleuser: any;
 
   registerForm = new FormGroup({
-    id : new FormControl(''),
+    id: new FormControl(''),
     name: new FormControl(''),
     email: new FormControl(''),
     password: new FormControl(''),
     isActive: new FormControl(false),
     role: new FormControl('')
-  }) 
+  })
 
 
   loadUser() {
-    this.service.getAllUser().subscribe(user => {
-      this.userlist = user;
-      console.log(this.userlist);
-    })
+    this.userlist = this.service.getAllUser();
   }
 
   onUpdate(user: any) {
-    console.log(user);
+    // console.log(user);
     this.singleuser = user;
     this.popupmenu = true;
     this.registerForm.patchValue({
-      id:this.singleuser.id,
+      id: this.singleuser.id,
       name: this.singleuser.name,
       email: this.singleuser.email,
       password: this.singleuser.password,
@@ -54,33 +51,24 @@ export class UserlistComponent implements OnInit {
   }
 
   onDelete(user: any) {
-    console.log(user);
-    this.service.deleteUser(user.id).subscribe(res => {
-      console.log('deleted');
-      this.loadUser();
-    })
+    this.service.deleteUser(user.id);
+    this.loadUser();
   }
 
-  updateUser(){
+  updateUser() {
     this.popupmenu = false;
     this.registerForm.patchValue({
-      id:this.registerForm.value.id,
+      id: this.registerForm.value.id,
       name: this.registerForm.value.name,
       email: this.registerForm.value.email,
       password: this.registerForm.value.password,
-      isActive:this.registerForm.value.isActive,
+      isActive: this.registerForm.value.isActive,
       role: this.registerForm.value.role
     })
-    console.log(this.registerForm.value)
-    this.service.updataUser(this.registerForm.value.id, this.registerForm.value).subscribe(res => {
-      console.log('inside service');
-      console.log(res);
-      this.loadUser();
-    });
-    console.log('update')
+    this.service.updataUser(this.registerForm.value.id, this.registerForm.value);
   }
 
-  closepop(){
+  closepop() {
     this.popupmenu = false;
     this.loadUser();
   }

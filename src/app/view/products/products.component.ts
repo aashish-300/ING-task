@@ -11,36 +11,41 @@ import { AuthService } from 'src/app/service/auth.service';
   styleUrls: ['./products.component.css']
 })
 export class ProductsComponent implements OnInit {
-  constructor(private service: ProductsService,private authService: AuthService){
-    this.getAllProducts();
-  }
-
-
-  
-  invoiceno: any;
-  products: any;
-  role: any;
-  
-  ngOnInit(): void {
+  constructor(private service: ProductsService, private authService: AuthService) {
     // this.getAllProducts();
-      this.role = this.authService.getUserRole();
   }
 
-  getAllProducts(){
-    this.service.getAllProducts().subscribe(res => {
-      console.log(res);
-      this.products = res;
-    })
+  invoiceno: any;
+  products: any = [];
+  role: any;
+
+  ngOnInit(): void {
+    this.getAllProducts();
+    this.role = this.authService.getUserRole();
+  }
+
+  loadProducts() {
+    this.products = this.service.getAllProducts();
+  }
+
+  getAllProducts() {
+    this.products = this.service.getAllProducts();
+    // console.log(this.products);
+  }
+
+  onAdd() {
+    this.service.edit = false;
   }
 
   onEdit(data: any) {
-    console.log(data);
-    this.service.temp = data;
+    this.service.editItem(data);
   }
 
   onDelete(data: any): void {
-    this.service.deleteItem(data.id).subscribe(res => {
-      this.getAllProducts();
-    });
+    this.service.deleteItem(data);
+    this.loadProducts();
+    // this.service.deleteItem(data.id).subscribe(res => {
+    //   this.getAllProducts();
+    // });
   }
 }

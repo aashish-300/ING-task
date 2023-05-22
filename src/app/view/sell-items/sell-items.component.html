@@ -49,8 +49,9 @@
                     <td>1</td>
                     <td>
                         <div class="input-group">
-                            <select class="custom-select form-control" aria-placeholder="select" (change)="itemSelected()" formControlName="name" id="inputGroupSelect04">
-                                <option *ngFor="let item of products" value={{item.name}}>{{item.name}}</option>
+                            <select class="custom-select form-control" aria-placeholder="select" formControlName="name"
+                                id="inputGroupSelect04">
+                                <option *ngFor="let item of products" value={{item}}>{{item}}</option>
                             </select>
                         </div>
                     </td>

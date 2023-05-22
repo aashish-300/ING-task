@@ -8,71 +8,95 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class ProductsService {
 
-   // private apiUrl = 'http://localhost:5000/products';
-   private apiUrl = 'https://misty-ox-sweater.cyclic.app/products';
+   private apiUrl = 'http://localhost:5000/products';
+   // private apiUrl = 'https://misty-ox-sweater.cyclic.app/products';
 
    constructor(private http: HttpClient) {
    }
 
    temp: any;
-   items: any;
+   items: any = [];
+   edit: boolean = false;
+   soldItems: any = [];
+
+   updateStorage() {
+      localStorage.setItem('products', JSON.stringify(this.items));
+   }
 
    getAllProducts() {
-      return this.http.get(this.apiUrl);
+      if (localStorage.getItem('products')) {
+         this.temp = localStorage.getItem('products');
+         this.items = JSON.parse(this.temp);
+      }
+      return this.items;
+   }
+
+   getAllProductName() {
+      if (localStorage.getItem('products')) {
+         this.temp = localStorage.getItem('products');
+         this.temp = JSON.parse(this.temp);
+         this.temp = Array.from(this.temp).map((val: any) => {
+            return val.name;
+         })
+      }
+      return this.temp;
    }
 
    getProduct(id: any) {
-      console.log(id);
       return this.http.get(this.apiUrl + '/' + id);
    }
 
    addItems(data: any) {
-      return this.http.post(this.apiUrl, data);
+      this.items.push(data);
+      localStorage.setItem('products', JSON.stringify(this.items));
    }
 
-   deleteItem(id: any) {
-      return this.http.delete(this.apiUrl + '/' + id);
+   deleteItem(item: any) {
+      this.temp = Array.from(this.items).filter((e: any) => {
+         return e.id !== item.id
+      })
+      this.items = this.temp;
+      this.updateStorage();
    }
 
-   editItem(id: any, data: any) {
-      return this.http.put(this.apiUrl + '/' + id, data);
+   editItem(data: any) {
+      this.temp = data;
+      this.edit = true;
+   }
+
+   updateItem(data: any) {
+      Array.from(this.items).forEach((val: any, i) => {
+         if (val.id === data.id) {
+            this.items[i] = data;
+            this.updateStorage()
+         }
+      })
    }
 
    sellItem(data: any) {
-      console.log(data);
-      this.decItem(data.name, data.quantity);
-      console.log('item sold successfully')
-      return this.http.post("https://misty-ox-sweater.cyclic.app/sold", data);
+      this.soldItems.push(data);
+      localStorage.setItem('soldItems', JSON.stringify(this.soldItems));
    }
 
-   getAllProductsName() {
-      this.http.get(this.apiUrl).subscribe(data => {
-         this.items = data;
-      });
-   }
 
    getAllSoldProducts() {
-      console.log('all products');
-      // return this.http.get("http://localhost:5000/sold");
-      return this.http.get("https://misty-ox-sweater.cyclic.app/sold");
+      if (localStorage.getItem('soldItems')) {
+         this.temp = localStorage.getItem('soldItems');
+         this.soldItems = JSON.parse(this.temp);
+      }
+      return this.soldItems;
    }
 
-   decItem(id: any, quantity: any) {
-      let item: any;
-      let update;
-      this.http.get(this.apiUrl + '/' + id).subscribe(data => {
-         item = data;
-         item.quantity -= quantity;
-         console.log(item);
-          update = { quantity: item.quantity };
-          // const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-          // this.http.patch(this.apiUrl + '/' + id, update, { headers });
-         })
-         console.log(update);
-         console.log(id);
-      const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-      return this.http.patch(this.apiUrl + '/' + id, update)
-      
+   decQuantity(val: any) {
+      Array.from(this.items).forEach((x: any, i) => {
+         if (val.name === x.id && Number(x.quantity) >= Number(val.quantity)) {
+            x.quantity = Number(x.quantity) - Number(val.quantity);
+            this.items[i] = x;
+            return true;
+         } else {
+            return false;
+         }
+      })
+      this.updateStorage();
    }
-
 }
