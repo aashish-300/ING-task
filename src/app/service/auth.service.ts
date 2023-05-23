@@ -19,9 +19,10 @@ export class AuthService implements OnInit {
   }
 
   userlist: RegisterModel[] = [];
-  user: any = {};
+  user!: RegisterModel;
   temp: any;
   index: number = 0;
+  role!: string | undefined;
 
   updateLocalStorage() {
     localStorage.setItem('userlist', JSON.stringify(this.userlist));
@@ -43,23 +44,26 @@ export class AuthService implements OnInit {
   }
 
   getUserById(id: string) {
+    console.log('getUserById', this.userlist)
     this.userlist.filter((x: RegisterModel) => {
       console.log(x)
       if (x.id === id) {
         this.user = x
+        console.log(this.user);
         return;
       }
     })
     return of(this.user).pipe(delay(1000));
   }
 
-  userRegister(id: string, data: any) {
+  userRegister(id: string, data: RegisterModel) {
     this.userlist.push(data);
     this.temp = JSON.stringify(this.userlist);
     return localStorage.setItem('userlist', this.temp);
   }
 
-  updataUser(id: any, data: any) {
+  updataUser(id: string, data: RegisterModel): void {
+    console.log('here is update', data);
     Array.from(this.userlist).forEach((e: any, i) => {
       if (e.id === id) {
         this.userlist[i] = data;
@@ -69,7 +73,7 @@ export class AuthService implements OnInit {
   }
 
   deleteUser(id: string) {
-    this.temp = Array.from(this.userlist).filter((e: any) => {
+    this.temp = this.userlist.filter((e: any) => {
       return e.id !== id;
     })
     console.log(this.temp);
@@ -80,8 +84,9 @@ export class AuthService implements OnInit {
   isLoggedIn() {
     return sessionStorage.getItem('username') != null;
   }
-  getUserRole() {
-    return sessionStorage.getItem('role') !== null ? sessionStorage.getItem('role')?.toString() : '';
+  getUserRole(): Observable<string | undefined> {
+    this.role = sessionStorage.getItem('role') !== null ? sessionStorage.getItem('role')?.toString() : ''
+    return of(this.role);
   }
 
 }

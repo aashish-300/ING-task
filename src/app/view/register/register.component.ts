@@ -17,12 +17,12 @@ export class RegisterComponent {
   constructor(private _formBuilder: FormBuilder, private service: AuthService, private router: Router) {
     this.service.loadAllUser();
     this.registerForm = this._formBuilder.group({
-      id: ['admin', Validators.required],
+      id: ['', Validators.required],
       name: ['', Validators.required],
       email: ['', Validators.required],
       password: ['', Validators.required],
-      isActive: [true],
-      role: ['admin']
+      isActive: [false],
+      role: ['']
     })
   }
 

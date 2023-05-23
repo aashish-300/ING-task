@@ -22,8 +22,8 @@
                 <td>{{item.id}}</td>
                 <td>{{item.name}}</td>
                 <td>{{item.description}}</td>
-                <td>{{item.quantity}}</td>
-                <td>{{item.price}}</td>
+                <td>{{item.numberGroup.quantity}}</td>
+                <td>{{item.numberGroup.price}}</td>
                 <td>{{item.total}}</td>
                 <td><button class="btn btn-primary" routerLink="/addItems" (click)="onEdit(item)">Edit</button><button
                         class="btn btn-danger" (click)="onDelete(item)">Delete</button></td>

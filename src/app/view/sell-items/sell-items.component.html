@@ -55,24 +55,21 @@
                             </select>
                         </div>
                     </td>
-                    <!-- <td>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="description" aria-label="Username"
-                                aria-describedby="basic-addon1" formControlName="description">
-                        </div>
-                    </td> -->
-                    <td>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="quantity" aria-label="Username"
-                                aria-describedby="basic-addon1" type="number" formControlName="quantity">
-                        </div>
-                    </td>
-                    <td>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="price" aria-label="Username"
-                                aria-describedby="basic-addon1" type="number" formControlName="price">
-                        </div>
-                    </td>
+                    <ng-container [formGroupName]="'numberGroup'">
+
+                        <td>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="quantity" aria-label="Username"
+                                    aria-describedby="basic-addon1" type="number" formControlName="quantity">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="price" aria-label="Username"
+                                    aria-describedby="basic-addon1" type="number" formControlName="price">
+                            </div>
+                        </td>
+                    </ng-container>
                     <td>
                         <div class="input-group mb-3">
                             <input type="text" class="form-control" type="number" formControlName="total"

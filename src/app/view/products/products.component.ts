@@ -3,6 +3,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ProductsService } from 'src/app/service/products.service';
 import { AuthService } from 'src/app/service/auth.service';
+import { IAddItems } from 'src/app/model/Productmodel';
 
 
 @Component({
@@ -15,13 +16,17 @@ export class ProductsComponent implements OnInit {
     // this.getAllProducts();
   }
 
-  invoiceno: any;
-  products: any = [];
-  role: any;
+  invoiceno!: string;
+  products: IAddItems[] = [];
+  role!: string | undefined;
 
   ngOnInit(): void {
     this.getAllProducts();
-    this.role = this.authService.getUserRole();
+    this.authService.getUserRole().subscribe(
+      {
+        next: (data: string | undefined) => this.role = data
+      }
+    );
   }
 
   loadProducts() {
@@ -36,7 +41,7 @@ export class ProductsComponent implements OnInit {
     this.service.getAllProducts().subscribe(data => {
       this.products = data;
     });
-    // console.log(this.products);
+    console.log(this.products);
   }
 
   onAdd() {

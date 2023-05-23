@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, } from '@angular/forms'
 import { AuthService } from 'src/app/service/auth.service';
 import { Router } from '@angular/router';
-import { RegisterModel } from 'src/app/model/Authenticationmodel';
+import { RegisterModel, loginModel } from 'src/app/model/Authenticationmodel';
 
 
 @Component({
@@ -32,8 +32,7 @@ export class LoginComponent {
   proceedLogin() {
     this.service.getUserById(this.loginForm.value.username).subscribe(
       {
-        next: (data: any) => {
-          console.log(data);
+        next: (data: RegisterModel) => {
           this.loginInfo = data;
           console.log('login info', this.loginInfo);
           if (this.loginInfo.password === this.loginForm.value.password) {

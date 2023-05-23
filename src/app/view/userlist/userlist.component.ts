@@ -11,26 +11,28 @@ import { RegisterModel } from 'src/app/model/Authenticationmodel';
   styleUrls: ['./userlist.component.css']
 })
 export class UserlistComponent implements OnInit {
-  constructor(private router: Router, private service: AuthService) {
-    this.loadUser();
+
+  registerForm!: FormGroup;
+
+  constructor(private _formBuilder: FormBuilder, private router: Router, private service: AuthService) {
+    this.registerForm = this._formBuilder.group({
+      id: new FormControl(''),
+      name: new FormControl(''),
+      email: new FormControl(''),
+      password: new FormControl(''),
+      isActive: new FormControl(false),
+      role: new FormControl('')
+    })
   }
 
   ngOnInit(): void {
+    this.loadUser();
 
   }
 
   userlist!: RegisterModel[];
   popupmenu = false;
   singleuser!: RegisterModel;
-
-  registerForm = new FormGroup({
-    id: new FormControl(''),
-    name: new FormControl(''),
-    email: new FormControl(''),
-    password: new FormControl(''),
-    isActive: new FormControl(false),
-    role: new FormControl('')
-  })
 
 
   loadUser() {
@@ -44,7 +46,6 @@ export class UserlistComponent implements OnInit {
   }
 
   onUpdate(user: RegisterModel) {
-    // console.log(user);
     this.singleuser = user;
     this.popupmenu = true;
     this.registerForm.patchValue({

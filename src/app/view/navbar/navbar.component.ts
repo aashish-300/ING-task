@@ -10,11 +10,16 @@ export class NavbarComponent implements OnInit {
 
   constructor(public service: AuthService) { }
 
-  role:any;
-  access:any;
+  role!: string;
 
   ngOnInit(): void {
-    this.role = this.service.getUserRole();
+    this.service.getUserRole().subscribe(
+      {
+        next: (data: any) => {
+          this.role = data;
+        }
+      }
+    )
   }
 
 }

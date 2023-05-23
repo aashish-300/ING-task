@@ -16,9 +16,11 @@ export class SellItemsComponent implements OnInit {
       id: ['unique', Validators.required],
       invoice: ['unique', Validators.required],
       name: ['ing', Validators.required],
-      quantity: [null, Validators.required],
-      price: [0, Validators.required],
-      total: [0, Validators.required],
+      numberGroup: this._formBuilder.group({
+        quantity: ['', Validators.required],
+        price: ['', Validators.required],
+      }),
+      total: [Number, Validators.required],
       customerName: ['ing', Validators.required],
       address: ['naxal', Validators.required],
       remark: ['send', Validators.required],
@@ -26,23 +28,36 @@ export class SellItemsComponent implements OnInit {
   }
 
   sellItems!: FormGroup;
-
+  sum!: number;
   products!: ISellItems[];
-  selectedItem: any;
-
 
   ngOnInit(): void {
     this.service.getAllProductName().subscribe(x => {
       this.products = x;
     });
+
+    this.sellItems.get('numberGroup')?.valueChanges.subscribe(val => {
+      if (!(val.price && val.quantity)) return;
+      this.calculation(val);
+    })
+
   }
 
+  calculation(val: { price: number, quantity: number }): void {
+    this.sum = +val.price * +val.quantity;
+    this.sellItems.get('total')!.patchValue(this.sum);
+  }
 
   onSell() {
     this.sellItems.patchValue({
-      id: this.sellItems.value.invoice
+      id: this.sellItems.value.invoice,
+      numberGroup: {
+        price: +this.sellItems.value.numberGroup.price,
+        quantity: +this.sellItems.value.numberGroup.quantity,
+      },
+      total: +this.sellItems.value.total
     })
-    console.log(this.sellItems.value)
+
     this.service.sellItem(this.sellItems.value)
     this.router.navigate(['/']);
   }

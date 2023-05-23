@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ISellItems } from 'src/app/model/Productmodel';
 import { ProductsService } from 'src/app/service/products.service';
 
 @Component({
@@ -21,10 +22,9 @@ export class HomeComponent implements OnInit {
   getAllSoldProducts() {
     this.service.getAllSoldProducts().subscribe(
       {
-        next: (data: any) => {
+        next: (data: ISellItems[]) => {
           this.products = data;
         }
       });
-    console.log(this.products);
   }
 }

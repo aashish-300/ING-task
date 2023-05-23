@@ -2,8 +2,12 @@ export interface IAddItems {
     id: string;
     name: string;
     description: string;
-    price: string;
-    quantity: string;
+    numberGroup: {
+        price: number;
+        quantity: number;
+    }
+    // price: string;
+    // quantity: string;
     total: number;
 }
 

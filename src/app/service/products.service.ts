@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, delay, from, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { IAddItems } from '../model/Productmodel';
+import { IAddItems, ISellItems } from '../model/Productmodel';
 
 
 @Injectable({
@@ -18,7 +18,7 @@ export class ProductsService {
    temp: any;
    items: IAddItems[] = [];
    edit: boolean = false;
-   soldItems: any = [];
+   soldItems: ISellItems[] = [];
 
    updateStorage() {
       localStorage.setItem('products', JSON.stringify(this.items));
@@ -44,12 +44,12 @@ export class ProductsService {
    }
 
 
-   addItems(data: any) {
+   addItems(data: IAddItems) {
       this.items.push(data);
       localStorage.setItem('products', JSON.stringify(this.items));
    }
 
-   deleteItem(item: any) {
+   deleteItem(item: IAddItems) {
       this.temp = Array.from(this.items).filter((e: any) => {
          return e.id !== item.id
       })
@@ -57,13 +57,13 @@ export class ProductsService {
       this.updateStorage();
    }
 
-   editItem(data: any) {
+   editItem(data: IAddItems) {
       this.temp = data;
       this.edit = true;
    }
 
-   updateItem(data: any) {
-      Array.from(this.items).forEach((val: any, i) => {
+   updateItem(data: IAddItems) {
+      this.items.forEach((val: IAddItems, i) => {
          if (val.id === data.id) {
             this.items[i] = data;
             this.updateStorage()
@@ -71,9 +71,10 @@ export class ProductsService {
       })
    }
 
-   sellItem(data: any) {
-      console.log(data);
+   sellItem(data: ISellItems) {
+      console.log('here is sell Item', data);
       this.soldItems.push(data);
+      this.decQuantity(data);
       localStorage.setItem('soldItems', JSON.stringify(this.soldItems));
    }
 
@@ -82,15 +83,14 @@ export class ProductsService {
       if (localStorage.getItem('soldItems')) {
          this.temp = localStorage.getItem('soldItems');
          this.soldItems = JSON.parse(this.temp);
-         console.log('soldItems: ', this.soldItems);
       }
       return of(this.soldItems).pipe(delay(1000));
    }
 
-   decQuantity(val: any) {
-      Array.from(this.items).forEach((x: any, i) => {
-         if (val.name === x.id && Number(x.quantity) >= Number(val.quantity)) {
-            x.quantity = Number(x.quantity) - Number(val.quantity);
+   decQuantity(val: ISellItems) {
+      this.items.forEach((x: any, i) => {
+         if (val.name === x.id && x.quantity >= val.quantity) {
+            x.quantity = x.quantity - val.quantity;
             this.items[i] = x;
             return true;
          } else {
