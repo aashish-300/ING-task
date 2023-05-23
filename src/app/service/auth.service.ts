@@ -9,7 +9,7 @@ export class AuthService implements OnInit {
 
   private apiUrl = 'http://localhost:5000/user';
   // private apiUrl = 'https://misty-ox-sweater.cyclic.app/user';
-  // 
+  //
   constructor(private http: HttpClient) {
   }
 
@@ -42,7 +42,7 @@ export class AuthService implements OnInit {
   }
 
   getUserById(id: string) {
-    Array.from(this.userlist).filter((x: RegisterModel) => {
+    Array.from(this.getAllUser()).filter((x: RegisterModel) => {
       if (x.id === id) {
         this.user = x
         return;

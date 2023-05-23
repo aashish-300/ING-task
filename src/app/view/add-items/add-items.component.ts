@@ -14,17 +14,24 @@ export class AddItemsComponent implements OnInit {
 
   constructor(private _formBuilder: FormBuilder, private service: ProductsService, private router: Router) {
 
+  }
+
+  ngOnInit(): void {
+    // https://angular.io/guide/observables-in-angular
     this.addProducts = this._formBuilder.group({
       id: ['', Validators.required],
       name: ['', Validators.required],
       description: ['', Validators.required],
-      quantity: ['', Validators.required],
-      price: ['', Validators.required],
+      numberGroup: this._formBuilder.group({
+        quantity: ['', Validators.required],
+        price: ['', Validators.required],
+      }),
       total: ['', Validators.required],
     });
-  }
-
-  ngOnInit(): void {
+    this.addProducts.get('numberGroup')?.valueChanges.subscribe(val => {
+    if (!(val.price && val.quantity)) return;
+      this.calculation(val);
+    })
     this.edit = this.service.edit;
     if (this.edit) {
       this.loadData();
@@ -41,18 +48,18 @@ export class AddItemsComponent implements OnInit {
       id: this.service.temp.id,
       name: this.service.temp.name,
       description: this.service.temp.description,
-      quantity: this.service.temp.quantity,
-      price: this.service.temp.price,
+      numberGroup: {
+        quantity: this.service.temp.quantity,
+        price: this.service.temp.price
+      },
       total: this.service.temp.total
     })
     this.service.temp = null;
   }
 
-  calculation(): any {
-    this.sum = Number(this.addProducts.value.price) * Number(this.addProducts.value.quantity);
-    this.addProducts.patchValue({
-      total: this.sum
-    })
+  calculation(val: any): any {
+    this.sum = +val.price * +val.quantity;
+    this.addProducts.get('total')!.patchValue(this.sum);
   }
 
   onAdd() {
@@ -68,8 +75,10 @@ export class AddItemsComponent implements OnInit {
       id: this.addProducts.value.id,
       name: this.addProducts.value.name,
       description: this.addProducts.value.description,
-      quantity: this.addProducts.value.quantity,
-      price: this.addProducts.value.price,
+      numberGroup: {
+        quantity: this.service.temp.quantity,
+        price: this.service.temp.price
+      },
       total: this.addProducts.value.total
     })
     this.service.updateItem(this.addProducts.value);
