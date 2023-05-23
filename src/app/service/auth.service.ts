@@ -34,7 +34,7 @@ export class AuthService implements OnInit {
     }
   }
 
-  getAllUser() {
+  getAllUser(): RegisterModel[] {
     this.loadAllUser();
     console.log('all user list loaded');
     console.log(this.userlist);
@@ -42,7 +42,8 @@ export class AuthService implements OnInit {
   }
 
   getUserById(id: string) {
-    Array.from(this.userlist).filter((x: RegisterModel) => {
+    this.userlist.filter((x: RegisterModel) => {
+      console.log(x)
       if (x.id === id) {
         this.user = x
         return;

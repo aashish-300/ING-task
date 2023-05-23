@@ -10,6 +10,8 @@ import { ProductsService } from 'src/app/service/products.service';
 })
 export class AddItemsComponent implements OnInit {
 
+
+  person!: person;
   addProducts!: FormGroup;
 
   constructor(private _formBuilder: FormBuilder, private service: ProductsService, private router: Router) {
@@ -25,7 +27,12 @@ export class AddItemsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.person = {
+      age: 18,
+      name: 'John',
+    }
     this.edit = this.service.edit;
+    this.onCalc();
     if (this.edit) {
       this.loadData();
     }
@@ -55,7 +62,16 @@ export class AddItemsComponent implements OnInit {
     })
   }
 
-  onAdd() {
+  onCalc(): void {
+    this.addProducts.get('quantity')?.valueChanges.subscribe(x => {
+      this.calculation();
+    })
+    this.addProducts.get('price')?.valueChanges.subscribe(x => {
+      this.calculation();
+    })
+  }
+
+  onAdd(): void {
     this.addProducts.patchValue({
       id: this.addProducts.value.name
     })
@@ -77,4 +93,9 @@ export class AddItemsComponent implements OnInit {
 
   }
 
+}
+
+export type person = {
+  name: string;
+  age: number;
 }

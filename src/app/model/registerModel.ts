@@ -6,3 +6,8 @@ export interface RegisterModel {
     role?: string;
     isActive?: boolean;
 }
+
+export interface loginModel {
+    username: string;
+    password: string;
+}

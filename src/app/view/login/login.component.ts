@@ -24,14 +24,7 @@ export class LoginComponent {
     this.service.loadAllUser();
   }
 
-  // userData: any;
   loginInfo: any;
-
-  // loginForm = new FormGroup({
-  //   username: new FormControl('test11'),
-  //   password: new FormControl('test'),
-  // })
-
 
   proceedLogin() {
     this.loginInfo = this.service.getUserById(this.loginForm.value.username);
