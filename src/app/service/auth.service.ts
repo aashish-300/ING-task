@@ -1,6 +1,7 @@
 import { Injectable, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { RegisterModel } from 'src/app/model/registerModel'
+import { Observable, delay, from, of } from 'rxjs';
+import { RegisterModel } from 'src/app/model/Authenticationmodel'
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ export class AuthService implements OnInit {
 
   private apiUrl = 'http://localhost:5000/user';
   // private apiUrl = 'https://misty-ox-sweater.cyclic.app/user';
-  // 
+  //
   constructor(private http: HttpClient) {
   }
 
@@ -34,11 +35,11 @@ export class AuthService implements OnInit {
     }
   }
 
-  getAllUser(): RegisterModel[] {
+  getAllUser(): Observable<RegisterModel[]> {
     this.loadAllUser();
     console.log('all user list loaded');
     console.log(this.userlist);
-    return this.userlist;
+    return of(this.userlist).pipe(delay(1000));
   }
 
   getUserById(id: string) {
@@ -49,10 +50,10 @@ export class AuthService implements OnInit {
         return;
       }
     })
-    return this.user;
+    return of(this.user).pipe(delay(1000));
   }
 
-  userRegister(id: any, data: any) {
+  userRegister(id: string, data: any) {
     this.userlist.push(data);
     this.temp = JSON.stringify(this.userlist);
     return localStorage.setItem('userlist', this.temp);
@@ -67,7 +68,7 @@ export class AuthService implements OnInit {
     });
   }
 
-  deleteUser(id: any) {
+  deleteUser(id: string) {
     this.temp = Array.from(this.userlist).filter((e: any) => {
       return e.id !== id;
     })

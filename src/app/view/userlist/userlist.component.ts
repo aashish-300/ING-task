@@ -3,6 +3,7 @@ import { AuthService } from 'src/app/service/auth.service';
 import { Router } from '@angular/router';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms'
 import { Observable } from 'rxjs';
+import { RegisterModel } from 'src/app/model/Authenticationmodel';
 
 @Component({
   selector: 'app-userlist',
@@ -18,9 +19,9 @@ export class UserlistComponent implements OnInit {
 
   }
 
-  userlist: any;
+  userlist!: RegisterModel[];
   popupmenu = false;
-  singleuser: any;
+  singleuser!: RegisterModel;
 
   registerForm = new FormGroup({
     id: new FormControl(''),
@@ -33,10 +34,16 @@ export class UserlistComponent implements OnInit {
 
 
   loadUser() {
-    this.userlist = this.service.getAllUser();
+    this.service.getAllUser().subscribe(
+      {
+        next: (data: RegisterModel[]) => {
+          this.userlist = data;
+        }
+      }
+    );
   }
 
-  onUpdate(user: any) {
+  onUpdate(user: RegisterModel) {
     // console.log(user);
     this.singleuser = user;
     this.popupmenu = true;
@@ -50,7 +57,7 @@ export class UserlistComponent implements OnInit {
     });
   }
 
-  onDelete(user: any) {
+  onDelete(user: RegisterModel) {
     this.service.deleteUser(user.id);
     this.loadUser();
   }

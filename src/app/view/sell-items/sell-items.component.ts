@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProductsService } from 'src/app/service/products.service';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { ISellItems } from 'src/app/model/Productmodel';
 
 @Component({
   selector: 'app-sell-items',
@@ -15,7 +16,7 @@ export class SellItemsComponent implements OnInit {
       id: ['unique', Validators.required],
       invoice: ['unique', Validators.required],
       name: ['ing', Validators.required],
-      quantity: [0, Validators.required],
+      quantity: [null, Validators.required],
       price: [0, Validators.required],
       total: [0, Validators.required],
       customerName: ['ing', Validators.required],
@@ -26,12 +27,14 @@ export class SellItemsComponent implements OnInit {
 
   sellItems!: FormGroup;
 
-  products: any;
+  products!: ISellItems[];
   selectedItem: any;
 
 
   ngOnInit(): void {
-    this.products = this.service.getAllProductName();
+    this.service.getAllProductName().subscribe(x => {
+      this.products = x;
+    });
   }
 
 
@@ -39,6 +42,7 @@ export class SellItemsComponent implements OnInit {
     this.sellItems.patchValue({
       id: this.sellItems.value.invoice
     })
+    console.log(this.sellItems.value)
     this.service.sellItem(this.sellItems.value)
     this.router.navigate(['/']);
   }

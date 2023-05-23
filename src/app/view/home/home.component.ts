@@ -11,7 +11,7 @@ export class HomeComponent implements OnInit {
   constructor(private service: ProductsService) {
   }
 
-  invoiceno: any;
+  invoiceno!: number | string;
   products: any;
 
   ngOnInit(): void {
@@ -19,7 +19,12 @@ export class HomeComponent implements OnInit {
   }
 
   getAllSoldProducts() {
-    this.products = this.service.getAllSoldProducts();
+    this.service.getAllSoldProducts().subscribe(
+      {
+        next: (data: any) => {
+          this.products = data;
+        }
+      });
     console.log(this.products);
   }
 }

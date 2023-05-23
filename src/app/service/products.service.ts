@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { from } from 'rxjs';
+import { Observable, delay, from, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { IAddItems } from '../model/Productmodel';
 
 
 @Injectable({
@@ -15,7 +16,7 @@ export class ProductsService {
    }
 
    temp: any;
-   items: any = [];
+   items: IAddItems[] = [];
    edit: boolean = false;
    soldItems: any = [];
 
@@ -28,7 +29,7 @@ export class ProductsService {
          this.temp = localStorage.getItem('products');
          this.items = JSON.parse(this.temp);
       }
-      return this.items;
+      return of(this.items).pipe(delay(1000));
    }
 
    getAllProductName() {
@@ -39,12 +40,9 @@ export class ProductsService {
             return val.name;
          })
       }
-      return this.temp;
+      return of(this.temp).pipe(delay(1000));
    }
 
-   getProduct(id: any) {
-      return this.http.get(this.apiUrl + '/' + id);
-   }
 
    addItems(data: any) {
       this.items.push(data);
@@ -74,6 +72,7 @@ export class ProductsService {
    }
 
    sellItem(data: any) {
+      console.log(data);
       this.soldItems.push(data);
       localStorage.setItem('soldItems', JSON.stringify(this.soldItems));
    }
@@ -83,8 +82,9 @@ export class ProductsService {
       if (localStorage.getItem('soldItems')) {
          this.temp = localStorage.getItem('soldItems');
          this.soldItems = JSON.parse(this.temp);
+         console.log('soldItems: ', this.soldItems);
       }
-      return this.soldItems;
+      return of(this.soldItems).pipe(delay(1000));
    }
 
    decQuantity(val: any) {
