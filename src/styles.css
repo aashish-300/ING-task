@@ -12,15 +12,48 @@ body {
   font-family: "Poppins", sans-serif;
 }
 
+/* .loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border: 16px solid #f3f3f3;
+  border-top: 16px solid #3498db;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  z-index: 10;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+} */
+
+.container__auth{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  
+}
+
 .container__box {
   max-width: 500px;
-  margin: 30px auto;
+  /* margin: 30px auto; */
   overflow: auto;
   min-height: 300px;
   border: 1px solid steelblue;
   padding: 30px;
   border-radius: 5px;
 }
+
 .button {
   display: inline-block;
   background: #000;
@@ -34,9 +67,11 @@ body {
   font-size: 15px;
   font-family: inherit;
 }
+
 .button:focus {
   outline: none;
 }
+
 .button:active {
   transform: scale(0.98);
 }
@@ -55,16 +90,16 @@ input {
   /* border:none; */
 }
 
-input:active{
-    border-bottom: 1px solid green
+input:active {
+  border-bottom: 1px solid green
 }
 
-input:focus{
-    border:none
+input:focus {
+  border: none
 }
 
-.title{
-    font-size: 30px;
-    font-weight: 500;
-    margin-bottom: 20px;
+.title {
+  font-size: 30px;
+  font-weight: 500;
+  margin-bottom: 20px;
 }

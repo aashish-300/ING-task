@@ -1,4 +1,4 @@
-.userList{
+.userList {
     display: flex;
     width: 80vw;
     position: relative;
@@ -6,7 +6,30 @@
     justify-content: center;
 }
 
-.popup{
+/* .loader {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border: 16px solid #f3f3f3;
+    border-top: 16px solid #3498db;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+} */
+
+.popup {
     position: absolute;
     /* display:none; */
     left: 50%;
@@ -14,41 +37,40 @@
     transform: translate(-50%, -50%);
     border: 1px solid grey;
     width: 50vw;
-    padding:50px;
-    background-color:white ;
+    padding: 50px;
+    background-color: white;
 }
 
-.user{
-    display:block;
+.user {
+    display: block;
     width: 100%;
 }
 
-.checkbox{
+.checkbox {
     display: flex;
     align-items: center;
     margin-bottom: 20px;
     margin-top: 10px;
 }
 
-.text{
+.text {
     font-weight: bold;
     font-size: 2rem;
     margin-bottom: 20px;
 }
-.mr{
+
+.mr {
     padding-right: 50px;
     padding-bottom: 10px;
 }
 
-.update{
-    margin:5px;
+.update {
+    margin: 5px;
 }
 
-.input__checkbox{
-    width:60px;
+.input__checkbox {
+    width: 60px;
     height: 20px;
 }
 
-.label{
-
-}
+.label {}

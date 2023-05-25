@@ -1,22 +1,22 @@
-.dashboard {
-    display: flex;
-    /* justify-content: center; */
-    /* align-items: center; */
-    width: 80%;
-    border: 1px solid grey;
-    margin: 30px auto;
+.container_box{
+    display:flex;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 100;
 }
 
-/* .loader {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+
+.loader {
     border: 16px solid #f3f3f3;
     border-top: 16px solid #3498db;
     border-radius: 50%;
     width: 120px;
     height: 120px;
+    z-index: 10;
     animation: spin 2s linear infinite;
 }
 
@@ -28,4 +28,4 @@
     100% {
         transform: rotate(360deg);
     }
-} */
+}

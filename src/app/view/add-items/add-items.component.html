@@ -1,61 +1,61 @@
+<!-- <div [ngClass]="spinner ? 'loader' : ''"></div> -->
 <div class="card" [formGroup]="addProducts">
-    <h3>Add Items</h3>
-    <table datatable class="table table-bordered">
-        <thead class="bg-dark text-white">
-            <tr>
-                <td>S.N</td>
-                <td>Product Name</td>
-                <td>Description</td>
-                <td>Qty</td>
-                <td>Price</td>
-                <td>Total</td>
-                <td>Action</td>
-            </tr>
-        </thead>
-        <tbody>
+  <h3>Add Items</h3>
+  <table datatable class="table table-bordered">
+    <thead class="bg-dark text-white">
+      <tr>
+        <td>S.N</td>
+        <td>Product Name</td>
+        <td>Description</td>
+        <td>Qty</td>
+        <td>Price</td>
+        <td>Total</td>
+        <td>Action</td>
+      </tr>
+    </thead>
+    <tbody>
 
-            <tr>
-                <td>1</td>
-                <td>
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="Product Name" aria-label="Username"
-                            aria-describedby="basic-addon1" formControlName="name">
-                    </div>
-                </td>
-                <td>
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="description" aria-label="Username"
-                            aria-describedby="basic-addon1" formControlName="description">
-                    </div>
-                </td>
+      <tr>
+        <td>1</td>
+        <td>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Product Name" aria-label="Username"
+              aria-describedby="basic-addon1" formControlName="name">
+          </div>
+        </td>
+        <td>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="description" aria-label="Username"
+              aria-describedby="basic-addon1" formControlName="description">
+          </div>
+        </td>
 
-              <ng-container [formGroupName]="'numberGroup'">
-                <td>
-                  <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="quantity"
-                           aria-label="Username" aria-describedby="basic-addon1" type="number"
-                           formControlName="quantity">
-                  </div>
-                </td>
-                <td>
-                  <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="price"
-                           aria-label="Username" aria-describedby="basic-addon1" type="number" formControlName="price">
-                  </div>
-                </td>
+        <ng-container [formGroupName]="'numberGroup'">
+          <td>
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" placeholder="quantity" aria-label="Username"
+                aria-describedby="basic-addon1" type="number" formControlName="quantity">
+            </div>
+          </td>
+          <td>
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" placeholder="price" aria-label="Username"
+                aria-describedby="basic-addon1" type="number" formControlName="price">
+            </div>
+          </td>
 
-              </ng-container>
-              <td>
-                <div class="input-group mb-3">
-                  <input type="text" class="form-control" type="number" formControlName="total"
-                         placeholder="total" aria-label="Username" aria-describedby="basic-addon1">
-                </div>
-              </td>
-                <td>
-                    <a class="btn btn-danger" *ngIf="!edit" (click)="onAdd()">Add</a>
-                    <a class="btn btn-primary" *ngIf="edit" (click)="onEdit()">Update</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+        </ng-container>
+        <td>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" type="number" formControlName="total" placeholder="total"
+              aria-label="Username" aria-describedby="basic-addon1">
+          </div>
+        </td>
+        <td>
+          <a class="btn btn-danger" *ngIf="!edit" (click)="onAdd()">Add</a>
+          <a class="btn btn-primary" *ngIf="edit" (click)="onEdit()">Update</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>

@@ -1,16 +1,20 @@
-<form type="submit" class="form__container container__box" [formGroup]="loginForm" (ngSubmit)="proceedLogin()">
-    <div class="title">User Registration</div>
-    <label class="form__input--label">
-        UserName
-    </label>
-    <input type="text" class="form__input--input" formControlName="username" required placeholder="UserName"/>
-    <label for="password" class="form__input--label">
+<!-- <div [ngClass]="spinner ? 'loader' : ''"></div> -->
+<div class="container__auth">
+    <form type="submit" class="form__container container__box" [formGroup]="loginForm" (ngSubmit)="proceedLogin()">
+        <div class="title">User Registration</div>
+        <label class="form__input--label">
+            UserName
+        </label>
+        <input type="text" class="form__input--input" formControlName="username" required placeholder="UserName" />
+        <label for="password" class="form__input--label">
             Password
         </label>
-        <input id="password" name="password" type="password" class="form__input--input" formControlName="password" placeholder="Password" required/>
-   <!-- <input type="submit" class="btn"/> -->
-    <button  class="form__submit button" type="submit">Submit
-        <!-- <button routerLink="/login" class="form__submit btn" type="submit">Submit -->
-    </button>
-    <div>New User <span routerLink="/register" class="text-primary">Register</span></div>
-</form>
+        <input id="password" name="password" type="password" class="form__input--input" formControlName="password"
+            placeholder="Password" required />
+        <!-- <input type="submit" class="btn"/> -->
+        <button class="form__submit button" type="submit">Submit
+            <!-- <button routerLink="/login" class="form__submit btn" type="submit">Submit -->
+        </button>
+        <div>New User <span routerLink="/register" class="text-primary">Register</span></div>
+    </form>
+</div>

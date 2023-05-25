@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms'
 import { Observable } from 'rxjs';
 import { RegisterModel } from 'src/app/model/Authenticationmodel';
+import { LoaderService } from 'src/app/service/loader.service';
 
 @Component({
   selector: 'app-userlist',
@@ -36,10 +37,16 @@ export class UserlistComponent implements OnInit {
 
 
   loadUser() {
+    LoaderService.get();
+    console.log(LoaderService.show());
     this.service.getAllUser().subscribe(
       {
         next: (data: RegisterModel[]) => {
           this.userlist = data;
+        },
+        complete: () => {
+          console.log('register', LoaderService.get())
+          LoaderService.hide();
         }
       }
     );
@@ -59,11 +66,20 @@ export class UserlistComponent implements OnInit {
   }
 
   onDelete(user: RegisterModel) {
-    this.service.deleteUser(user.id);
-    this.loadUser();
+    LoaderService.show();
+    this.service.deleteUser(user.id).subscribe(
+      {
+        next: () => { },
+        complete: () => {
+          LoaderService.hide();
+          this.loadUser();
+        }
+      }
+    );
   }
 
   updateUser() {
+    LoaderService.show();
     this.popupmenu = false;
     this.registerForm.patchValue({
       id: this.registerForm.value.id,
@@ -73,7 +89,15 @@ export class UserlistComponent implements OnInit {
       isActive: this.registerForm.value.isActive,
       role: this.registerForm.value.role
     })
-    this.service.updataUser(this.registerForm.value.id, this.registerForm.value);
+    this.service.updataUser(this.registerForm.value.id, this.registerForm.value).subscribe(
+      {
+        next: () => { },
+        complete: () => {
+          LoaderService.hide();
+          this.loadUser()
+        }
+      }
+    );
   }
 
   closepop() {

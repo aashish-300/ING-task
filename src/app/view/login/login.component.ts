@@ -3,6 +3,7 @@ import { FormBuilder, Validators, FormGroup, } from '@angular/forms'
 import { AuthService } from 'src/app/service/auth.service';
 import { Router } from '@angular/router';
 import { RegisterModel, loginModel } from 'src/app/model/Authenticationmodel';
+import { LoaderService } from 'src/app/service/loader.service';
 
 
 @Component({
@@ -23,18 +24,17 @@ export class LoginComponent {
 
     sessionStorage.clear()
     this.service.loadAllUser();
-
-    // this.loginInfo;
   }
 
   loginInfo!: RegisterModel;
 
   proceedLogin() {
+    console.log(LoaderService.get());
+    LoaderService.show();
     this.service.getUserById(this.loginForm.value.username).subscribe(
       {
         next: (data: RegisterModel) => {
           this.loginInfo = data;
-          console.log('login info', this.loginInfo);
           if (this.loginInfo.password === this.loginForm.value.password) {
             if (this.loginInfo.isActive) {
               sessionStorage.setItem('username', this.loginInfo.id);
@@ -46,7 +46,13 @@ export class LoginComponent {
           } else {
             alert('invalid credentials')
           }
+        },
+        complete: () => {
+          console.log('complete', LoaderService.get())
+          LoaderService.hide();
+          this.router.navigate(['']);
         }
+
       }
     );
   }

@@ -19,20 +19,26 @@ export class ProductsService {
    items: IAddItems[] = [];
    edit: boolean = false;
    soldItems: ISellItems[] = [];
+   StartTime = 2500;
+   EndTime = 5000;
+
+   delayNumber(): number {
+      return Math.random() * ((this.EndTime - this.StartTime) + this.StartTime);
+   }
 
    updateStorage() {
       localStorage.setItem('products', JSON.stringify(this.items));
    }
 
-   getAllProducts() {
+   getAllProducts(): Observable<IAddItems[]> {
       if (localStorage.getItem('products')) {
          this.temp = localStorage.getItem('products');
          this.items = JSON.parse(this.temp);
       }
-      return of(this.items).pipe(delay(1000));
+      return ob<IAddItems[]>(this.items);
    }
 
-   getAllProductName() {
+   getAllProductName(): Observable<string[]> {
       if (localStorage.getItem('products')) {
          this.temp = localStorage.getItem('products');
          this.temp = JSON.parse(this.temp);
@@ -40,13 +46,14 @@ export class ProductsService {
             return val.name;
          })
       }
-      return of(this.temp).pipe(delay(1000));
+      return ob<string[]>(this.temp);
    }
 
 
-   addItems(data: IAddItems) {
+   addItems(data: IAddItems): Observable<IAddItems[]> {
       this.items.push(data);
       localStorage.setItem('products', JSON.stringify(this.items));
+      return ob<IAddItems[]>(this.items);
    }
 
    deleteItem(item: IAddItems) {
@@ -71,26 +78,26 @@ export class ProductsService {
       })
    }
 
-   sellItem(data: ISellItems) {
-      console.log('here is sell Item', data);
+   sellItem(data: ISellItems): Observable<ISellItems[]> {
       this.soldItems.push(data);
       this.decQuantity(data);
       localStorage.setItem('soldItems', JSON.stringify(this.soldItems));
+      return ob<ISellItems[]>(this.soldItems)
    }
 
 
-   getAllSoldProducts() {
+   getAllSoldProducts(): Observable<ISellItems[]> {
       if (localStorage.getItem('soldItems')) {
          this.temp = localStorage.getItem('soldItems');
          this.soldItems = JSON.parse(this.temp);
       }
-      return of(this.soldItems).pipe(delay(1000));
+      return ob<ISellItems[]>(this.soldItems);
    }
 
    decQuantity(val: ISellItems) {
       this.items.forEach((x: any, i) => {
-         if (val.name === x.id && x.quantity >= val.quantity) {
-            x.quantity = x.quantity - val.quantity;
+         if (val.name === x.id && x.quantity >= val.numberGroup.quantity) {
+            x.quantity = x.quantity - val.numberGroup.quantity;
             this.items[i] = x;
             return true;
          } else {
@@ -99,4 +106,15 @@ export class ProductsService {
       })
       this.updateStorage();
    }
+}
+
+
+export function ob<T = any>(ob: T) {
+   return of(ob).pipe(delay(delayNumber()))
+}
+
+export function delayNumber(): number {
+   const startTime = 2500;
+   const endTime = 5000;
+   return Math.random() * ((endTime - startTime) + startTime);
 }

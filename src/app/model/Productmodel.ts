@@ -17,7 +17,12 @@ export interface ISellItems {
     id: string;
     invoice: string;
     name: string;
-    price: number;
-    quantity: number;
+    numberGroup: {
+        price: number;
+        quantity: number;
+    }
+    remark: string;
+    // price: number;
+    // quantity: number;
     total: number;
 }

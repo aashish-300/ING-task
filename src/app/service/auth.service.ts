@@ -1,7 +1,7 @@
 import { Injectable, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, delay, from, of } from 'rxjs';
-import { RegisterModel } from 'src/app/model/Authenticationmodel'
+import { RegisterModel, loginModel } from 'src/app/model/Authenticationmodel'
 
 @Injectable({
   providedIn: 'root'
@@ -24,15 +24,17 @@ export class AuthService implements OnInit {
   index: number = 0;
   role!: string | undefined;
 
-  updateLocalStorage() {
+
+
+
+  updateLocalStorage(): void {
     localStorage.setItem('userlist', JSON.stringify(this.userlist));
   }
 
-  loadAllUser() {
+  loadAllUser(): void {
     if (localStorage.getItem('userlist')) {
       this.temp = localStorage.getItem('userlist');
       this.userlist = JSON.parse(this.temp);
-      console.log(this.userlist);
     }
   }
 
@@ -40,45 +42,42 @@ export class AuthService implements OnInit {
     this.loadAllUser();
     console.log('all user list loaded');
     console.log(this.userlist);
-    return of(this.userlist).pipe(delay(1000));
+    return ob<RegisterModel[]>(this.userlist);
   }
 
-  getUserById(id: string) {
-    console.log('getUserById', this.userlist)
+  getUserById(id: string): Observable<RegisterModel> {
     this.userlist.filter((x: RegisterModel) => {
-      console.log(x)
       if (x.id === id) {
         this.user = x
-        console.log(this.user);
         return;
       }
     })
-    return of(this.user).pipe(delay(1000));
+    return ob<RegisterModel>(this.user);
   }
 
-  userRegister(id: string, data: RegisterModel) {
+  userRegister(id: string, data: RegisterModel): Observable<RegisterModel[]> {
     this.userlist.push(data);
-    this.temp = JSON.stringify(this.userlist);
-    return localStorage.setItem('userlist', this.temp);
+    this.updateLocalStorage();
+    return ob<RegisterModel[]>(this.userlist);
   }
 
-  updataUser(id: string, data: RegisterModel): void {
-    console.log('here is update', data);
-    Array.from(this.userlist).forEach((e: any, i) => {
+  updataUser(id: string, data: RegisterModel): Observable<RegisterModel[]> {
+    this.userlist.forEach((e: RegisterModel, i) => {
       if (e.id === id) {
         this.userlist[i] = data;
         this.updateLocalStorage();
       }
     });
+    return ob<RegisterModel[]>(this.userlist);
   }
 
-  deleteUser(id: string) {
-    this.temp = this.userlist.filter((e: any) => {
+  deleteUser(id: string): Observable<RegisterModel[]> {
+    this.temp = this.userlist.filter((e: RegisterModel) => {
       return e.id !== id;
     })
-    console.log(this.temp);
     this.userlist = this.temp;
     this.updateLocalStorage();
+    return ob<RegisterModel[]>(this.userlist);
   }
 
   isLoggedIn() {
@@ -89,4 +88,15 @@ export class AuthService implements OnInit {
     return of(this.role);
   }
 
+}
+
+
+export function ob<T = any>(ob: T) {
+  return of(ob).pipe(delay(delayNumber()))
+}
+
+export function delayNumber(): number {
+  const startTime = 2500;
+  const endTime = 5000;
+  return Math.random() * ((endTime - startTime) + startTime);
 }

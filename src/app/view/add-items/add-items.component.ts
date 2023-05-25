@@ -3,6 +3,7 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { ProductsService } from 'src/app/service/products.service';
 import { IAddItems } from 'src/app/model/Productmodel';
+import { LoaderService } from 'src/app/service/loader.service';
 
 @Component({
   selector: 'app-add-items',
@@ -40,7 +41,6 @@ export class AddItemsComponent implements OnInit {
     this.service.getAllProducts().subscribe(
       {
         next: (data: IAddItems[]) => {
-          console.log('all products', data);
         }
       }
     );
@@ -71,11 +71,23 @@ export class AddItemsComponent implements OnInit {
   }
 
   onAdd(): void {
+    LoaderService.show();
     this.addProducts.patchValue({
-      id: this.addProducts.value.name
+      id: this.addProducts.value.name,
+      numberGroup: {
+        price: +this.addProducts.value.numberGroup.price,
+        quantity: +this.addProducts.value.numberGroup.quantity,
+      }
     })
-    this.service.addItems(this.addProducts.value);
-    this.router.navigate(['/product']);
+    this.service.addItems(this.addProducts.value).subscribe(
+      {
+        next: () => { },
+        complete: () => {
+          LoaderService.hide();
+          this.router.navigate(['/product']);
+        }
+      }
+    );
   }
 
   onEdit() {

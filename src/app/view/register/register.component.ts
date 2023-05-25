@@ -4,6 +4,8 @@ import { AuthService } from 'src/app/service/auth.service';
 import { Validation } from 'src/app/validation';
 import { Router } from '@angular/router';
 import { RegisterModel } from 'src/app/model/Authenticationmodel';
+import { LoaderComponent } from '../loader/loader.component';
+import { LoaderService } from 'src/app/service/loader.service';
 
 @Component({
   selector: 'app-register',
@@ -28,9 +30,17 @@ export class RegisterComponent {
 
 
   proceedRegistration() {
+    LoaderService.show();
     if (this.registerForm.valid) {
-      this.service.userRegister(this.registerForm.value.id, this.registerForm.value);
-      this.router.navigate(['login']);
+      this.service.userRegister(this.registerForm.value.id, this.registerForm.value).subscribe(
+        {
+          next: (data: any) => { },
+          complete: () => {
+            LoaderService.hide();
+            this.router.navigate(['login']);
+          }
+        }
+      );
     } else {
       alert('please enter valid data')
     }

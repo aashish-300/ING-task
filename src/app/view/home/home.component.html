@@ -16,6 +16,7 @@
                 <!-- <td>Action</td> -->
             </tr>
         </thead>
+        <!-- <div [ngClass]="spinner ? 'loader' : ''"></div> -->
         <tr *ngFor="let item of products">
             <td>{{item.invoice}}</td>
             <td>{{item.customerName}}</td>

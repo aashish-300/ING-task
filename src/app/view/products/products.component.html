@@ -1,3 +1,4 @@
+<!-- <div [ngClass]="spinner ? 'loader' : ''"></div> -->
 <div class="card" style="width: 80vw;margin:auto">
     <h3>List Items</h3>
     <div class="card-header">
@@ -17,7 +18,6 @@
             </tr>
         </thead>
         <tbody>
-
             <tr *ngFor="let item of products">
                 <td>{{item.id}}</td>
                 <td>{{item.name}}</td>

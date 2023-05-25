@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ProductsService } from 'src/app/service/products.service';
 import { AuthService } from 'src/app/service/auth.service';
 import { IAddItems } from 'src/app/model/Productmodel';
+import { LoaderService } from 'src/app/service/loader.service';
 
 
 @Component({
@@ -13,7 +14,6 @@ import { IAddItems } from 'src/app/model/Productmodel';
 })
 export class ProductsComponent implements OnInit {
   constructor(private service: ProductsService, private authService: AuthService) {
-    // this.getAllProducts();
   }
 
   invoiceno!: string;
@@ -24,39 +24,47 @@ export class ProductsComponent implements OnInit {
     this.getAllProducts();
     this.authService.getUserRole().subscribe(
       {
-        next: (data: string | undefined) => this.role = data
-      }
+        next: (data: string | undefined) => this.role = data,
+      },
     );
   }
 
   loadProducts() {
+    LoaderService.show();
     this.service.getAllProducts().subscribe({
       next: (data: any) => {
         this.products = data;
+      },
+      complete: () => {
+        LoaderService.hide();
       }
     });
   }
 
   getAllProducts() {
-    this.service.getAllProducts().subscribe(data => {
-      this.products = data;
-    });
-    console.log(this.products);
+    LoaderService.show();
+    this.service.getAllProducts().subscribe(
+      {
+        next: (data: IAddItems[]) => {
+          this.products = data;
+        },
+        complete: () => {
+          LoaderService.hide();
+        }
+      }
+    )
   }
 
   onAdd() {
     this.service.edit = false;
   }
 
-  onEdit(data: any) {
+  onEdit(data: IAddItems) {
     this.service.editItem(data);
   }
 
-  onDelete(data: any): void {
+  onDelete(data: IAddItems): void {
     this.service.deleteItem(data);
     this.loadProducts();
-    // this.service.deleteItem(data.id).subscribe(res => {
-    //   this.getAllProducts();
-    // });
   }
 }

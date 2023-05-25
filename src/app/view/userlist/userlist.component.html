@@ -1,32 +1,35 @@
 <div class="userList">
-    <div class="popup" *ngIf="popupmenu" [formGroup] = "registerForm">
+    <div class="popup" *ngIf="popupmenu" [formGroup]="registerForm">
         <div class="text">Update User</div>
         <label class="form__input--label">
             UserName
         </label>
-        <input type="text" class="form__input--input" formControlName="id" required placeholder="UserName"/>
+        <input type="text" class="form__input--input" formControlName="id" required placeholder="UserName" />
         <label class="form__input--label">
             Name
         </label>
-        <input type="text" class="form__input--input" formControlName="name" required placeholder="Name"/>
-        
+        <input type="text" class="form__input--input" formControlName="name" required placeholder="Name" />
+
         <label for="email" class="form__input--label">
             Email
         </label>
-        <input id="email" name="email" type="email" class="form__input--input" formControlName="email" placeholder="Email" required/>
+        <input id="email" name="email" type="email" class="form__input--input" formControlName="email"
+            placeholder="Email" required />
         <label for="password" class="form__input--label">
             Password
         </label>
-        <input id="password" name="password" type="password" class="form__input--input" formControlName="password" placeholder="Password" required/>
-   
+        <input id="password" name="password" type="password" class="form__input--input" formControlName="password"
+            placeholder="Password" required />
+
         <select id="user" class="user" formControlName="role">
             <option value="supervisor">Supervisor</option>
             <option value="user">User</option>
             <option value="sales person">Sales Person</option>
         </select>
         <div class="checkbox">
-            <input type="checkbox" class="input__checkbox" formControlName="isActive" id="input__checkbox" value="active">
-              <label class="label" for="html">Is Active</label>
+            <input type="checkbox" class="input__checkbox" formControlName="isActive" id="input__checkbox"
+                value="active">
+            <label class="label" for="html">Is Active</label>
         </div>
         <button type="button" class="btn btn-primary" (click)="updateUser()">Update</button>
         <button type="button" class="btn btn-primary" (click)="closepop()">Close</button>
@@ -34,23 +37,26 @@
 
     <table class="table">
         <thead>
-          <tr>
-            <th scope="col">User Name</th>
-            <th scope="col">Name</th>
-            <th scope="col">Email</th>
-            <th scope="col">Role</th>
-            <th scope="col">Status</th>
-            <th scope="col">Action</th>
-          </tr>
+            <tr>
+                <th scope="col">User Name</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Role</th>
+                <th scope="col">Status</th>
+                <th scope="col">Action</th>
+            </tr>
         </thead>
         <tbody>
-            <tr class="space" *ngFor="let user of userlist" >
+            <!-- <div [ngClass]="spinner ? 'loader' : ''"></div> -->
+            <tr class="space" *ngFor="let user of userlist">
                 <td>{{user.id}}</td>
                 <td>{{user.name}}</td>
                 <td>{{user.email}}</td>
                 <td>{{user.role}}</td>
                 <td>{{user.isActive? 'Active':'Inactive'}}</td>
-                <td *ngIf="user.role!=='admin'" > <button type="button" (click)="onUpdate(user)" class="btn btn-primary update">Update</button><button type="button" (click)="onDelete(user)" class="btn btn-danger">Delete</button></td>
+                <td *ngIf="user.role!=='admin'"> <button type="button" (click)="onUpdate(user)"
+                        class="btn btn-primary update">Update</button><button type="button" (click)="onDelete(user)"
+                        class="btn btn-danger">Delete</button></td>
             </tr>
         </tbody>
     </table>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ISellItems } from 'src/app/model/Productmodel';
+import { LoaderService } from 'src/app/service/loader.service';
 import { ProductsService } from 'src/app/service/products.service';
 
 @Component({
@@ -20,10 +21,14 @@ export class HomeComponent implements OnInit {
   }
 
   getAllSoldProducts() {
+    LoaderService.show();
     this.service.getAllSoldProducts().subscribe(
       {
         next: (data: ISellItems[]) => {
           this.products = data;
+        },
+        complete: () => {
+          LoaderService.hide();
         }
       });
   }

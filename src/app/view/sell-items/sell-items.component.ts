@@ -3,6 +3,7 @@ import { ProductsService } from 'src/app/service/products.service';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ISellItems } from 'src/app/model/Productmodel';
+import { LoaderService } from 'src/app/service/loader.service';
 
 @Component({
   selector: 'app-sell-items',
@@ -29,12 +30,15 @@ export class SellItemsComponent implements OnInit {
 
   sellItems!: FormGroup;
   sum!: number;
-  products!: ISellItems[];
+  products!: string[];
 
   ngOnInit(): void {
-    this.service.getAllProductName().subscribe(x => {
-      this.products = x;
-    });
+    this.service.getAllProductName().subscribe(
+      {
+        next: (x) => { this.products = x; },
+        complete: () => { }
+      },
+    )
 
     this.sellItems.get('numberGroup')?.valueChanges.subscribe(val => {
       if (!(val.price && val.quantity)) return;
@@ -49,6 +53,7 @@ export class SellItemsComponent implements OnInit {
   }
 
   onSell() {
+    LoaderService.show();
     this.sellItems.patchValue({
       id: this.sellItems.value.invoice,
       numberGroup: {
@@ -58,8 +63,15 @@ export class SellItemsComponent implements OnInit {
       total: +this.sellItems.value.total
     })
 
-    this.service.sellItem(this.sellItems.value)
-    this.router.navigate(['/']);
+    this.service.sellItem(this.sellItems.value).subscribe(
+      {
+        next: () => { },
+        complete: () => {
+          LoaderService.hide();
+          this.router.navigate(['/']);
+        }
+      }
+    )
   }
 
 
