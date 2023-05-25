@@ -57,8 +57,8 @@ export class AddItemsComponent implements OnInit {
       name: this.service.temp.name,
       description: this.service.temp.description,
       numberGroup: {
-        quantity: this.service.temp.quantity,
-        price: this.service.temp.price
+        quantity: this.service.temp.numberGroup.quantity,
+        price: this.service.temp.numberGroup.price
       },
       total: this.service.temp.total
     })
@@ -96,8 +96,8 @@ export class AddItemsComponent implements OnInit {
       name: this.addProducts.value.name,
       description: this.addProducts.value.description,
       numberGroup: {
-        quantity: this.service.temp.quantity,
-        price: this.service.temp.price
+        quantity: this.addProducts.value.numberGroup.quantity,
+        price: this.addProducts.value.numberGroup.price
       },
       total: this.addProducts.value.total
     })

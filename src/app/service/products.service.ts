@@ -51,6 +51,7 @@ export class ProductsService {
 
 
    addItems(data: IAddItems): Observable<IAddItems[]> {
+      console.log("addItems", data);
       this.items.push(data);
       localStorage.setItem('products', JSON.stringify(this.items));
       return ob<IAddItems[]>(this.items);
@@ -66,6 +67,7 @@ export class ProductsService {
 
    editItem(data: IAddItems) {
       this.temp = data;
+      console.log('inside edit item',this.temp);
       this.edit = true;
    }
 
