@@ -14,17 +14,18 @@ export class SellItemsComponent implements OnInit {
 
   constructor(private _formBuilder: FormBuilder, private service: ProductsService, private router: Router) {
     this.sellItems = this._formBuilder.group({
-      id: ['unique', Validators.required],
-      invoice: ['unique', Validators.required],
-      name: ['ing', Validators.required],
+      id: ['asdf', Validators.required],
+      invoice: ['', Validators.required],
+      name: ['', Validators.required],
       numberGroup: this._formBuilder.group({
-        quantity: ['', Validators.required],
-        price: ['', Validators.required],
+        quantity: ['1', Validators.required],
+        price: ['1', Validators.required],
       }),
       total: [Number, Validators.required],
-      customerName: ['ing', Validators.required],
-      address: ['naxal', Validators.required],
+      customerName: ['ram', Validators.required],
+      address: ['gwarko', Validators.required],
       remark: ['send', Validators.required],
+      date: ['', Validators.required],
     })
   }
 
@@ -33,6 +34,14 @@ export class SellItemsComponent implements OnInit {
   products!: string[];
 
   ngOnInit(): void {
+    this.service.getAllSoldProducts().subscribe(
+      {
+        next: () => { }
+      }
+    )
+    this.sellItems.patchValue({
+      invoice: this.invoiceNum()
+    })
     this.service.getAllProductName().subscribe(
       {
         next: (x) => { this.products = x; },
@@ -45,6 +54,11 @@ export class SellItemsComponent implements OnInit {
       this.calculation(val);
     })
 
+    this.service.productCount();
+  }
+
+  invoiceNum() {
+    return Math.floor(Math.random() * ((99999 - 10000) + 10000))
   }
 
   calculation(val: { price: number, quantity: number }): void {
@@ -60,7 +74,8 @@ export class SellItemsComponent implements OnInit {
         price: +this.sellItems.value.numberGroup.price,
         quantity: +this.sellItems.value.numberGroup.quantity,
       },
-      total: +this.sellItems.value.total
+      total: +this.sellItems.value.total,
+      date: currentDate(),
     })
 
     this.service.sellItem(this.sellItems.value).subscribe(
@@ -73,7 +88,14 @@ export class SellItemsComponent implements OnInit {
       }
     )
   }
+}
 
 
+export function currentDate(): string {
+  const date = new Date();
+  let day = date.getDate();
+  let month = date.getMonth() + 1;
+  let year = date.getFullYear();
+  return `${day}-${month}-${year}`;
 
 }

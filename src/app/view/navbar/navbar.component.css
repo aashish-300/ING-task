@@ -1,14 +1,15 @@
-.navbar__container{
-    background-color: rgb(77, 53, 53);
+.navbar__container {
+    /* background-color: rgb(77, 53, 53); */
+    border-bottom: 1px solid lightblue;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding:20px;
+    padding: 20px;
     font-size: 20px;
     color: white;
 }
 
-.navbar__menu{
+.navbar__menu {
     display: flex;
     align-items: space-between;
     width: 100%;
@@ -19,6 +20,6 @@
     cursor: pointer;
 }
 
-.logout{
+.logout {
     cursor: pointer;
 }

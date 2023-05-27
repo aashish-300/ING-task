@@ -25,4 +25,11 @@ export interface ISellItems {
     // price: number;
     // quantity: number;
     total: number;
+    date: string;
+}
+
+export interface IProductSoldCount {
+    today: number;
+    popular: number;
+    total: number;
 }

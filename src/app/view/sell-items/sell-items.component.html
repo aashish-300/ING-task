@@ -6,8 +6,8 @@
             <div class="input-group-prepend">
                 <span class="input-group-text" id="basic-addon1">Invoice No.</span>
             </div>
-            <input type="text" class="form-control" formControlName="invoice" placeholder="Invoice Number..."
-                aria-label="Username" aria-describedby="basic-addon1">
+            <input type="number" class="form-control" id="disableInput" formControlName="invoice" [readonly]="true"
+                placeholder="Invoice Number..." aria-label="Username" aria-describedby="basic-addon1">
         </div>
         <div class="input-group mb-3">
             <div class="input-group-prepend">
@@ -73,8 +73,9 @@
                     </ng-container>
                     <td>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" type="number" formControlName="total"
-                                placeholder="total" aria-label="Username" aria-describedby="basic-addon1">
+                            <input type="text" class="form-control" id="disableInput" [readOnly]="true" type="number"
+                                formControlName="total" placeholder="total" aria-label="Username"
+                                aria-describedby="basic-addon1">
                         </div>
                     </td>
                     <td>

@@ -1,8 +1,9 @@
 <div class="navbar__container">
     <div class="navbar__menu">
-        <div routerLink="/">Dashboard</div>
+        <div routerLink="/" *ngIf="role === 'admin' || role === 'supervisor'">Dashboard</div>
         <div routerLink="/user" *ngIf="role === 'admin'">User</div>
-        <div routerLink="/product" *ngIf="role === 'admin' || 'supervisor' || 'sales person'" >Product</div>
+        <div routerLink="/product" *ngIf="role === 'admin' || 'supervisor' || 'sales person'">
+            Product</div>
     </div>
     <div>
         <div class="logout" routerLink="/login">LOGOUT</div>

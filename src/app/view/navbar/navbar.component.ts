@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/service/auth.service';
+import { ProductsService } from 'src/app/service/products.service';
 
 @Component({
   selector: 'app-navbar',
@@ -8,12 +9,12 @@ import { AuthService } from 'src/app/service/auth.service';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(public service: AuthService) { }
+  constructor(public authservice: AuthService, public productservice: ProductsService) { }
 
   role!: string;
 
   ngOnInit(): void {
-    this.service.getUserRole().subscribe(
+    this.authservice.getUserRole().subscribe(
       {
         next: (data: any) => {
           this.role = data;
@@ -21,5 +22,16 @@ export class NavbarComponent implements OnInit {
       }
     )
   }
+
+  // productClick() {
+  //   console.log('productClick');
+  //   this.productservice.getAllProducts().subscribe(
+  //     {
+  //       next: (data: any) => {
+  //         console.log(data)
+  //       }
+  //     }
+  //   )
+  // }
 
 }

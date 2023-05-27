@@ -36,12 +36,15 @@ body {
   }
 } */
 
-.container__auth{
+body {
+  background-image: url(../src/assets/black2.jpg);
+}
+
+.container__auth {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  
 }
 
 .container__box {
@@ -102,4 +105,36 @@ input:focus {
   font-size: 30px;
   font-weight: 500;
   margin-bottom: 20px;
+}
+
+#disableInput {
+  outline: none;
+  border: none;
+  background-color: rgba(2, 2, 2, 0.1);
+}
+
+.input-back {
+  background-color: transparent;
+  outline: none;
+  border-bottom: 1px solid rgb(204, 198, 196);
+  margin-top: 10px
+}
+
+.input-back:focus {
+  outline: none;
+  border-bottom: 1px solid green;
+}
+
+button {
+  margin-top: 10px;
+}
+
+form {
+  border: 1px solid lightblue;
+  padding: 30px;
+  border-radius: 10px;
+}
+
+form>* {
+  color: white
 }

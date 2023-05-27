@@ -46,8 +46,8 @@
         </ng-container>
         <td>
           <div class="input-group mb-3">
-            <input type="text" class="form-control" type="number" formControlName="total" placeholder="total"
-              aria-label="Username" aria-describedby="basic-addon1">
+            <input type="text" class="form-control" id="disableInput" type="number" [readOnly]="true"
+              formControlName="total" placeholder="total">
           </div>
         </td>
         <td>

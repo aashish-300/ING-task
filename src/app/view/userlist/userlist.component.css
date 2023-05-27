@@ -53,11 +53,7 @@
     margin-top: 10px;
 }
 
-.text {
-    font-weight: bold;
-    font-size: 2rem;
-    margin-bottom: 20px;
-}
+
 
 .mr {
     padding-right: 50px;
@@ -72,5 +68,3 @@
     width: 60px;
     height: 20px;
 }
-
-.label {}

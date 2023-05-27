@@ -96,7 +96,7 @@ export function ob<T = any>(ob: T) {
 }
 
 export function delayNumber(): number {
-  const startTime = 2500;
-  const endTime = 5000;
+  const startTime = 500;
+  const endTime = 2500;
   return Math.random() * ((endTime - startTime) + startTime);
 }

@@ -39,7 +39,13 @@ export class LoginComponent {
             if (this.loginInfo.isActive) {
               sessionStorage.setItem('username', this.loginInfo.id);
               sessionStorage.setItem('role', this.loginInfo.role);
-              this.router.navigate(['']);
+              // this.router.navigate(['']);
+              console.log(this.loginInfo.role);
+              if (this.loginInfo.role === 'salesperson') {
+                this.router.navigate(['product']);
+              } else {
+                this.router.navigate(['']);
+              }
             } else {
               alert('Please contact admin to activate');
             }
@@ -50,7 +56,15 @@ export class LoginComponent {
         complete: () => {
           console.log('complete', LoaderService.get())
           LoaderService.hide();
-          this.router.navigate(['']);
+          console.log(this.loginInfo.role)
+          // if (this.loginInfo.role === 'salesperson') {
+          //   this.router.navigate(['/product']);
+          // } else {
+          //   this.router.navigate(['']);
+          // }
+          // this.router.navigate(['']);
+
+
         }
 
       }
