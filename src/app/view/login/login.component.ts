@@ -1,17 +1,18 @@
 import { Component } from '@angular/core';
-import { FormBuilder, Validators, FormGroup, } from '@angular/forms'
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { AuthService } from 'src/app/service/auth.service';
 import { Router } from '@angular/router';
-import { RegisterModel, loginModel } from 'src/app/common/model/Authenticationmodel';
+import {
+  RegisterModel,
+  loginModel,
+} from 'src/app/common/model/Authenticationmodel';
 import { LoaderService } from 'src/app/service/loader.service';
-
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
-
 
 /**
 
@@ -19,7 +20,6 @@ Represents the LoginComponent.
 @class
 */
 export class LoginComponent {
-
   /**
 
 Represents the login form group.
@@ -35,17 +35,19 @@ Constructs a new LoginComponent.
 @param {AuthService} service - The AuthService instance.
 @param {Router} router - The Router instance.
 */
-  constructor(private _formBuilder: FormBuilder, private service: AuthService, private router: Router) {
-
+  constructor(
+    private _formBuilder: FormBuilder,
+    private service: AuthService,
+    private router: Router
+  ) {
     this.loginForm = this._formBuilder.group({
       username: ['', Validators.required],
-      password: ['', Validators.required]
+      password: ['', Validators.required],
     });
 
-    sessionStorage.clear()
+    sessionStorage.clear();
     this.service.loadAllUser();
   }
-
 
   /**
 
@@ -62,35 +64,32 @@ Proceeds with the login process.
   proceedLogin() {
     console.log(LoaderService.get());
     LoaderService.show();
-    this.service.getUserById(this.loginForm.value.username).subscribe(
-      {
-        next: (data: RegisterModel) => {
-          this.loginInfo = data;
-          if (this.loginInfo.password === this.loginForm.value.password) {
-            if (this.loginInfo.isActive) {
-              sessionStorage.setItem('username', this.loginInfo.id);
-              sessionStorage.setItem('role', this.loginInfo.role);
-              // this.router.navigate(['']);
-              console.log(this.loginInfo.role);
-              if (this.loginInfo.role === 'salesperson') {
-                this.router.navigate(['product']);
-              } else {
-                this.router.navigate(['']);
-              }
+    this.service.getUserById(this.loginForm.value.username).subscribe({
+      next: (data: RegisterModel) => {
+        this.loginInfo = data;
+        if (this.loginInfo.password === this.loginForm.value.password) {
+          if (this.loginInfo.isActive) {
+            sessionStorage.setItem('username', this.loginInfo.id);
+            sessionStorage.setItem('role', this.loginInfo.role);
+            // this.router.navigate(['']);
+            console.log(this.loginInfo.role);
+            if (this.loginInfo.role === 'salesperson') {
+              this.router.navigate(['product']);
             } else {
-              alert('Please contact admin to activate');
+              this.router.navigate(['']);
             }
           } else {
-            alert('invalid credentials')
+            alert('Please contact admin to activate');
           }
-        },
-        complete: () => {
-          console.log('complete', LoaderService.get())
-          LoaderService.hide();
-          console.log(this.loginInfo.role)
+        } else {
+          alert('invalid credentials');
         }
-
-      }
-    );
+      },
+      complete: () => {
+        console.log('complete', LoaderService.get());
+        LoaderService.hide();
+        console.log(this.loginInfo.role);
+      },
+    });
   }
 }

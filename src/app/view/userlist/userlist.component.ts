@@ -1,7 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/service/auth.service';
 import { Router } from '@angular/router';
-import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms'
+import {
+  FormBuilder,
+  Validators,
+  FormGroup,
+  FormControl,
+} from '@angular/forms';
 import { Observable } from 'rxjs';
 import { RegisterModel } from 'src/app/common/model/Authenticationmodel';
 import { LoaderService } from 'src/app/service/loader.service';
@@ -9,7 +14,7 @@ import { LoaderService } from 'src/app/service/loader.service';
 @Component({
   selector: 'app-userlist',
   templateUrl: './userlist.component.html',
-  styleUrls: ['./userlist.component.css']
+  styleUrls: ['./userlist.component.css'],
 })
 
 /**
@@ -18,7 +23,6 @@ Represents the UserlistComponent.
 @class
 */
 export class UserlistComponent implements OnInit {
-
   /**
 
 Represents the register form group.
@@ -34,15 +38,19 @@ Constructs a new UserlistComponent.
 @param {Router} router - The Router instance.
 @param {AuthService} service - The AuthService instance.
 */
-  constructor(private _formBuilder: FormBuilder, private router: Router, private service: AuthService) {
+  constructor(
+    private _formBuilder: FormBuilder,
+    private router: Router,
+    private service: AuthService
+  ) {
     this.registerForm = this._formBuilder.group({
       id: new FormControl(''),
       name: new FormControl(''),
       email: new FormControl(''),
       password: new FormControl(''),
       isActive: new FormControl(false),
-      role: new FormControl('')
-    })
+      role: new FormControl(''),
+    });
   }
 
   /**
@@ -52,7 +60,6 @@ Initializes the component.
 */
   ngOnInit(): void {
     this.loadUser();
-
   }
 
   /**
@@ -82,17 +89,15 @@ Represents a single user.
   loadUser() {
     LoaderService.get();
     console.log(LoaderService.show());
-    this.service.getAllUser().subscribe(
-      {
-        next: (data: RegisterModel[]) => {
-          this.userlist = data;
-        },
-        complete: () => {
-          console.log('register', LoaderService.get())
-          LoaderService.hide();
-        }
-      }
-    );
+    this.service.getAllUser().subscribe({
+      next: (data: RegisterModel[]) => {
+        this.userlist = data;
+      },
+      complete: () => {
+        console.log('register', LoaderService.get());
+        LoaderService.hide();
+      },
+    });
   }
 
   /**
@@ -110,7 +115,7 @@ Updates the form with the selected user's data.
       email: this.singleuser.email,
       password: this.singleuser.password,
       isActive: this.singleuser.isActive,
-      role: this.singleuser.role
+      role: this.singleuser.role,
     });
   }
 
@@ -122,17 +127,14 @@ Deletes a user.
 */
   onDelete(user: RegisterModel) {
     LoaderService.show();
-    this.service.deleteUser(user.id).subscribe(
-      {
-        next: () => { },
-        complete: () => {
-          LoaderService.hide();
-          this.loadUser();
-        }
-      }
-    );
+    this.service.deleteUser(user.id).subscribe({
+      next: () => {},
+      complete: () => {
+        LoaderService.hide();
+        this.loadUser();
+      },
+    });
   }
-
 
   /**
   
@@ -148,17 +150,17 @@ Deletes a user.
       email: this.registerForm.value.email,
       password: this.registerForm.value.password,
       isActive: this.registerForm.value.isActive,
-      role: this.registerForm.value.role
-    })
-    this.service.updataUser(this.registerForm.value.id, this.registerForm.value).subscribe(
-      {
-        next: () => { },
+      role: this.registerForm.value.role,
+    });
+    this.service
+      .updataUser(this.registerForm.value.id, this.registerForm.value)
+      .subscribe({
+        next: () => {},
         complete: () => {
           LoaderService.hide();
-          this.loadUser()
-        }
-      }
-    );
+          this.loadUser();
+        },
+      });
   }
 
   /**
@@ -170,7 +172,4 @@ Closes the popup menu.
     this.popupmenu = false;
     this.loadUser();
   }
-
-
-
 }

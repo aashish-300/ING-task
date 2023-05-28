@@ -7,38 +7,37 @@ import { Injectable } from '@angular/core';
  * This service provides methods to get, show, and hide the loader.
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LoaderService {
-
-    /**
+  /**
    * The loader object containing the loading state.
    */
   private static object: any = {
-    loading: false
-  }
+    loading: false,
+  };
 
   /**
    * Constructs an instance of the LoaderService.
    */
-  constructor() { }
+  constructor() {}
 
-    /**
+  /**
    * Retrieves the current loading state.
    *
    * @returns A boolean indicating whether the loader is currently showing or hiding.
    */
   public static get(): boolean {
-    return this.object.loading
+    return this.object.loading;
   }
 
-   /**
+  /**
    * Shows the loader.
    *
    * @returns A boolean indicating whether the loader is now showing.
    */
   public static show(): boolean {
-    return this.object.loading = true;
+    return (this.object.loading = true);
   }
 
   /**
@@ -47,7 +46,6 @@ export class LoaderService {
    * @returns A boolean indicating whether the loader is now hiding.
    */
   public static hide(): boolean {
-    return this.object.loading = false;
+    return (this.object.loading = false);
   }
-
 }

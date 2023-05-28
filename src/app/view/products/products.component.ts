@@ -6,11 +6,10 @@ import { AuthService } from 'src/app/service/auth.service';
 import { IAddItems } from 'src/app/common/model/Productmodel';
 import { LoaderService } from 'src/app/service/loader.service';
 
-
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
-  styleUrls: ['./products.component.css']
+  styleUrls: ['./products.component.css'],
 })
 
 /**
@@ -19,7 +18,6 @@ Represents the ProductsComponent.
 @class
 */
 export class ProductsComponent implements OnInit {
-
   /**
 
 Constructs a new ProductsComponent.
@@ -28,8 +26,11 @@ Constructs a new ProductsComponent.
 @param {ProductsService} service - The ProductsService instance.
 @param {AuthService} authService - The AuthService instance.
 */
-  constructor(private _formBuilder: FormBuilder, private service: ProductsService, private authService: AuthService) {
-  }
+  constructor(
+    private _formBuilder: FormBuilder,
+    private service: ProductsService,
+    private authService: AuthService
+  ) {}
 
   /**
 
@@ -80,39 +81,31 @@ Initializes the component.
 @method
 */
   ngOnInit(): void {
-    this.authService.getUserRole().subscribe(
-      {
-        next: (data: any) => this.role = data,
-      },
-    );
-    console.log(this.role)
+    this.authService.getUserRole().subscribe({
+      next: (data: any) => (this.role = data),
+    });
+    console.log(this.role);
     this.getAllProducts();
-    this.service.getAllSoldProducts().subscribe(
-      {
-        next: () => { },
-        complete: () => {
-          this.countName = this.service.productCount();
-        }
-      }
-    )
-    this.service.getAllProductName().subscribe(
-      {
-        next: (data: string[]) => this.productName = data,
+    this.service.getAllSoldProducts().subscribe({
+      next: () => {},
+      complete: () => {
+        this.countName = this.service.productCount();
       },
-    )
+    });
+    this.service.getAllProductName().subscribe({
+      next: (data: string[]) => (this.productName = data),
+    });
     this.searchItem = this._formBuilder.group({
-      productNameInput: ['', Validators.required]
-    })
-    this.searchItem.get('productNameInput')?.valueChanges.subscribe(
-      {
-        next: (data) => {
-          this.searchProductName = this.productName.filter(s => {
-            if (data === '') return;
-            return s.match(data)
-          })
-        },
-      }
-    )
+      productNameInput: ['', Validators.required],
+    });
+    this.searchItem.get('productNameInput')?.valueChanges.subscribe({
+      next: (data) => {
+        this.searchProductName = this.productName.filter((s) => {
+          if (data === '') return;
+          return s.match(data);
+        });
+      },
+    });
   }
 
   /**
@@ -134,7 +127,7 @@ Gets the background color for a product based on its count.
         }
       }
     }
-    return 'none'
+    return 'none';
   }
 
   /**
@@ -145,10 +138,9 @@ Performs a search based on the selected item.
 */
   searchClick(item: string): void {
     this.searchItem.value.productNameInput = ' ';
-    this.service.searchItem(item).subscribe(
-      {
-        next: (val) => this.products = val
-      });
+    this.service.searchItem(item).subscribe({
+      next: (val) => (this.products = val),
+    });
   }
 
   /**
@@ -164,22 +156,20 @@ Loads all products.
       },
       complete: () => {
         LoaderService.hide();
-      }
+      },
     });
   }
 
   getAllProducts() {
     LoaderService.show();
-    this.service.getAllProducts().subscribe(
-      {
-        next: (data: IAddItems[]) => {
-          this.products = data;
-        },
-        complete: () => {
-          LoaderService.hide();
-        }
-      }
-    )
+    this.service.getAllProducts().subscribe({
+      next: (data: IAddItems[]) => {
+        this.products = data;
+      },
+      complete: () => {
+        LoaderService.hide();
+      },
+    });
   }
 
   onAdd() {

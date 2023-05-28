@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms'
+import {
+  FormBuilder,
+  Validators,
+  FormGroup,
+  FormControl,
+} from '@angular/forms';
 import { AuthService } from 'src/app/service/auth.service';
 import { Validation } from 'src/app/validation';
 import { Router } from '@angular/router';
@@ -10,7 +15,7 @@ import { LoaderService } from 'src/app/service/loader.service';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  styleUrls: ['./register.component.css'],
 })
 
 /**
@@ -19,7 +24,6 @@ Represents the RegisterComponent.
 @class
 */
 export class RegisterComponent {
-
   /**
 
 Represents the register form group.
@@ -36,7 +40,11 @@ Constructs a new RegisterComponent.
 @param {AuthService} service - The AuthService instance.
 @param {Router} router - The Router instance.
 */
-  constructor(private _formBuilder: FormBuilder, private service: AuthService, private router: Router) {
+  constructor(
+    private _formBuilder: FormBuilder,
+    private service: AuthService,
+    private router: Router
+  ) {
     this.service.loadAllUser();
     this.registerForm = this._formBuilder.group({
       id: ['', Validators.required],
@@ -44,8 +52,8 @@ Constructs a new RegisterComponent.
       email: ['', Validators.required],
       password: ['', Validators.required],
       isActive: [false],
-      role: ['']
-    })
+      role: [''],
+    });
   }
 
   /**
@@ -56,19 +64,17 @@ Constructs a new RegisterComponent.
   proceedRegistration() {
     LoaderService.show();
     if (this.registerForm.valid) {
-      this.service.userRegister(this.registerForm.value.id, this.registerForm.value).subscribe(
-        {
-          next: (data: any) => { },
+      this.service
+        .userRegister(this.registerForm.value.id, this.registerForm.value)
+        .subscribe({
+          next: (data: any) => {},
           complete: () => {
             LoaderService.hide();
             this.router.navigate(['login']);
-          }
-        }
-      );
+          },
+        });
     } else {
-      alert('please enter valid data')
+      alert('please enter valid data');
     }
   }
-
-
 }

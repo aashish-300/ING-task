@@ -23,7 +23,6 @@
 
         <select id="user" class="user" formControlName="role">
             <option value="supervisor">Supervisor</option>
-            <option value="user">User</option>
             <option value="salesperson">Sales Person</option>
         </select>
         <div class="checkbox">
@@ -60,24 +59,4 @@
             </tr>
         </tbody>
     </table>
-
-    <!-- <table class="box">
-        <tr class="column">
-            <th class="mr">User Name</th>
-            <th class="mr">Name</th>
-            <th class="mr">Email</th>
-            <th class="mr">Role</th>
-            <th class="mr">Status</th>
-            <th class="mr">Action</th>
-        </tr>
-        <tr class="space" *ngFor="let user of userlist" >
-            <td>{{user.id}}</td>
-            <td>{{user.name}}</td>
-            <td>{{user.email}}</td>
-            <td>{{user.role}}</td>
-            <td>{{user.isActive? 'Active':'Inactive'}}</td>
-            <td *ngIf="user.role!=='admin'" > <button type="button" (click)="onUpdate(user)" class="btn btn-primary update">Update</button><button type="button" (click)="onDelete(user)" class="btn btn-danger">Delete</button></td>
-        </tr>
-       
-    </table> -->
 </div>
