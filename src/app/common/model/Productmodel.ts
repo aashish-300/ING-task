@@ -32,4 +32,8 @@ export interface IProductSoldCount {
     today: number;
     popular: number;
     total: number;
+    most:[{
+        name:string,
+        count:number
+    }]
 }

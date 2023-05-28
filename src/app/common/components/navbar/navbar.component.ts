@@ -45,4 +45,12 @@ Initializes the component.
       }
     )
   }
+
+  onProduct(){
+    this.productservice.getAllProducts().subscribe(
+      {
+        next: (data: any) => {console.log(data);}
+      }
+    )
+  }
 }

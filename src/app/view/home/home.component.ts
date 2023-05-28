@@ -50,6 +50,10 @@ Represents the product sold count.
     today: 0,
     popular: 0,
     total: 0,
+    most: [{
+      name:'',
+      count:0
+    }],
   };
 
   /**
@@ -94,14 +98,18 @@ Counts the number of products.
 
     this.products.forEach((item: ISellItems) => {
       this.ProductSoldCount.popular = 0;
+      this.ProductSoldCount.most.pop();
       if (item.date === fullDate) {
         ++this.ProductSoldCount.today;
       }
       for (let key in this.service.countName) {
+        console.log(key, this.service.countName[key]);
         if (Number(this.service.countName[key]) >= 5) {
           ++this.ProductSoldCount.popular;
+          this.ProductSoldCount.most.push({"name":key, "count":+this.service.countName[key]});
         }
       }
+      console.log(this.ProductSoldCount.most);
 
       this.ProductSoldCount.total =
         this.ProductSoldCount.today + this.ProductSoldCount.popular;

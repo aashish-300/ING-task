@@ -8,9 +8,9 @@
 }
 
 .data {
-    font-size: 100px;
+    font-size: 80px;
     margin: auto;
-    text-align: center;
+    /* text-align: center; */
 }
 
 .card-container {

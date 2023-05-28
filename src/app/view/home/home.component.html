@@ -6,13 +6,18 @@
             <tr>
                 <th scope="col">TOTAL</th>
                 <th scope="col">TODAY</th>
-                <th scope="col">POPULAR</th>
+                <th scope="col">MOST POPULAR</th>
             </tr>
         </thead>
         <tr>
             <td class="data">{{ProductSoldCount.total}}</td>
             <td class="data">{{ProductSoldCount.today}}</td>
-            <td class="data">{{ProductSoldCount.popular}}</td>
+            <!-- <td class="data">{{ProductSoldCount.popular}}</td> -->
+            <td class="data">
+                <div *ngFor="let item of ProductSoldCount.most">
+                    <span>{{item.name}}</span>-<span>{{item.count}}</span>
+                </div>
+            </td>
         </tr>
     </table>
 </div>

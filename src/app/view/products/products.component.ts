@@ -162,6 +162,7 @@ Loads all products.
 
   getAllProducts() {
     LoaderService.show();
+    // this.service.getAllProducts().1
     this.service.getAllProducts().subscribe({
       next: (data: IAddItems[]) => {
         this.products = data;
