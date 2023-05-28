@@ -1,38 +1,82 @@
 import { Injectable, OnInit } from '@angular/core';
 import { Observable, delay, from, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { IAddItems, ISellItems } from '../model/Productmodel';
+import { IAddItems, ISellItems } from '../common/model/Productmodel';
 
-
+/**
+ * Service responsible for managing products and sold items.
+ *
+ * @remarks
+ * This service provides methods to interact with product data, such as adding, deleting, editing, and selling items.
+ * It also provides methods to retrieve and count products and sold items.
+ */
 @Injectable({
    providedIn: 'root'
 })
 export class ProductsService implements OnInit {
 
+   /**
+    * The API URL for product operations.
+    */
    private apiUrl = 'http://localhost:5000/products';
    // private apiUrl = 'https://misty-ox-sweater.cyclic.app/products';
 
+   /**
+    * Constructs an instance of the ProductsService.
+    *
+    * @param http - The HttpClient for making HTTP requests.
+    */
    constructor(private http: HttpClient) { }
 
+   /**
+    * Temporary variable to store data.
+    */
    temp: any;
-   items: IAddItems[] = [];
-   edit: boolean = false;
-   soldItems: ISellItems[] = [];
-   countName: {}[] = [{}]
 
+   /**
+    * Array of items representing added products.
+    */
+   items: IAddItems[] = [];
+
+   /**
+    * Flag indicating whether an item is being edited.
+    */
+   edit: boolean = false;
+
+   /**
+    * Array of items representing sold products.
+    */
+   soldItems: ISellItems[] = [];
+
+   /**
+    * Array to store product count by name.
+    */
+   countName: {}[] = [{}];
+
+   /**
+    * Lifecycle hook that is called after construction and initialization of the service.
+    */
    ngOnInit(): void {
-    this.getAllSoldProducts().subscribe(
-      {
-         next: (item: ISellItems[]) => {},
-         complete: () => this.productCount()
-      });
-      
+      this.getAllSoldProducts().subscribe(
+         {
+            next: (item: ISellItems[]) => { },
+            complete: () => this.productCount()
+         }
+      );
    }
 
-   updateStorage() {
+   /**
+    * Updates the local storage with the current item list.
+    */
+   updateStorage(): void {
       localStorage.setItem('products', JSON.stringify(this.items));
    }
 
+   /**
+    * Retrieves all products from the local storage.
+    *
+    * @returns An observable of an array of added items.
+    */
    getAllProducts(): Observable<IAddItems[]> {
       if (localStorage.getItem('products')) {
          this.temp = localStorage.getItem('products');
@@ -41,30 +85,52 @@ export class ProductsService implements OnInit {
       return ob<IAddItems[]>(this.items);
    }
 
+   /**
+    * Retrieves all product names from the local storage.
+    *
+    * @returns An observable of an array of product names.
+    */
    getAllProductName(): Observable<string[]> {
       if (localStorage.getItem('products')) {
          this.temp = localStorage.getItem('products');
          this.temp = JSON.parse(this.temp);
          this.temp = Array.from(this.temp).map((val: any) => {
             return val.name;
-         })
+         });
       }
       return ob<string[]>(this.temp);
    }
 
-   searchItem(val: string) {
+   /**
+    * Searches for an item by name.
+    *
+    * @param val - The name to search for.
+    * @returns An observable of an array of matching items.
+    */
+   searchItem(val: string): Observable<IAddItems[]> {
       this.temp = this.items.filter(e => {
          return e.name === val;
-      })
+      });
       return ob<IAddItems[]>(this.temp);
    }
 
-
+   /**
+    * Adds an item to the product list.
+    *
+    * @param data - The item data to add.
+    * @returns An observable of the updated array of items.
+    */
    addItems(data: IAddItems): Observable<IAddItems[]> {
       this.items.push(data);
       localStorage.setItem('products', JSON.stringify(this.items));
       return ob<IAddItems[]>(this.items);
    }
+
+   /**
+    * Deletes an item from the product list.
+    *
+    * @param item - The item to delete.
+    */
 
    deleteItem(item: IAddItems) {
       this.temp = Array.from(this.items).filter((e: any) => {
@@ -74,11 +140,21 @@ export class ProductsService implements OnInit {
       this.updateStorage();
    }
 
+   /**
+    * Edits an item in the product list.
+    *
+    * @param data - The updated item data.
+    */
    editItem(data: IAddItems) {
       this.temp = data;
       this.edit = true;
    }
 
+   /**
+ * Updates an item in the product list.
+ *
+ * @param data - The updated item data.
+ */
    updateItem(data: IAddItems) {
       this.items.forEach((val: IAddItems, i) => {
          if (val.id === data.id) {
@@ -88,6 +164,12 @@ export class ProductsService implements OnInit {
       })
    }
 
+   /**
+ * Sells an item and adds it to the sold items list.
+ *
+ * @param data - The item data to sell.
+ * @returns An observable of the updated array of sold items.
+ */
    sellItem(data: ISellItems): Observable<ISellItems[]> {
       this.soldItems.push(data);
       this.decQuantity(data);
@@ -95,7 +177,13 @@ export class ProductsService implements OnInit {
       return ob<ISellItems[]>(this.soldItems)
    }
 
-   productCount():{} {
+
+   /**
+    * Counts the number of sold products by name.
+    *
+    * @returns An object representing the count of sold products by name.
+    */
+   productCount(): {} {
       const productName = this.soldItems.map(item => {
          return item.name;
       })
@@ -103,22 +191,33 @@ export class ProductsService implements OnInit {
       return this.countName;
    }
 
-   countElements(arr:any) {
-   let counts:any = {};
- 
-   for (let i = 0; i < arr.length; i++) {
-     let element = arr[i];
-     if (counts[element]) {
-       counts[element]++;
-     } else {
-       counts[element] = 1;
-     }
-   }
- 
-   return counts;
- }
- 
+   /**
+ * Counts the occurrences of elements in an array.
+ *
+ * @param arr - The array to count elements from.
+ * @returns An object representing the count of elements.
+ */
+   countElements(arr: any) {
+      let counts: any = {};
 
+      for (let i = 0; i < arr.length; i++) {
+         let element = arr[i];
+         if (counts[element]) {
+            counts[element]++;
+         } else {
+            counts[element] = 1;
+         }
+      }
+
+      return counts;
+   }
+
+
+   /**
+   * Retrieves all sold products from the local storage.
+   *
+   * @returns An observable of an array of sold items.
+   */
    getAllSoldProducts(): Observable<ISellItems[]> {
       if (localStorage.getItem('soldItems')) {
          this.temp = localStorage.getItem('soldItems');
@@ -127,6 +226,11 @@ export class ProductsService implements OnInit {
       return ob<ISellItems[]>(this.soldItems);
    }
 
+   /**
+ * Decreases the quantity of a sold item from the product list.
+ *
+ * @param val - The sold item data.
+ */
    decQuantity(val: ISellItems) {
       this.items.forEach((x: any, i) => {
          if (val.name === x.id && x.numberGroup.quantity >= val.numberGroup.quantity) {
@@ -141,45 +245,25 @@ export class ProductsService implements OnInit {
    }
 }
 
-// export function checkItem(data: ISellItems) {
-//    console.log(this.items)
-// }
-
-
+/**
+ * An observable creation function with a delay.
+ *
+ * @param ob - The value to be emitted as an observable.
+ * @returns An observable of the given value with a delay.
+ */
 export function ob<T = any>(ob: T) {
    return of(ob).pipe(delay(delayNumber()))
 }
 
+/**
+ * Generates a random delay number between a start time and end time.
+ *
+ * @returns A random delay number.
+ */
 export function delayNumber(): number {
-   // const startTime = 500;
-   // const endTime = 2500;
-   const startTime = 100;
-   const endTime = 500;
+   const startTime = 500;
+   const endTime = 2500;
    return Math.random() * ((endTime - startTime) + startTime);
 }
 
 
-// function countElements(arr) {
-//    var counts = {};
- 
-//    for (var i = 0; i < arr.length; i++) {
-//      var element = arr[i];
-//      if (counts[element]) {
-//        counts[element]++;
-//      } else {
-//        counts[element] = 1;
-//      }
-//    }
- 
-//    return counts;
-//  }
- 
-//  // Example usage:
-//  var array = ["apple", "banana", "apple", "orange", "banana", "apple"];
-//  var elementCounts = countElements(array);
- 
-//  // Output the counts
-//  for (var key in elementCounts) {
-//    console.log('Element: ' + key + ', Count: ' + elementCounts[key]);
-//  }
- 

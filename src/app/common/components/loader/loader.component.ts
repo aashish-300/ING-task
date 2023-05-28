@@ -6,12 +6,23 @@ import { LoaderService } from 'src/app/service/loader.service';
   templateUrl: './loader.component.html',
   styleUrls: ['./loader.component.css']
 })
+
+/**
+
+Represents the LoaderComponent.
+@class
+*/
 export class LoaderComponent {
-  
-  
-  constructor(private service : LoaderService){}
-  
-  
-  
+
+  /**
+
+Constructs a new LoaderComponent.
+@constructor
+@param {LoaderService} service - The LoaderService instance.
+*/
+  constructor(private service: LoaderService) { }
+
+
+
 
 }

@@ -7,12 +7,35 @@ import { ProductsService } from 'src/app/service/products.service';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
+
+/**
+
+Represents the NavbarComponent.
+@class
+*/
 export class NavbarComponent implements OnInit {
 
+  /**
+
+Constructs a new NavbarComponent.
+@constructor
+@param {AuthService} authservice - The AuthService instance.
+@param {ProductsService} productservice - The ProductsService instance.
+*/
   constructor(public authservice: AuthService, public productservice: ProductsService) { }
 
+  /**
+
+Represents the user's role.
+@type {string}
+*/
   role!: string;
 
+  /**
+
+Initializes the component.
+@method
+*/
   ngOnInit(): void {
     this.authservice.getUserRole().subscribe(
       {
@@ -22,16 +45,4 @@ export class NavbarComponent implements OnInit {
       }
     )
   }
-
-  // productClick() {
-  //   console.log('productClick');
-  //   this.productservice.getAllProducts().subscribe(
-  //     {
-  //       next: (data: any) => {
-  //         console.log(data)
-  //       }
-  //     }
-  //   )
-  // }
-
 }

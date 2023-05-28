@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Main module that bootstraps the Angular application.
+ * @module AppModule
+ */
+
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -9,12 +14,15 @@ import { RegisterComponent } from './view/register/register.component';
 import { LoginComponent } from './view/login/login.component';
 import { HomeComponent } from './view/home/home.component';
 import { UserlistComponent } from './view/userlist/userlist.component';
-import { NavbarComponent } from './view/navbar/navbar.component';
+import { NavbarComponent } from './common/components/navbar/navbar.component';
 import { ProductsComponent } from './view/products/products.component';
 import { AddItemsComponent } from './view/add-items/add-items.component';
 import { SellItemsComponent } from './view/sell-items/sell-items.component';
-import { LoaderComponent } from './view/loader/loader.component';
+import { LoaderComponent } from './common/components/loader/loader.component';
 
+/**
+ * Main module that bootstraps the Angular application.
+ */
 @NgModule({
   declarations: [
     AppComponent,

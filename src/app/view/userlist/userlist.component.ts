@@ -3,7 +3,7 @@ import { AuthService } from 'src/app/service/auth.service';
 import { Router } from '@angular/router';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms'
 import { Observable } from 'rxjs';
-import { RegisterModel } from 'src/app/model/Authenticationmodel';
+import { RegisterModel } from 'src/app/common/model/Authenticationmodel';
 import { LoaderService } from 'src/app/service/loader.service';
 
 @Component({
@@ -11,10 +11,29 @@ import { LoaderService } from 'src/app/service/loader.service';
   templateUrl: './userlist.component.html',
   styleUrls: ['./userlist.component.css']
 })
+
+/**
+
+Represents the UserlistComponent.
+@class
+*/
 export class UserlistComponent implements OnInit {
 
+  /**
+
+Represents the register form group.
+@type {FormGroup}
+*/
   registerForm!: FormGroup;
 
+  /**
+
+Constructs a new UserlistComponent.
+@constructor
+@param {FormBuilder} _formBuilder - The FormBuilder instance.
+@param {Router} router - The Router instance.
+@param {AuthService} service - The AuthService instance.
+*/
   constructor(private _formBuilder: FormBuilder, private router: Router, private service: AuthService) {
     this.registerForm = this._formBuilder.group({
       id: new FormControl(''),
@@ -26,16 +45,40 @@ export class UserlistComponent implements OnInit {
     })
   }
 
+  /**
+
+Initializes the component.
+@method
+*/
   ngOnInit(): void {
     this.loadUser();
 
   }
 
+  /**
+
+Represents the list of users.
+@type {RegisterModel[]}
+*/
   userlist!: RegisterModel[];
-  popupmenu = false;
+  /**
+
+Represents the status of the popup menu.
+@type {boolean}
+*/
+  popupmenu: boolean = false;
+  /**
+
+Represents a single user.
+@type {RegisterModel}
+*/
   singleuser!: RegisterModel;
 
-
+  /**
+  
+  Loads the user data.
+  @method
+  */
   loadUser() {
     LoaderService.get();
     console.log(LoaderService.show());
@@ -52,6 +95,12 @@ export class UserlistComponent implements OnInit {
     );
   }
 
+  /**
+
+Updates the form with the selected user's data.
+@param {RegisterModel} user - The selected user.
+@method
+*/
   onUpdate(user: RegisterModel) {
     this.singleuser = user;
     this.popupmenu = true;
@@ -65,6 +114,12 @@ export class UserlistComponent implements OnInit {
     });
   }
 
+  /**
+
+Deletes a user.
+@param {RegisterModel} user - The user to be deleted.
+@method
+*/
   onDelete(user: RegisterModel) {
     LoaderService.show();
     this.service.deleteUser(user.id).subscribe(
@@ -78,6 +133,12 @@ export class UserlistComponent implements OnInit {
     );
   }
 
+
+  /**
+  
+  Updates a user's information.
+  @method
+  */
   updateUser() {
     LoaderService.show();
     this.popupmenu = false;
@@ -100,6 +161,11 @@ export class UserlistComponent implements OnInit {
     );
   }
 
+  /**
+
+Closes the popup menu.
+@method
+*/
   closepop() {
     this.popupmenu = false;
     this.loadUser();

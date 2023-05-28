@@ -35,6 +35,7 @@
 .search-box {
     border: none;
     outline: none;
+    color: white;
     border-bottom: 2px solid yellowgreen;
     transition: width 0.5s ease-in-out;
 }
@@ -45,8 +46,9 @@
 
 .search-list>* {
     cursor: pointer;
+    color: black;
     padding: 5px;
-    background-color: white;
+    background-color: rgb(156, 156, 156);
     border-bottom: 1px solid lightgrey;
 }
 
