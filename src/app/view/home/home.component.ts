@@ -109,7 +109,6 @@ Counts the number of products.
           this.ProductSoldCount.most.push({"name":key, "count":+this.service.countName[key]});
         }
       }
-      console.log(this.ProductSoldCount.most);
 
       this.ProductSoldCount.total =
         this.ProductSoldCount.today + this.ProductSoldCount.popular;

@@ -84,7 +84,6 @@ Initializes the component.
     this.authService.getUserRole().subscribe({
       next: (data: any) => (this.role = data),
     });
-    console.log(this.role);
     this.getAllProducts();
     this.service.getAllSoldProducts().subscribe({
       next: () => {},
@@ -162,7 +161,6 @@ Loads all products.
 
   getAllProducts() {
     LoaderService.show();
-    // this.service.getAllProducts().1
     this.service.getAllProducts().subscribe({
       next: (data: IAddItems[]) => {
         this.products = data;
