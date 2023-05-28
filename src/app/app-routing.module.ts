@@ -4,7 +4,7 @@
  */
 
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router'
+import { RouterModule, Routes } from '@angular/router';
 
 import { HomeComponent } from './view/home/home.component';
 import { LoginComponent } from './view/login/login.component';
@@ -21,76 +21,95 @@ import { RoleGuard } from './guard/role.guard';
  * @type {Routes}
  */
 const routes: Routes = [
-    /**
-     * Default route for the home component.
-     * Only accessible to authenticated users with the 'admin' or 'supervisor' roles.
-     */
-    { path: '', component: HomeComponent, canActivate: [AuthGuard, RoleGuard], data: { allowedRoles: ['admin', 'supervisor'] } },
+  /**
+   * Default route for the home component.
+   * Only accessible to authenticated users with the 'admin' or 'supervisor' roles.
+   */
+  {
+    path: '',
+    component: HomeComponent,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { allowedRoles: ['admin', 'supervisor'] },
+  },
 
-    /**
-     * Route for the login component.
-     * Unrestricted access.
-     */
-    { path: 'login', component: LoginComponent },
+  /**
+   * Route for the login component.
+   * Unrestricted access.
+   */
+  { path: 'login', component: LoginComponent },
 
-    /**
-     * Route for the register component.
-     * Unrestricted access.
-     */
-    { path: 'register', component: RegisterComponent },
+  /**
+   * Route for the register component.
+   * Unrestricted access.
+   */
+  { path: 'register', component: RegisterComponent },
 
-    /**
-     * Route for the user list component.
-     * Only accessible to authenticated users with the 'admin' role.
-     * Lazy-loaded module: UserModule.
-     */
-    {
-        path: 'user', component: UserlistComponent,
-        loadChildren: () => import('./modules/user/user.module').then(m => m.UserModule),
-        canActivate: [AuthGuard, RoleGuard], data: { allowedRoles: ['admin'] }
-    },
+  /**
+   * Route for the user list component.
+   * Only accessible to authenticated users with the 'admin' role.
+   * Lazy-loaded module: UserModule.
+   */
+  {
+    path: 'user',
+    component: UserlistComponent,
+    loadChildren: () =>
+      import('./modules/user/user.module').then((m) => m.UserModule),
+    canActivate: [AuthGuard, RoleGuard],
+    data: { allowedRoles: ['admin'] },
+  },
 
-    /**
-     * Route for the products component.
-     * Only accessible to authenticated users with the 'admin', 'supervisor', or 'salesperson' roles.
-     * Lazy-loaded module: ProductModule.
-     */
-    {
-        path: 'product', component: ProductsComponent,
-        loadChildren: () => import('./modules/product/product.module').then(m => m.ProductModule),
-        canActivate: [AuthGuard, RoleGuard], data: { allowedRoles: ['admin', 'supervisor', 'salesperson'] }
-    },
+  /**
+   * Route for the products component.
+   * Only accessible to authenticated users with the 'admin', 'supervisor', or 'salesperson' roles.
+   * Lazy-loaded module: ProductModule.
+   */
+  {
+    path: 'product',
+    component: ProductsComponent,
+    loadChildren: () =>
+      import('./modules/product/product.module').then((m) => m.ProductModule),
+    canActivate: [AuthGuard, RoleGuard],
+    data: { allowedRoles: ['admin', 'supervisor', 'salesperson'] },
+  },
 
-    /**
-     * Route for the add items component.
-     * Only accessible to authenticated users with the 'admin', 'supervisor', or 'salesperson' roles.
-     * Lazy-loaded module: AddItemsModule.
-     */
-    {
-        path: 'addItems', component: AddItemsComponent,
-        loadChildren: () => import('./modules/add-items/add-items.module').then((m) => m.AddItemsModule),
-        canActivate: [AuthGuard, RoleGuard], data: { allowedRoles: ['admin', 'supervisor', 'salesperson'] }
-    },
+  /**
+   * Route for the add items component.
+   * Only accessible to authenticated users with the 'admin', 'supervisor', or 'salesperson' roles.
+   * Lazy-loaded module: AddItemsModule.
+   */
+  {
+    path: 'addItems',
+    component: AddItemsComponent,
+    loadChildren: () =>
+      import('./modules/add-items/add-items.module').then(
+        (m) => m.AddItemsModule
+      ),
+    canActivate: [AuthGuard, RoleGuard],
+    data: { allowedRoles: ['admin', 'supervisor'] },
+  },
 
-    /**
-     * Route for the sell items component.
-     * Only accessible to authenticated users with the 'admin' or 'sales person' roles.
-     * Lazy-loaded module: SellItemsModule.
-     */
-    {
-        path: 'sellItems', component: SellItemsComponent,
-        loadChildren: () => import('./modules/sell-items/sell-items.module').then((m) => m.SellItemsModule),
-        canActivate: [AuthGuard, RoleGuard], data: { allowedRoles: ['admin', 'sales person'] }
-    }
+  /**
+   * Route for the sell items component.
+   * Only accessible to authenticated users with the 'admin' or 'sales person' roles.
+   * Lazy-loaded module: SellItemsModule.
+   */
+  {
+    path: 'sellItems',
+    component: SellItemsComponent,
+    loadChildren: () =>
+      import('./modules/sell-items/sell-items.module').then(
+        (m) => m.SellItemsModule
+      ),
+    canActivate: [AuthGuard, RoleGuard],
+    data: { allowedRoles: ['admin', 'sales person'] },
+  },
 ];
 
 /**
  * Angular module for managing the application routes.
  */
 @NgModule({
-    imports: [RouterModule.forRoot(routes)],
-    exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
 })
-
-
-export class AppRoutingModule { };
+export class AppRoutingModule {}

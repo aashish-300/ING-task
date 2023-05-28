@@ -5,9 +5,9 @@
         (ngSubmit)="proceedRegistration()">
         <div class="title">User Registration</div>
         <label class="form__input--label">
-            UserName
+            Username
         </label>
-        <input type="text" class="input-back" formControlName="id" required placeholder="UserName" />
+        <input type="text" class="input-back" formControlName="id" required placeholder="Username" />
         <label class="form__input--label">
             Name
         </label>
@@ -24,7 +24,7 @@
         <input id="password" name="password" type="password" class="input-back" formControlName="password"
             placeholder="Password" required />
         <!-- <input type="submit" class="btn"/> -->
-        <button class="bg-info button" type="submit">Submit
+        <button class="bg-dark button" type="submit">Submit
             <!-- <button routerLink="/login" class="form__submit btn" type="submit">Submit -->
         </button>
         <div>Already have an account <span routerLink="/login" class="text-primary">login</span></div>

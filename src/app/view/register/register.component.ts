@@ -49,7 +49,7 @@ Constructs a new RegisterComponent.
     this.registerForm = this._formBuilder.group({
       id: ['', Validators.required],
       name: ['', Validators.required],
-      email: ['', Validators.required],
+      email: ['', Validators.required, Validators.email],
       password: ['', Validators.required],
       isActive: [false],
       role: [''],

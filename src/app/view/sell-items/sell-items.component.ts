@@ -36,7 +36,7 @@ Constructs a new SellItemsComponent.
     private router: Router
   ) {
     this.sellItems = this._formBuilder.group({
-      id: ['asdf', Validators.required],
+      id: ['', Validators.required],
       invoice: ['', Validators.required],
       name: ['', Validators.required],
       numberGroup: this._formBuilder.group({
