@@ -5,6 +5,7 @@ import { ProductsService } from 'src/app/service/products.service';
 import { AuthService } from 'src/app/service/auth.service';
 import { IAddItems } from 'src/app/common/model/Productmodel';
 import { LoaderService } from 'src/app/service/loader.service';
+import { ExcelService } from 'src/app/service/excel.service';
 
 @Component({
   selector: 'app-products',
@@ -29,7 +30,8 @@ Constructs a new ProductsComponent.
   constructor(
     private _formBuilder: FormBuilder,
     private service: ProductsService,
-    private authService: AuthService
+    private authService: AuthService,
+    private excelService: ExcelService
   ) {}
 
   /**
@@ -81,6 +83,7 @@ Initializes the component.
 @method
 */
   ngOnInit(): void {
+    console.log('products', this.products);
     this.authService.getUserRole().subscribe({
       next: (data: any) => (this.role = data),
     });
@@ -107,26 +110,9 @@ Initializes the component.
     });
   }
 
-  /**
 
-Gets the background color for a product based on its count.
-@method
-@param {any} val - The value to check.
-@returns {string} - The background color.
-*/
-  getProductBackgroundColor(val: any): string {
-    for (let key in this.countName) {
-      if (val.name === key) {
-        if (this.countName[key] >= 10) {
-          return 'green';
-        } else if (this.countName[key] <= 10 && this.countName[key] >= 5) {
-          return '#F1EE48';
-        } else {
-          return 'red';
-        }
-      }
-    }
-    return 'none';
+  getProductBackgroundColor(val: any) {
+    return this.service.getProductBackgroundColor(val);
   }
 
   /**
@@ -147,7 +133,7 @@ Performs a search based on the selected item.
 Loads all products.
 @method
 */
-  loadProducts() {
+  loadProducts(): void {
     LoaderService.show();
     this.service.getAllProducts().subscribe({
       next: (data: any) => {
@@ -158,29 +144,82 @@ Loads all products.
       },
     });
   }
-
-  getAllProducts() {
+  /**
+   * Fetches all products, updates the products array, and manages the loader display.
+   * @returns {void}
+   */
+  getAllProducts(): void {
     LoaderService.show();
     this.service.getAllProducts().subscribe({
-      next: (data: IAddItems[]) => {
+      /**
+       * Callback function to handle the next value received from the observable.
+       * Updates the products array with the received data.
+       * @param {IAddItems[]} data - The array of products received from the observable.
+       * @returns {void}
+       */
+      next: (data: IAddItems[]): void => {
         this.products = data;
       },
-      complete: () => {
+      /**
+       * Callback function to handle the completion of the observable.
+       * Hides the loader after the operation is complete.
+       * @returns {void}
+       */
+      complete: (): void => {
         LoaderService.hide();
       },
     });
   }
 
-  onAdd() {
+  /**
+   * Sets the edit flag in the service to false.
+   * @returns {void}
+   */
+  onAdd(): void {
     this.service.edit = false;
   }
 
-  onEdit(data: IAddItems) {
+  /**
+   * Calls the service to edit an item with the provided data.
+   * @param {IAddItems} data - The item to be edited.
+   * @returns {void}
+   */
+  onEdit(data: IAddItems): void {
     this.service.editItem(data);
   }
 
+  /**
+   * Calls the service to delete an item with the provided data and reloads the products.
+   * @param {IAddItems} data - The item to be deleted.
+   * @returns {void}
+   */
   onDelete(data: IAddItems): void {
     this.service.deleteItem(data);
     this.loadProducts();
+  }
+
+  exportFile(): void {
+    console.log('inside export ', this.products);
+    const listITems = this.products.map((item) => {
+      return {
+        id: item.id,
+        name: item.name,
+        description: item.description,
+        quantity: item.numberGroup.quantity,
+        price: item.numberGroup.price,
+        total: item.total,
+      };
+    });
+    const columns = ['id', 'name', 'description', 'quantity', 'price', 'total'];
+
+    this.excelService.exportAsExcelFile(
+      'Product Reports',
+      '',
+      columns,
+      listITems,
+      '',
+      'product-report',
+      'sheet1'
+    );
   }
 }

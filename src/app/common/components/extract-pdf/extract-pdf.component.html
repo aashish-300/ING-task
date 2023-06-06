@@ -1,0 +1,84 @@
+<div>
+    <div class="title">Product Sold</div>
+    <div class="item-container">
+        <div class="today-container">
+            <div>Today</div>
+            <!-- <kendo-grid [data]="today">
+                <kendo-grid-column field="invoice" title="ID"></kendo-grid-column>
+                <kendo-grid-column field="customerName" title="customer Name"></kendo-grid-column>
+                <kendo-grid-column field="name" title="Product Name"></kendo-grid-column>
+                <kendo-grid-column field="date" title="Sold Date"></kendo-grid-column>
+                <kendo-grid-column field="address" title="Address"></kendo-grid-column>
+                <kendo-grid-column field="numberGroup.quantity" title="Quantity"></kendo-grid-column>
+                <kendo-grid-column field="numberGroup.price" title="Price"></kendo-grid-column>
+                <kendo-grid-column field="total" title="total"></kendo-grid-column>
+            </kendo-grid> -->
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Invoice ID</th>
+                        <th scope="col">Customer Name</th>
+                        <th scope="col">Product Name</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of today">
+                        <td>{{item.invoice}}</td>
+                        <td>{{item.customerName}}</td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.date}}</td>
+                        <td>{{item.address}}</td>
+                        <td>{{item.numberGroup?.quantity}}</td>
+                        <td>{{item.numberGroup?.price}}</td>
+                        <td>{{item.total}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- <div class="popular-container">
+            <div class="popular-title">Most Popular</div>
+            <kendo-grid [data]="popular">
+                <kendo-grid-column field="invoice" title="ID"></kendo-grid-column>
+                <kendo-grid-column field="customerName" title="customer Name"></kendo-grid-column>
+                <kendo-grid-column field="name" title="Product Name"></kendo-grid-column>
+                <kendo-grid-column field="date" title="Sold Date"></kendo-grid-column>
+                <kendo-grid-column field="address" title="Address"></kendo-grid-column>
+                <kendo-grid-column field="numberGroup.quantity" title="Quantity"></kendo-grid-column>
+                <kendo-grid-column field="numberGroup.price" title="Price"></kendo-grid-column>
+                <kendo-grid-column field="total" title="total"></kendo-grid-column>
+            </kendo-grid> -->
+            <div class="popular-title">Most Popular</div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Invoice ID</th>
+                        <th scope="col">Customer Name</th>
+                        <th scope="col">Product Name</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of popular">
+                        <td>{{item.invoice}}</td>
+                        <td>{{item.customerName}}</td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.date}}</td>
+                        <td>{{item.address}}</td>
+                        <td>{{item.numberGroup?.quantity}}</td>
+                        <td>{{item.numberGroup?.price}}</td>
+                        <td>{{item.total}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+<!-- </div> -->

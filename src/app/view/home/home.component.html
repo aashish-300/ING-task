@@ -1,7 +1,11 @@
 <div class="card card-container">
-    <h3>Items sold</h3>
+
+    <div class="card-flex">
+        <h3>Items sold</h3>
+        <div class="btn btn-success" type="button" (click)="saveAs()">Export
+            Pdf</div>
+    </div>
     <table datatable class="table" style="color:white">
-        <!-- <thead class="bg-dark text-white"> -->
         <thead>
             <tr>
                 <th scope="col">TOTAL</th>
@@ -10,14 +14,20 @@
             </tr>
         </thead>
         <tr>
-            <td class="data">{{ProductSoldCount.total}}</td>
-            <td class="data">{{ProductSoldCount.today}}</td>
-            <!-- <td class="data">{{ProductSoldCount.popular}}</td> -->
+            <td class="data">{{productSalesData.counts.total}}</td>
+            <td class="data">{{productSalesData.counts.today.length}}</td>
             <td class="data">
-                <div *ngFor="let item of ProductSoldCount.most">
-                    <span>{{item.name}}</span>-<span>{{item.count}}</span>
+                <div *ngFor="let item of productSalesData.counts.popular">
+                    <span>{{item.name}}</span>
+                    <!-- -<span>{{item.length}}</span> -->
                 </div>
             </td>
         </tr>
     </table>
+</div>
+<div style="display: none;" #pdfContainer>
+    <kendo-pdf-export #pdf paperSize="A4" margin="2cm">
+        <app-extract-pdf [today]="productSalesData.counts.today"
+            [popular]="productSalesData.counts.popular"></app-extract-pdf>
+    </kendo-pdf-export>
 </div>

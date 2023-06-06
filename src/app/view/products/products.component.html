@@ -1,6 +1,9 @@
 <div class="card-container">
     <div class="card">
-        <h3>List Items</h3>
+        <div class="card-title">
+            <h3>List Items</h3>
+            <button type="button" class="btn btn-success" (click)="exportFile()">Export Excel</button>
+        </div>
         <div class=" card-header card__function">
             <div class="card__items">
                 <a class="btn btn-success" routerLink="/addItems" *ngIf="role === 'admin' || role === 'supervisor'"

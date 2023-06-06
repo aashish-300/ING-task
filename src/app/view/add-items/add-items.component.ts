@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ProductsService } from 'src/app/service/products.service';
-import { IAddItems } from 'src/app/common/model/Productmodel';
+import {
+  IAddItems,
+  TotalCalulationModel,
+} from 'src/app/common/model/Productmodel';
 import { LoaderService } from 'src/app/service/loader.service';
 
 @Component({
@@ -17,6 +20,7 @@ Represents the AddItemsComponent.
 @class
 */
 export class AddItemsComponent implements OnInit {
+  getTotal!: TotalCalulationModel;
   /**
   
   Represents the add products form group.
@@ -56,8 +60,8 @@ Initializes the component.
       total: ['', Validators.required],
     });
     this.addProducts.get('numberGroup')?.valueChanges.subscribe((val) => {
-      if (!(val.price && val.quantity)) return;
-      this.calculation(val);
+      this.getTotal = new TotalCalulationModel(val);
+      this.addProducts.get('total')!.patchValue(this.getTotal.sum);
     });
     this.edit = this.service.edit;
     if (this.edit) {
@@ -99,17 +103,6 @@ Represents whether the form is in edit mode or not.
       total: this.service.temp.total,
     });
     this.service.temp = null;
-  }
-
-  /**
-
-Performs calculation of the total based on price and quantity.
-@method
-@param {object} val - The object containing price and quantity values.
-*/
-  calculation(val: { price: number; quantity: number }): void {
-    this.sum = +val.price * +val.quantity;
-    this.addProducts.get('total')!.patchValue(this.sum);
   }
 
   /**

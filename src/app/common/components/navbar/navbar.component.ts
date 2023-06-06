@@ -56,11 +56,11 @@ Initializes the component.
       /**
        * Callback function to handle the next value received from the observable.
        * It reloads the page by calling `window.location.reload()` after receiving the data.
-       * @param {any} data - The data received from the observable.
        * @returns {void}
        */
       next: (): void => {
-        window.location.reload();
+        
+        // window.location.reload();
       },
     });
   }

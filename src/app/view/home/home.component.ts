@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { count } from 'rxjs';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { DatePipe } from '@progress/kendo-angular-intl';
+import { PDFExportComponent } from '@progress/kendo-angular-pdf-export';
 import {
   ISellItems,
-  IProductSoldCount,
+  IProductSoldCounts,
+  Productmodel,
 } from 'src/app/common/model/Productmodel';
 import { LoaderService } from 'src/app/service/loader.service';
 import { ProductsService } from 'src/app/service/products.service';
@@ -18,6 +20,10 @@ Represents the HomeComponent.
 @class
 */
 export class HomeComponent implements OnInit {
+  @ViewChild('pdf') pdf?: PDFExportComponent;
+  @ViewChild('pdfContainer') container!: ElementRef<any>;
+  productSalesData!: Productmodel;
+
   /**
 
 Constructs a new HomeComponent.
@@ -25,7 +31,7 @@ Constructs a new HomeComponent.
 @param {ProductsService} service - The ProductsService instance.
 */
 
-  constructor(private service: ProductsService) {}
+  constructor(private service: ProductsService, private datePipe: DatePipe) {}
 
   /**
 
@@ -41,20 +47,7 @@ Represents the products.
 */
   products: any;
 
-  /**
-
-Represents the product sold count.
-@type {IProductSoldCount}
-*/
-  ProductSoldCount: IProductSoldCount = {
-    today: 0,
-    popular: 0,
-    total: 0,
-    most: [{
-      name:'',
-      count:0
-    }],
-  };
+  ProductSoldCounts!: IProductSoldCounts;
 
   /**
 
@@ -75,11 +68,9 @@ Retrieves all sold products.
     this.service.getAllSoldProducts().subscribe({
       next: (data: ISellItems[]) => {
         this.products = data;
-      },
-      complete: () => {
-        LoaderService.hide();
         this.service.productCount();
-        this.productCount();
+        this.productCount(data);
+        LoaderService.hide();
       },
     });
   }
@@ -89,29 +80,13 @@ Retrieves all sold products.
 Counts the number of products.
 @method
 */
-  productCount() {
-    const date = new Date();
-    let day = date.getDate();
-    let month = date.getMonth() + 1;
-    let year = date.getFullYear();
-    let fullDate = `${day}-${month}-${year}`;
+  productCount(data: ISellItems[]) {
+    this.productSalesData = new Productmodel(data, this.datePipe, this.service);
+  }
 
-    this.products.forEach((item: ISellItems) => {
-      this.ProductSoldCount.popular = 0;
-      this.ProductSoldCount.most.pop();
-      if (item.date === fullDate) {
-        ++this.ProductSoldCount.today;
-      }
-      for (let key in this.service.countName) {
-        console.log(key, this.service.countName[key]);
-        if (Number(this.service.countName[key]) >= 5) {
-          ++this.ProductSoldCount.popular;
-          this.ProductSoldCount.most.push({"name":key, "count":+this.service.countName[key]});
-        }
-      }
-
-      this.ProductSoldCount.total =
-        this.ProductSoldCount.today + this.ProductSoldCount.popular;
-    });
+  public saveAs(): void {
+    this.container.nativeElement.style.display = 'block';
+    this.pdf?.saveAs();
+    this.container.nativeElement.style.display = 'none';
   }
 }

@@ -13,6 +13,11 @@
     padding: 30px;
 }
 
+.card-title{
+    display: flex;
+    justify-content: space-between;
+}
+
 .card>* {
     color: white;
 }

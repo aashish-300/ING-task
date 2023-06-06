@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import {
   RegisterModel,
   loginModel,
+  LoginModel,
 } from 'src/app/common/model/Authenticationmodel';
 import { LoaderService } from 'src/app/service/loader.service';
 
@@ -20,6 +21,7 @@ Represents the LoginComponent.
 @class
 */
 export class LoginComponent {
+  loginData!: LoginModel;
   /**
 
 Represents the login form group.
@@ -28,6 +30,8 @@ Represents the login form group.
   loginForm!: FormGroup;
 
   /**
+   
+
 
 Constructs a new LoginComponent.
 @constructor
@@ -62,33 +66,17 @@ Proceeds with the login process.
 @method
 */
   proceedLogin() {
-    console.log(LoaderService.get());
     LoaderService.show();
     this.service.getUserById(this.loginForm.value.username).subscribe({
       next: (data: RegisterModel) => {
-        this.loginInfo = data;
-        if (this.loginInfo.password === this.loginForm.value.password) {
-          if (this.loginInfo.isActive) {
-            sessionStorage.setItem('username', this.loginInfo.id);
-            sessionStorage.setItem('role', this.loginInfo.role);
-            // this.router.navigate(['']);
-            console.log(this.loginInfo.role);
-            if (this.loginInfo.role === 'salesperson') {
-              this.router.navigate(['product']);
-            } else {
-              this.router.navigate(['']);
-            }
-          } else {
-            alert('Please contact admin to activate');
-          }
-        } else {
-          alert('invalid credentials');
-        }
+        this.loginData = new LoginModel(
+          this.loginForm.value.password,
+          data,
+          this.router
+        );
       },
       complete: () => {
-        console.log('complete', LoaderService.get());
         LoaderService.hide();
-        console.log(this.loginInfo.role);
       },
     });
   }

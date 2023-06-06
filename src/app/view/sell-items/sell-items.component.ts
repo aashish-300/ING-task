@@ -7,7 +7,11 @@ import {
   FormBuilder,
   Validators,
 } from '@angular/forms';
-import { ISellItems } from 'src/app/common/model/Productmodel';
+import {
+  ISellItems,
+  TotalCalulationModel,
+  InvoiceNumber,
+} from 'src/app/common/model/Productmodel';
 import { LoaderService } from 'src/app/service/loader.service';
 
 @Component({
@@ -22,6 +26,8 @@ Represents the SellItemsComponent.
 @class
 */
 export class SellItemsComponent implements OnInit {
+  getTotal!: TotalCalulationModel;
+  invoiceNumber!: InvoiceNumber;
   /**
 
 Constructs a new SellItemsComponent.
@@ -76,11 +82,12 @@ Initializes the component.
 @method
 */
   ngOnInit(): void {
+    this.invoiceNumber = new InvoiceNumber();
     this.service.getAllSoldProducts().subscribe({
       next: () => {},
     });
     this.sellItems.patchValue({
-      invoice: this.invoiceNum(),
+      invoice: this.invoiceNumber.invoice,
     });
     this.service.getAllProductName().subscribe({
       next: (x) => {
@@ -90,31 +97,11 @@ Initializes the component.
     });
 
     this.sellItems.get('numberGroup')?.valueChanges.subscribe((val) => {
-      if (!(val.price && val.quantity)) return;
-      this.calculation(val);
+      this.getTotal = new TotalCalulationModel(val);
+      this.sellItems.get('total')!.patchValue(this.getTotal.sum);
     });
 
     this.service.productCount();
-  }
-
-  /**
-
-Generates an invoice number.
-@returns {number} - The generated invoice number.
-*/
-  invoiceNum(): number {
-    return Math.floor(Math.random() * (99999 - 10000 + 10000));
-  }
-
-  /**
-
-Performs the calculation of the total based on price and quantity.
-@param {Object} val - The object containing price and quantity.
-@method
-*/
-  calculation(val: { price: number; quantity: number }): void {
-    this.sum = +val.price * +val.quantity;
-    this.sellItems.get('total')!.patchValue(this.sum);
   }
 
   /**
@@ -150,10 +137,6 @@ Returns the current date in the format 'day-month-year'.
 @returns {string} - The current date.
 @function
 */
-export function currentDate(): string {
-  const date = new Date();
-  let day = date.getDate();
-  let month = date.getMonth() + 1;
-  let year = date.getFullYear();
-  return `${day}-${month}-${year}`;
+export function currentDate(): Date {
+  return new Date();
 }

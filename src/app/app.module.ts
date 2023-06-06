@@ -19,6 +19,11 @@ import { ProductsComponent } from './view/products/products.component';
 import { AddItemsComponent } from './view/add-items/add-items.component';
 import { SellItemsComponent } from './view/sell-items/sell-items.component';
 import { LoaderComponent } from './common/components/loader/loader.component';
+import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ExtractPdfComponent } from './common/components/extract-pdf/extract-pdf.component';
+import { GridModule } from '@progress/kendo-angular-grid';
+import { DatePipe } from '@progress/kendo-angular-intl';
 
 /**
  * Main module that bootstraps the Angular application.
@@ -34,16 +39,20 @@ import { LoaderComponent } from './common/components/loader/loader.component';
     ProductsComponent,
     AddItemsComponent,
     SellItemsComponent,
-    LoaderComponent
+    LoaderComponent,
+    ExtractPdfComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    PDFExportModule,
+    BrowserAnimationsModule,
+    GridModule,
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [DatePipe],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

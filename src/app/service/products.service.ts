@@ -15,12 +15,6 @@ import { IAddItems, ISellItems } from '../common/model/Productmodel';
 })
 export class ProductsService implements OnInit {
   /**
-   * The API URL for product operations.
-   */
-  private apiUrl = 'http://localhost:5000/products';
-  // private apiUrl = 'https://misty-ox-sweater.cyclic.app/products';
-
-  /**
    * Constructs an instance of the ProductsService.
    *
    * @param http - The HttpClient for making HTTP requests.
@@ -43,6 +37,11 @@ export class ProductsService implements OnInit {
   edit: boolean = false;
 
   /**
+   * Array of items representing all products.
+   */
+  allItems: IAddItems[] = [];
+
+  /**
    * Array of items representing sold products.
    */
   soldItems: ISellItems[] = [];
@@ -50,8 +49,8 @@ export class ProductsService implements OnInit {
   /**
    * Array to store product count by name.
    */
-  countName: {}[] = [{}];
-
+  // countName: {}[] = [{}];
+  countName: any;
   /**
    * Lifecycle hook that is called after construction and initialization of the service.
    */
@@ -79,6 +78,7 @@ export class ProductsService implements OnInit {
       this.temp = localStorage.getItem('products');
       this.items = JSON.parse(this.temp);
     }
+    this.allItems = this.items;
     return ob<IAddItems[]>(this.items);
   }
 
@@ -185,6 +185,21 @@ export class ProductsService implements OnInit {
     });
     this.countName = this.countElements(productName);
     return this.countName;
+  }
+
+  getProductBackgroundColor(val: any): string {
+    for (let key in this.countName) {
+      if (val.name === key) {
+        if (this.countName[key] >= 10) {
+          return '#009900';
+        } else if (this.countName[key] <= 10 && this.countName[key] >= 5) {
+          return '#E8C919';
+        } else {
+          return '#990000';
+        }
+      }
+    }
+    return 'none';
   }
 
   /**
