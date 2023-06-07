@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { AuthService } from 'src/app/service/auth.service';
 import { ProductsService } from 'src/app/service/products.service';
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-navbar',
@@ -13,14 +14,10 @@ import { ProductsService } from 'src/app/service/products.service';
 Represents the NavbarComponent.
 @class
 */
-export class NavbarComponent implements OnInit {
-  /**
+export class NavbarComponent implements OnInit, OnDestroy {
 
-Constructs a new NavbarComponent.
-@constructor
-@param {AuthService} authservice - The AuthService instance.
-@param {ProductsService} productservice - The ProductsService instance.
-*/
+  private unsubscribe$ = new Subject<void>();
+
   constructor(
     public authservice: AuthService,
     public productservice: ProductsService
@@ -39,7 +36,11 @@ Initializes the component.
 @method
 */
   ngOnInit(): void {
-    this.authservice.getUserRole().subscribe({
+    this.authservice.getUserRole()
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe({
       next: (data: any) => {
         this.role = data;
       },
@@ -59,9 +60,14 @@ Initializes the component.
        * @returns {void}
        */
       next: (): void => {
-        
+
         // window.location.reload();
       },
     });
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

@@ -19,25 +19,25 @@ import { LoaderService } from 'src/app/service/loader.service';
 
 /**
 
-Represents the UserlistComponent.
-@class
-*/
+ Represents the UserlistComponent.
+ @class
+ */
 export class UserlistComponent implements OnInit {
   /**
 
-Represents the register form group.
-@type {FormGroup}
-*/
+   Represents the register form group.
+   @type {FormGroup}
+   */
   registerForm!: FormGroup;
 
   /**
 
-Constructs a new UserlistComponent.
-@constructor
-@param {FormBuilder} _formBuilder - The FormBuilder instance.
-@param {Router} router - The Router instance.
-@param {AuthService} service - The AuthService instance.
-*/
+   Constructs a new UserlistComponent.
+   @constructor
+   @param {FormBuilder} _formBuilder - The FormBuilder instance.
+   @param {Router} router - The Router instance.
+   @param {AuthService} service - The AuthService instance.
+   */
   constructor(
     private _formBuilder: FormBuilder,
     private router: Router,
@@ -55,57 +55,56 @@ Constructs a new UserlistComponent.
 
   /**
 
-Initializes the component.
-@method
-*/
+   Initializes the component.
+   @method
+   */
   ngOnInit(): void {
     this.loadUser();
   }
 
   /**
 
-Represents the list of users.
-@type {RegisterModel[]}
-*/
+   Represents the list of users.
+   @type {RegisterModel[]}
+   */
   userlist!: RegisterModel[];
   /**
 
-Represents the status of the popup menu.
-@type {boolean}
-*/
+   Represents the status of the popup menu.
+   @type {boolean}
+   */
   popupmenu: boolean = false;
   /**
 
-Represents a single user.
-@type {RegisterModel}
-*/
+   Represents a single user.
+   @type {RegisterModel}
+   */
   singleuser!: RegisterModel;
 
   /**
-  
-  Loads the user data.
-  @method
-  */
+
+   Loads the user data.
+   @method
+   */
   loadUser() {
-    LoaderService.get();
-    console.log(LoaderService.show());
-    this.service.getAllUser().subscribe({
-      next: (data: RegisterModel[]) => {
-        this.userlist = data;
-      },
-      complete: () => {
-        console.log('register', LoaderService.get());
-        LoaderService.hide();
-      },
-    });
+    LoaderService.show();
+    this.service.getAllUser()
+      .subscribe({
+        next: (data: RegisterModel[]) => {
+          this.userlist = data;
+        },
+        complete: () => {
+          LoaderService.hide();
+        },
+      });
   }
 
   /**
 
-Updates the form with the selected user's data.
-@param {RegisterModel} user - The selected user.
-@method
-*/
+   Updates the form with the selected user's data.
+   @param {RegisterModel} user - The selected user.
+   @method
+   */
   onUpdate(user: RegisterModel) {
     this.singleuser = user;
     this.popupmenu = true;
@@ -121,10 +120,10 @@ Updates the form with the selected user's data.
 
   /**
 
-Deletes a user.
-@param {RegisterModel} user - The user to be deleted.
-@method
-*/
+   Deletes a user.
+   @param {RegisterModel} user - The user to be deleted.
+   @method
+   */
   onDelete(user: RegisterModel) {
     LoaderService.show();
     this.service.deleteUser(user.id).subscribe({
@@ -137,10 +136,10 @@ Deletes a user.
   }
 
   /**
-  
-  Updates a user's information.
-  @method
-  */
+
+   Updates a user's information.
+   @method
+   */
   updateUser() {
     LoaderService.show();
     this.popupmenu = false;
@@ -165,9 +164,9 @@ Deletes a user.
 
   /**
 
-Closes the popup menu.
-@method
-*/
+   Closes the popup menu.
+   @method
+   */
   closepop() {
     this.popupmenu = false;
     this.loadUser();
