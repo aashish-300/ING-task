@@ -21,47 +21,34 @@ export class AppComponent implements DoCheck {
    * @type {string}
    */
   title = 'ING-task';
-  
+
   /**
    * Flag indicating whether the menu is required or not.
    * Determines the visibility of the menu component.
    * @type {boolean}
    */
   isMenuRequired = false;
-  
-  /**
-   * Static property to track the loading state of the application.
-   * @type {boolean}
-   */
-  static loading: boolean;
-  
+
+  public loader = LoaderService.get();
+
   /**
    * Constructs the AppComponent.
    * @param {Router} router - The Angular router service.
    */
   constructor(private router: Router) {}
-  
+
   /**
    * Lifecycle hook that is called when Angular performs change detection.
    * Implements the DoCheck interface.
    */
   ngDoCheck(): void {
-    AppComponent.loading = LoaderService.get();
     const currenturl = this.router.url;
-    
+
     if (currenturl === '/login' || currenturl === '/register') {
       this.isMenuRequired = false;
     } else {
       this.isMenuRequired = true;
     }
   }
-  
-  /**
-   * Getter for the isLoading property.
-   * Used to check the loading state of the application.
-   * @returns {boolean} - The loading state of the application.
-   */
-  get isLoading(): boolean {
-    return AppComponent.loading;
-  }
+
 }

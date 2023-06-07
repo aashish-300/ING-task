@@ -98,11 +98,10 @@ export class AuthService implements OnInit {
   /**
    * Registers a new user.
    *
-   * @param id - The ID of the user.
    * @param data - The data of the user to be registered.
    * @returns An Observable that emits an array of RegisterModel objects representing the updated userlist.
    */
-  userRegister(id: string, data: RegisterModel): Observable<RegisterModel[]> {
+  userRegister(data: RegisterModel): Observable<RegisterModel[]> {
     this.userlist.push(data);
     this.updateLocalStorage();
     return ob<RegisterModel[]>(this.userlist);
@@ -132,10 +131,9 @@ export class AuthService implements OnInit {
    * @returns An Observable that emits an array of RegisterModel objects representing the updated userlist.
    */
   deleteUser(id: string): Observable<RegisterModel[]> {
-    this.temp = this.userlist.filter((e: RegisterModel) => {
+    this.userlist = this.userlist.filter((e: RegisterModel) => {
       return e.id !== id;
     });
-    this.userlist = this.temp;
     this.updateLocalStorage();
     return ob<RegisterModel[]>(this.userlist);
   }
@@ -143,11 +141,10 @@ export class AuthService implements OnInit {
   isLoggedIn() {
     return sessionStorage.getItem('username') != null;
   }
+
   getUserRole(): Observable<string | undefined> {
-    this.role =
-      sessionStorage.getItem('role') !== null
-        ? sessionStorage.getItem('role')?.toString()
-        : '';
+    const role = sessionStorage.getItem('role');
+    this.role = (role !== null) ? role.toString() : '';
     return of(this.role);
   }
 }
