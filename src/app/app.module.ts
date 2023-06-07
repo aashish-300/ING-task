@@ -22,8 +22,9 @@ import { LoaderComponent } from './common/components/loader/loader.component';
 import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ExtractPdfComponent } from './common/components/extract-pdf/extract-pdf.component';
-import { GridModule } from '@progress/kendo-angular-grid';
 import { DatePipe } from '@progress/kendo-angular-intl';
+import { LabelModule } from '@progress/kendo-angular-label';
+
 
 /**
  * Main module that bootstraps the Angular application.
@@ -50,7 +51,7 @@ import { DatePipe } from '@progress/kendo-angular-intl';
     FormsModule,
     PDFExportModule,
     BrowserAnimationsModule,
-    GridModule,
+    LabelModule,
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent],
