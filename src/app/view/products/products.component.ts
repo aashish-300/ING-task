@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { ProductsService } from 'src/app/service/products.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { IAddItems, ISellItems } from 'src/app/common/model/Productmodel';
 import { AuthService } from 'src/app/service/auth.service';
-import { IAddItems } from 'src/app/common/model/Productmodel';
-import { LoaderService } from 'src/app/service/loader.service';
 import { ExcelService } from 'src/app/service/excel.service';
+import { LoaderService } from 'src/app/service/loader.service';
+import { ProductsService } from 'src/app/service/products.service';
 
 @Component({
   selector: 'app-products',
@@ -36,28 +35,22 @@ Constructs a new ProductsComponent.
 
   /**
 
-Represents the invoice number.
-@type {string}
-*/
-  invoiceno!: string;
-  /**
-
 Represents the list of products.
 @type {IAddItems[]}
 */
-  products: IAddItems[] = [];
+  public products: IAddItems[] = [];
   /**
 
 Represents the user's role.
 @type {string}
 */
-  role!: string;
+  public role!: string;
   /**
 
 Represents the search item form group.
 @type {FormGroup}
 */
-  searchItem!: FormGroup;
+  public searchItem!: FormGroup;
   /**
 
 Represents the list of product names.
@@ -69,13 +62,7 @@ Represents the list of product names.
 Represents the list of search product names.
 @type {string[]}
 */
-  searchProductName: string[] = [];
-  /**
-
-Represents the count name.
-@type {any}
-*/
-  countName!: any;
+  public searchProductName: string[] = [];
 
   /**
 
@@ -83,7 +70,6 @@ Initializes the component.
 @method
 */
   ngOnInit(): void {
-    console.log('products', this.products);
     this.authService.getUserRole().subscribe({
       next: (data: any) => (this.role = data),
     });
@@ -91,7 +77,7 @@ Initializes the component.
     this.service.getAllSoldProducts().subscribe({
       next: () => {},
       complete: () => {
-        this.countName = this.service.productCount();
+        // this.countName = this.service.productCount();
       },
     });
     this.service.getAllProductName().subscribe({
@@ -110,8 +96,7 @@ Initializes the component.
     });
   }
 
-
-  getProductBackgroundColor(val: any) {
+  public getProductBackgroundColor(val: any) {
     return this.service.getProductBackgroundColor(val);
   }
 
@@ -121,7 +106,7 @@ Performs a search based on the selected item.
 @method
 @param {string} item - The item to search for.
 */
-  searchClick(item: string): void {
+  public searchClick(item: string): void {
     this.searchItem.value.productNameInput = ' ';
     this.service.searchItem(item).subscribe({
       next: (val) => (this.products = val),
@@ -133,7 +118,7 @@ Performs a search based on the selected item.
 Loads all products.
 @method
 */
-  loadProducts(): void {
+  private loadProducts(): void {
     LoaderService.show();
     this.service.getAllProducts().subscribe({
       next: (data: any) => {
@@ -148,7 +133,7 @@ Loads all products.
    * Fetches all products, updates the products array, and manages the loader display.
    * @returns {void}
    */
-  getAllProducts(): void {
+  private getAllProducts(): void {
     LoaderService.show();
     this.service.getAllProducts().subscribe({
       /**
@@ -175,7 +160,7 @@ Loads all products.
    * Sets the edit flag in the service to false.
    * @returns {void}
    */
-  onAdd(): void {
+  public onAdd(): void {
     this.service.edit = false;
   }
 
@@ -184,7 +169,7 @@ Loads all products.
    * @param {IAddItems} data - The item to be edited.
    * @returns {void}
    */
-  onEdit(data: IAddItems): void {
+  public onEdit(data: IAddItems): void {
     this.service.editItem(data);
   }
 
@@ -193,13 +178,13 @@ Loads all products.
    * @param {IAddItems} data - The item to be deleted.
    * @returns {void}
    */
-  onDelete(data: IAddItems): void {
+  public onDelete(data: IAddItems): void {
     this.service.deleteItem(data);
     this.loadProducts();
   }
 
-  exportFile(): void {
-    console.log('inside export ', this.products);
+  public exportFile(): void {
+    let header: string[] = [];
     const listITems = this.products.map((item) => {
       return {
         id: item.id,
@@ -210,16 +195,12 @@ Loads all products.
         total: item.total,
       };
     });
-    const columns = ['id', 'name', 'description', 'quantity', 'price', 'total'];
 
     this.excelService.exportAsExcelFile(
       'Product Reports',
-      '',
-      columns,
       listITems,
-      '',
       'product-report',
-      'sheet1'
+      'Asis'
     );
   }
 }

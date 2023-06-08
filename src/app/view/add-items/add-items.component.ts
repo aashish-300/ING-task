@@ -20,25 +20,25 @@ Represents the AddItemsComponent.
 @class
 */
 export class AddItemsComponent implements OnInit {
-  getTotal!: TotalCalulationModel;
+  // getTotal!: TotalCalulationModel;
   /**
   
   Represents the add products form group.
   @type {FormGroup}
   */
 
-  addProducts!: FormGroup;
+  public addProducts!: FormGroup;
 
   /**
   
   Constructs a new AddItemsComponent.
   @constructor
-  @param {FormBuilder} _formBuilder - The FormBuilder instance.
+  @param {FormBuilder} formBuilder - The FormBuilder instance.
   @param {ProductsService} service - The ProductsService instance.
   @param {Router} router - The Router instance.
   */
   constructor(
-    private _formBuilder: FormBuilder,
+    private formBuilder: FormBuilder,
     private service: ProductsService,
     private router: Router
   ) {}
@@ -49,49 +49,44 @@ Initializes the component.
 @method
 */
   ngOnInit(): void {
-    this.addProducts = this._formBuilder.group({
+    this.addProducts = this.formBuilder.group({
       id: ['', Validators.required],
       name: ['', Validators.required],
       description: ['', Validators.required],
-      numberGroup: this._formBuilder.group({
+      numberGroup: this.formBuilder.group({
         quantity: ['', Validators.required],
         price: ['', Validators.required],
       }),
       total: ['', Validators.required],
     });
-    this.addProducts.get('numberGroup')?.valueChanges.subscribe((val) => {
-      this.getTotal = new TotalCalulationModel(val);
-      this.addProducts.get('total')!.patchValue(this.getTotal.sum);
-    });
     this.edit = this.service.edit;
     if (this.edit) {
       this.loadData();
     }
+    this.addProducts.get('numberGroup')?.valueChanges.subscribe((val) => {
+      this.addProducts
+        .get('total')!
+        .patchValue(new TotalCalulationModel(val).sum);
+    });
     this.service.getAllProducts().subscribe({
-      next: (data: IAddItems[]) => {},
+      next: () => {},
     });
   }
-
-  /**
-
-Represents the sum of prices and quantities.
-@type {number}
-*/
-  sum!: number;
 
   /**
 
 Represents whether the form is in edit mode or not.
 @type {boolean}
 */
-  edit: boolean = false;
+  public edit: boolean = false;
 
   /**
   
   Loads data for editing.
   @method
   */
-  loadData() {
+  private loadData(): void {
+    console.log('Loading data');
     this.addProducts.patchValue({
       id: this.service.temp.id,
       name: this.service.temp.name,
@@ -103,6 +98,7 @@ Represents whether the form is in edit mode or not.
       total: this.service.temp.total,
     });
     this.service.temp = null;
+    console.log('Loading data');
   }
 
   /**
@@ -110,7 +106,7 @@ Represents whether the form is in edit mode or not.
 Handles the add button click event.
 @method
 */
-  onAdd(): void {
+  public onAdd(): void {
     LoaderService.show();
     this.addProducts.patchValue({
       id: this.addProducts.value.name,
@@ -133,7 +129,7 @@ Handles the add button click event.
 Handles the edit button click event.
 @method
 */
-  onEdit() {
+  public onEdit(): void {
     this.addProducts.patchValue({
       id: this.addProducts.value.id,
       name: this.addProducts.value.name,

@@ -1,6 +1,5 @@
 import { Injectable, OnInit } from '@angular/core';
-import { Observable, delay, from, of } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, delay, of } from 'rxjs';
 import { IAddItems, ISellItems } from '../common/model/Productmodel';
 
 /**
@@ -14,12 +13,7 @@ import { IAddItems, ISellItems } from '../common/model/Productmodel';
   providedIn: 'root',
 })
 export class ProductsService implements OnInit {
-  /**
-   * Constructs an instance of the ProductsService.
-   *
-   * @param http - The HttpClient for making HTTP requests.
-   */
-  constructor(private http: HttpClient) {}
+  constructor() {}
 
   /**
    * Temporary variable to store data.
@@ -142,9 +136,12 @@ export class ProductsService implements OnInit {
    *
    * @param data - The updated item data.
    */
-  editItem(data: IAddItems) {
-    this.temp = data;
+  public editItem(data: IAddItems) {
+    // const temps = data;
     this.edit = true;
+    this.temp = data;
+    console.log(this.temp);
+    // return
   }
 
   /**
@@ -188,6 +185,7 @@ export class ProductsService implements OnInit {
   }
 
   getProductBackgroundColor(val: any): string {
+    this.productCount();
     for (let key in this.countName) {
       if (val.name === key) {
         if (this.countName[key] >= 10) {

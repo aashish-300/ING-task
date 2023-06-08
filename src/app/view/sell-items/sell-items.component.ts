@@ -1,18 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductsService } from 'src/app/service/products.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
-  FormGroup,
-  FormControl,
-  FormBuilder,
-  Validators,
-} from '@angular/forms';
-import {
-  ISellItems,
-  TotalCalulationModel,
   InvoiceNumber,
+  TotalCalulationModel,
 } from 'src/app/common/model/Productmodel';
 import { LoaderService } from 'src/app/service/loader.service';
+import { ProductsService } from 'src/app/service/products.service';
 
 @Component({
   selector: 'app-sell-items',
@@ -26,8 +20,6 @@ Represents the SellItemsComponent.
 @class
 */
 export class SellItemsComponent implements OnInit {
-  getTotal!: TotalCalulationModel;
-  invoiceNumber!: InvoiceNumber;
   /**
 
 Constructs a new SellItemsComponent.
@@ -40,7 +32,33 @@ Constructs a new SellItemsComponent.
     private _formBuilder: FormBuilder,
     private service: ProductsService,
     private router: Router
-  ) {
+  ) {}
+
+  /**
+
+Represents the sell items form group.
+@type {FormGroup}
+*/
+  public sellItems!: FormGroup;
+  /**
+
+Represents the sum of price and quantity.
+@type {number}
+*/
+  // sum!: number;
+  /**
+
+Represents the list of products.
+@type {string[]}
+*/
+  public products!: string[];
+
+  /**
+
+Initializes the component.
+@method
+*/
+  ngOnInit(): void {
     this.sellItems = this._formBuilder.group({
       id: ['', Validators.required],
       invoice: ['', Validators.required],
@@ -55,50 +73,22 @@ Constructs a new SellItemsComponent.
       remark: ['', Validators.required],
       date: ['', Validators.required],
     });
-  }
-
-  /**
-
-Represents the sell items form group.
-@type {FormGroup}
-*/
-  sellItems!: FormGroup;
-  /**
-
-Represents the sum of price and quantity.
-@type {number}
-*/
-  sum!: number;
-  /**
-
-Represents the list of products.
-@type {string[]}
-*/
-  products!: string[];
-
-  /**
-
-Initializes the component.
-@method
-*/
-  ngOnInit(): void {
-    this.invoiceNumber = new InvoiceNumber();
     this.service.getAllSoldProducts().subscribe({
       next: () => {},
     });
     this.sellItems.patchValue({
-      invoice: this.invoiceNumber.invoice,
+      invoice: new InvoiceNumber().invoice,
     });
     this.service.getAllProductName().subscribe({
       next: (x) => {
         this.products = x;
       },
-      complete: () => {},
     });
 
     this.sellItems.get('numberGroup')?.valueChanges.subscribe((val) => {
-      this.getTotal = new TotalCalulationModel(val);
-      this.sellItems.get('total')!.patchValue(this.getTotal.sum);
+      this.sellItems
+        .get('total')!
+        .patchValue(new TotalCalulationModel(val).sum);
     });
 
     this.service.productCount();
@@ -109,7 +99,7 @@ Initializes the component.
 Performs the selling of items.
 @method
 */
-  onSell() {
+  public onSell() {
     LoaderService.show();
     this.sellItems.patchValue({
       id: this.sellItems.value.invoice,

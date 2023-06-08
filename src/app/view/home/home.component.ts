@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { DatePipe } from '@progress/kendo-angular-intl';
+import { DatePipe } from '@angular/common';
 import { PDFExportComponent } from '@progress/kendo-angular-pdf-export';
 import {
   ISellItems,
@@ -33,21 +33,7 @@ Constructs a new HomeComponent.
 
   constructor(private service: ProductsService, private datePipe: DatePipe) {}
 
-  /**
-
-Represents the invoice number.
-@type {number|string}
-*/
-  invoiceno!: number | string;
-
-  /**
-
-Represents the products.
-@type {any}
-*/
-  products: any;
-
-  ProductSoldCounts!: IProductSoldCounts;
+  public ProductSoldCounts!: IProductSoldCounts;
 
   /**
 
@@ -63,11 +49,10 @@ Initializes the component.
 Retrieves all sold products.
 @method
 */
-  getAllSoldProducts() {
+  private getAllSoldProducts(): void {
     LoaderService.show();
     this.service.getAllSoldProducts().subscribe({
       next: (data: ISellItems[]) => {
-        this.products = data;
         this.service.productCount();
         this.productCount(data);
         LoaderService.hide();
@@ -80,7 +65,7 @@ Retrieves all sold products.
 Counts the number of products.
 @method
 */
-  productCount(data: ISellItems[]) {
+  private productCount(data: ISellItems[]): void {
     this.productSalesData = new Productmodel(data, this.datePipe, this.service);
   }
 

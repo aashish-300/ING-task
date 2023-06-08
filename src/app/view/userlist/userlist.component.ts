@@ -1,14 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/service/auth.service';
-import { Router } from '@angular/router';
-import {
-  FormBuilder,
-  Validators,
-  FormGroup,
-  FormControl,
-} from '@angular/forms';
-import { Observable } from 'rxjs';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { RegisterModel } from 'src/app/common/model/Authenticationmodel';
+import { AuthService } from 'src/app/service/auth.service';
 import { LoaderService } from 'src/app/service/loader.service';
 
 @Component({
@@ -28,22 +21,25 @@ export class UserlistComponent implements OnInit {
    Represents the register form group.
    @type {FormGroup}
    */
-  registerForm!: FormGroup;
+  public registerForm!: FormGroup;
 
   /**
 
    Constructs a new UserlistComponent.
    @constructor
    @param {FormBuilder} _formBuilder - The FormBuilder instance.
-   @param {Router} router - The Router instance.
    @param {AuthService} service - The AuthService instance.
    */
-  constructor(
-    private _formBuilder: FormBuilder,
-    private router: Router,
-    private service: AuthService
-  ) {
-    this.registerForm = this._formBuilder.group({
+  constructor(private formBuilder: FormBuilder, private service: AuthService) {}
+
+  /**
+
+   Initializes the component.
+   @method
+   */
+  ngOnInit(): void {
+    this.loadUser();
+    this.registerForm = this.formBuilder.group({
       id: new FormControl(''),
       name: new FormControl(''),
       email: new FormControl(''),
@@ -55,31 +51,22 @@ export class UserlistComponent implements OnInit {
 
   /**
 
-   Initializes the component.
-   @method
-   */
-  ngOnInit(): void {
-    this.loadUser();
-  }
-
-  /**
-
    Represents the list of users.
    @type {RegisterModel[]}
    */
-  userlist!: RegisterModel[];
+  public userlist!: RegisterModel[];
   /**
 
    Represents the status of the popup menu.
    @type {boolean}
    */
-  popupmenu: boolean = false;
+  public popupmenu: boolean = false;
   /**
 
    Represents a single user.
    @type {RegisterModel}
    */
-  singleuser!: RegisterModel;
+  // singleuser!: RegisterModel;
 
   /**
 
@@ -88,15 +75,14 @@ export class UserlistComponent implements OnInit {
    */
   loadUser() {
     LoaderService.show();
-    this.service.getAllUser()
-      .subscribe({
-        next: (data: RegisterModel[]) => {
-          this.userlist = data;
-        },
-        complete: () => {
-          LoaderService.hide();
-        },
-      });
+    this.service.getAllUser().subscribe({
+      next: (data: RegisterModel[]) => {
+        this.userlist = data;
+      },
+      complete: () => {
+        LoaderService.hide();
+      },
+    });
   }
 
   /**
@@ -106,15 +92,15 @@ export class UserlistComponent implements OnInit {
    @method
    */
   onUpdate(user: RegisterModel) {
-    this.singleuser = user;
+    const updateUser = user;
     this.popupmenu = true;
     this.registerForm.patchValue({
-      id: this.singleuser.id,
-      name: this.singleuser.name,
-      email: this.singleuser.email,
-      password: this.singleuser.password,
-      isActive: this.singleuser.isActive,
-      role: this.singleuser.role,
+      id: updateUser.id,
+      name: updateUser.name,
+      email: updateUser.email,
+      password: updateUser.password,
+      isActive: updateUser.isActive,
+      role: updateUser.role,
     });
   }
 

@@ -1,10 +1,6 @@
 import { Injectable, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, delay, from, of } from 'rxjs';
-import {
-  RegisterModel,
-  loginModel,
-} from 'src/app/common/model/Authenticationmodel';
+import { Observable, delay, of } from 'rxjs';
+import { RegisterModel } from 'src/app/common/model/Authenticationmodel';
 
 /**
  * Service responsible for handling authentication-related operations.
@@ -16,12 +12,7 @@ import {
   providedIn: 'root',
 })
 export class AuthService implements OnInit {
-  /**
-   * Constructs an instance of the AuthService.
-   *
-   * @param http - The HttpClient for making HTTP requests.
-   */
-  constructor(private http: HttpClient) {}
+  constructor() {}
 
   /**
    * Lifecycle hook that is called after the service is instantiated.
@@ -88,6 +79,7 @@ export class AuthService implements OnInit {
   getUserById(id: string): Observable<RegisterModel> {
     this.userlist.filter((x: RegisterModel) => {
       if (x.id === id) {
+        sessionStorage.setItem('user', JSON.stringify(x));
         this.user = x;
         return;
       }
@@ -144,7 +136,7 @@ export class AuthService implements OnInit {
 
   getUserRole(): Observable<string | undefined> {
     const role = sessionStorage.getItem('role');
-    this.role = (role !== null) ? role.toString() : '';
+    this.role = role !== null ? role.toString() : '';
     return of(this.role);
   }
 }

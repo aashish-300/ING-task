@@ -13,21 +13,15 @@ import { LoaderService } from './service/loader.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements DoCheck {
-  /**
-   * Title of the application.
-   * @type {string}
-   */
-  title = 'ING-task';
-
   /**
    * Flag indicating whether the menu is required or not.
    * Determines the visibility of the menu component.
    * @type {boolean}
    */
-  isMenuRequired = false;
+  public isMenuRequired: boolean = false;
 
   public loader = LoaderService.get();
 
@@ -50,5 +44,4 @@ export class AppComponent implements DoCheck {
       this.isMenuRequired = true;
     }
   }
-
 }

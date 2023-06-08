@@ -13,13 +13,12 @@ export interface loginModel {
 }
 
 export class LoginModel {
-  data!: RegisterModel;
+  private data!: RegisterModel;
   constructor(
     loginForm: string,
     serverData: RegisterModel,
     router: { navigate: (arg0: string[]) => void }
   ) {
-    console.log(loginForm, serverData);
     if (loginForm === serverData?.password) {
       if (serverData.isActive) {
         sessionStorage.setItem('username', serverData.id);

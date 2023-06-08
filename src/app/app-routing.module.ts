@@ -27,6 +27,7 @@ const routes: Routes = [
    */
   {
     path: '',
+    // redirectTo: '',
     component: HomeComponent,
     canActivate: [AuthGuard, RoleGuard],
     data: { allowedRoles: ['admin', 'supervisor'] },

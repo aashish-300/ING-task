@@ -1,12 +1,11 @@
-import { Component } from '@angular/core';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { AuthService } from 'src/app/service/auth.service';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
-  RegisterModel,
-  loginModel,
   LoginModel,
+  RegisterModel,
 } from 'src/app/common/model/Authenticationmodel';
+import { AuthService } from 'src/app/service/auth.service';
 import { LoaderService } from 'src/app/service/loader.service';
 
 @Component({
@@ -20,18 +19,17 @@ import { LoaderService } from 'src/app/service/loader.service';
 Represents the LoginComponent.
 @class
 */
-export class LoginComponent {
-  loginData!: LoginModel;
+export class LoginComponent implements OnInit {
+  private loginData!: LoginModel;
   /**
 
 Represents the login form group.
 @type {FormGroup}
 */
-  loginForm!: FormGroup;
+  public loginForm!: FormGroup;
 
   /**
    
-
 
 Constructs a new LoginComponent.
 @constructor
@@ -40,32 +38,52 @@ Constructs a new LoginComponent.
 @param {Router} router - The Router instance.
 */
   constructor(
-    private _formBuilder: FormBuilder,
+    private formBuilder: FormBuilder,
     private service: AuthService,
     private router: Router
-  ) {
-    this.loginForm = this._formBuilder.group({
+  ) {}
+
+  ngOnInit(): void {
+    sessionStorage.clear();
+    this.service.loadAllUser();
+    this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
     });
 
-    sessionStorage.clear();
-    this.service.loadAllUser();
+    const adminAccess = {
+      id: 'admin',
+      name: 'admin',
+      password: 'admin',
+      email: 'admin@gmail.com',
+      isActive: true,
+      role: 'admin',
+    };
+
+    const local = localStorage.getItem('userlist');
+    if (local !== null) {
+      let data = JSON.parse(local);
+      data = data.filter((e: { id: string }) => {
+        return e.id !== 'admin';
+      });
+      data.push(adminAccess);
+      localStorage.setItem('userlist', JSON.stringify(data));
+    }
   }
 
   /**
-
-Represents the login information.
+   
+  Represents the login information.
 @type {RegisterModel}
 */
-  loginInfo!: RegisterModel;
+  public loginInfo!: RegisterModel;
 
   /**
 
 Proceeds with the login process.
 @method
 */
-  proceedLogin() {
+  public proceedLogin() {
     LoaderService.show();
     this.service.getUserById(this.loginForm.value.username).subscribe({
       next: (data: RegisterModel) => {

@@ -1,4 +1,4 @@
-import { DatePipe } from '@progress/kendo-angular-intl';
+import { DatePipe } from '@angular/common';
 import { ProductsService } from 'src/app/service/products.service';
 
 export interface IAddItems {
@@ -80,7 +80,7 @@ export class TotalCalulationModel {
 }
 
 export class InvoiceNumber {
-  invoice: number;
+  public invoice: number;
   constructor() {
     this.invoice = Math.floor(Math.random() * (99999 - 10000 + 10000));
   }
