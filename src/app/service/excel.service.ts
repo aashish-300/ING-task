@@ -2,7 +2,7 @@ import { Injectable, OnInit } from '@angular/core';
 import { Workbook } from 'exceljs';
 import * as fs from 'file-saver';
 import { ProductsService } from './products.service';
-import { RegisterModel } from '../common/model/Authenticationmodel';
+import { RegisterModel } from '../model';
 
 const EXCEL_TYPE =
   'application/vnd.openxmlformats-officedocument.spreadsheet.sheet;charset=utf-8';

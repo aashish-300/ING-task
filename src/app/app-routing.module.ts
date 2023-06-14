@@ -3,107 +3,46 @@
  * @module AppRoutingModule
  */
 
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-
-import { HomeComponent } from './view/home/home.component';
-import { LoginComponent } from './view/login/login.component';
-import { RegisterComponent } from './view/register/register.component';
-import { UserlistComponent } from './view/userlist/userlist.component';
-import { ProductsComponent } from './view/products/products.component';
-import { AuthGuard } from './guard/auth.guard';
-import { AddItemsComponent } from './view/add-items/add-items.component';
-import { SellItemsComponent } from './view/sell-items/sell-items.component';
-import { RoleGuard } from './guard/role.guard';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {LoginComponent} from "./components/login/login.component";
+import {RegisterComponent} from "./components/register/register.component";
+import {HomeComponent} from "./components/home/home.component";
+import {AuthGuard} from "./guard/auth.guard";
+import {RoleGuard} from "./guard/role.guard";
 
 /**
  * Defines the routes for the application.
  * @type {Routes}
  */
 const routes: Routes = [
-  /**
-   * Default route for the home component.
-   * Only accessible to authenticated users with the 'admin' or 'supervisor' roles.
-   */
   {
-    path: '',
-    // redirectTo: '',
+    path: 'login',
+    component: LoginComponent
+  },
+  {
+    path: 'register',
+    component: RegisterComponent
+  },
+  {
+    path: 'dashboard',
     component: HomeComponent,
-    canActivate: [AuthGuard, RoleGuard],
-    data: { allowedRoles: ['admin', 'supervisor'] },
+    canActivate:[AuthGuard,RoleGuard],
+    data: {allowedRoles: ['admin', 'supervisor']}
   },
-
-  /**
-   * Route for the login component.
-   * Unrestricted access.
-   */
-  { path: 'login', component: LoginComponent },
-
-  /**
-   * Route for the register component.
-   * Unrestricted access.
-   */
-  { path: 'register', component: RegisterComponent },
-
-  /**
-   * Route for the user list component.
-   * Only accessible to authenticated users with the 'admin' role.
-   * Lazy-loaded module: UserModule.
-   */
-  {
-    path: 'user',
-    component: UserlistComponent,
-    loadChildren: () =>
-      import('./modules/user/user.module').then((m) => m.UserModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: { allowedRoles: ['admin'] },
-  },
-
-  /**
-   * Route for the products component.
-   * Only accessible to authenticated users with the 'admin', 'supervisor', or 'salesperson' roles.
-   * Lazy-loaded module: ProductModule.
-   */
   {
     path: 'product',
-    component: ProductsComponent,
-    loadChildren: () =>
-      import('./modules/product/product.module').then((m) => m.ProductModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: { allowedRoles: ['admin', 'supervisor', 'salesperson'] },
+    loadChildren: () => import('./modules/productlist/productlist.module').then(m => m.ProductlistModule)
   },
-
-  /**
-   * Route for the add items component.
-   * Only accessible to authenticated users with the 'admin', 'supervisor', or 'salesperson' roles.
-   * Lazy-loaded module: AddItemsModule.
-   */
   {
-    path: 'addItems',
-    component: AddItemsComponent,
-    loadChildren: () =>
-      import('./modules/add-items/add-items.module').then(
-        (m) => m.AddItemsModule
-      ),
-    canActivate: [AuthGuard, RoleGuard],
-    data: { allowedRoles: ['admin', 'supervisor'] },
+    path: 'admin',
+    loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminModule)
   },
-
-  /**
-   * Route for the sell items component.
-   * Only accessible to authenticated users with the 'admin' or 'sales person' roles.
-   * Lazy-loaded module: SellItemsModule.
-   */
-  {
-    path: 'sellItems',
-    component: SellItemsComponent,
-    loadChildren: () =>
-      import('./modules/sell-items/sell-items.module').then(
-        (m) => m.SellItemsModule
-      ),
-    canActivate: [AuthGuard, RoleGuard],
-    data: { allowedRoles: ['admin', 'sales person'] },
-  },
+  // {
+  //   path: '**',
+  //   redirectTo: 'login',
+  //   pathMatch: 'full'
+  // }
 ];
 
 /**
@@ -113,4 +52,5 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule {
+}

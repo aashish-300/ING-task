@@ -1,6 +1,6 @@
 import { Injectable, OnInit } from '@angular/core';
 import { Observable, delay, of } from 'rxjs';
-import { RegisterModel } from 'src/app/common/model/Authenticationmodel';
+import { RegisterModel } from '../model';
 
 /**
  * Service responsible for handling authentication-related operations.
@@ -25,11 +25,11 @@ export class AuthService implements OnInit {
   /**
    * Array containing all registered users.
    */
-  userlist: RegisterModel[] = [];
+  private userlist: RegisterModel[] = [];
   /**
    * Represents a single user.
    */
-  user!: RegisterModel;
+  private user!: RegisterModel;
   /**
    * Temporary variable for storing data.
    */

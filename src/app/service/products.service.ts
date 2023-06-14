@@ -1,6 +1,6 @@
-import { Injectable, OnInit } from '@angular/core';
-import { Observable, delay, of } from 'rxjs';
-import { IAddItems, ISellItems } from '../common/model/Productmodel';
+import {Injectable, OnInit} from '@angular/core';
+import {delay, Observable, of} from 'rxjs';
+import {IAddItems, ISellItems} from '../model';
 
 /**
  * Service responsible for managing products and sold items.
@@ -58,8 +58,22 @@ export class ProductsService implements OnInit {
   /**
    * Updates the local storage with the current item list.
    */
-  updateStorage(): void {
-    localStorage.setItem('products', JSON.stringify(this.items));
+  updateStorage(items: IAddItems[]): void {
+    localStorage.setItem('products', JSON.stringify(items));
+  }
+
+  getProductById(id: string) {
+    let item;
+    if (localStorage.getItem('products')) {
+      item = localStorage.getItem('products');
+      if (item) item = JSON.parse(item!);
+    }
+    if (!item) return;
+    item = item.filter((e: IAddItems) => {
+      if (e.id === id) return e;
+      return;
+    });
+    return item[0];
   }
 
   /**
@@ -68,12 +82,8 @@ export class ProductsService implements OnInit {
    * @returns An observable of an array of added items.
    */
   getAllProducts(): Observable<IAddItems[]> {
-    if (localStorage.getItem('products')) {
-      this.temp = localStorage.getItem('products');
-      this.items = JSON.parse(this.temp);
-    }
-    this.allItems = this.items;
-    return ob<IAddItems[]>(this.items);
+    let items = localData('products');
+    return ob<IAddItems[]>(items);
   }
 
   /**
@@ -82,14 +92,10 @@ export class ProductsService implements OnInit {
    * @returns An observable of an array of product names.
    */
   getAllProductName(): Observable<string[]> {
-    if (localStorage.getItem('products')) {
-      this.temp = localStorage.getItem('products');
-      this.temp = JSON.parse(this.temp);
-      this.temp = Array.from(this.temp).map((val: any) => {
-        return val.name;
-      });
-    }
-    return ob<string[]>(this.temp);
+    let productName = localData('products');
+    if(!productName) return ob<string[]>([]);
+    productName = productName.map((val:IAddItems) => val.name)
+    return ob<string[]>(productName);
   }
 
   /**
@@ -99,10 +105,13 @@ export class ProductsService implements OnInit {
    * @returns An observable of an array of matching items.
    */
   searchItem(val: string): Observable<IAddItems[]> {
-    this.temp = this.items.filter((e) => {
-      return e.name === val;
+    let item = localData('products');
+    if(!item) return ob<IAddItems[]>([]);
+    item = item.filter((e: IAddItems): string => {
+      if (e.name === val) return e.name;
+      return '';
     });
-    return ob<IAddItems[]>(this.temp);
+    return ob<IAddItems[]>(item);
   }
 
   /**
@@ -112,9 +121,11 @@ export class ProductsService implements OnInit {
    * @returns An observable of the updated array of items.
    */
   addItems(data: IAddItems): Observable<IAddItems[]> {
-    this.items.push(data);
-    localStorage.setItem('products', JSON.stringify(this.items));
-    return ob<IAddItems[]>(this.items);
+    let item = localData('products');
+    if(!item) return ob<IAddItems[]>([])
+    item.push(data);
+    localStorage.setItem('products', JSON.stringify(item));
+    return ob<IAddItems[]>(item);
   }
 
   /**
@@ -123,12 +134,13 @@ export class ProductsService implements OnInit {
    * @param item - The item to delete.
    */
 
-  deleteItem(item: IAddItems) {
-    this.temp = Array.from(this.items).filter((e: any) => {
+  deleteItem(item: IAddItems): void {
+    let items = localData('products');
+    if(!items) return ;
+    items = items.filter((e: any) => {
       return e.id !== item.id;
     });
-    this.items = this.temp;
-    this.updateStorage();
+    this.updateStorage(items);
   }
 
   /**
@@ -137,11 +149,7 @@ export class ProductsService implements OnInit {
    * @param data - The updated item data.
    */
   public editItem(data: IAddItems) {
-    // const temps = data;
     this.edit = true;
-    this.temp = data;
-    console.log(this.temp);
-    // return
   }
 
   /**
@@ -150,12 +158,18 @@ export class ProductsService implements OnInit {
    * @param data - The updated item data.
    */
   updateItem(data: IAddItems) {
-    this.items.forEach((val: IAddItems, i) => {
+    let items;
+    if (localStorage.getItem('products')) {
+      items = localStorage.getItem('products');
+      if (!items) return;
+      items = JSON.parse(items!);
+    }
+    items.forEach((val: IAddItems, i: number) => {
       if (val.id === data.id) {
-        this.items[i] = data;
-        this.updateStorage();
+        items[i] = data;
       }
     });
+    this.updateStorage(items);
   }
 
   /**
@@ -165,10 +179,16 @@ export class ProductsService implements OnInit {
    * @returns An observable of the updated array of sold items.
    */
   sellItem(data: ISellItems): Observable<ISellItems[]> {
-    this.soldItems.push(data);
+    let items;
+    if (localStorage.getItem('soldItems')) {
+      items = localStorage.getItem('soldItems');
+      if (!items) return ob<ISellItems[]>([]);
+      items = JSON.parse(items!);
+    }
+    items.push(data);
     this.decQuantity(data);
-    localStorage.setItem('soldItems', JSON.stringify(this.soldItems));
-    return ob<ISellItems[]>(this.soldItems);
+    localStorage.setItem('soldItems', JSON.stringify(items));
+    return ob<ISellItems[]>(items);
   }
 
   /**
@@ -177,10 +197,12 @@ export class ProductsService implements OnInit {
    * @returns An object representing the count of sold products by name.
    */
   productCount(): {} {
-    const productName = this.soldItems.map((item) => {
+    let items = localData('soldItems');
+    const productName:string[] = items.map((item:ISellItems) => {
       return item.name;
     });
     this.countName = this.countElements(productName);
+    console.log('count name',this.countName)
     return this.countName;
   }
 
@@ -206,7 +228,7 @@ export class ProductsService implements OnInit {
    * @param arr - The array to count elements from.
    * @returns An object representing the count of elements.
    */
-  countElements(arr: any) {
+  countElements(arr: string[]) {
     let counts: any = {};
 
     for (let i = 0; i < arr.length; i++) {
@@ -227,11 +249,12 @@ export class ProductsService implements OnInit {
    * @returns An observable of an array of sold items.
    */
   getAllSoldProducts(): Observable<ISellItems[]> {
+    let items;
     if (localStorage.getItem('soldItems')) {
-      this.temp = localStorage.getItem('soldItems');
-      this.soldItems = JSON.parse(this.temp);
+      items = localStorage.getItem('soldItems');
+      items = JSON.parse(items!);
     }
-    return ob<ISellItems[]>(this.soldItems);
+    return ob<ISellItems[]>(items);
   }
 
   /**
@@ -240,22 +263,38 @@ export class ProductsService implements OnInit {
    * @param val - The sold item data.
    */
   decQuantity(val: ISellItems) {
-    this.items.forEach((x: any, i) => {
+    let items;
+    if (localStorage.getItem('products')) {
+      items = localStorage.getItem('products');
+      if (!items) return;
+      items = JSON.parse(items!);
+    }
+    items.forEach((x: IAddItems, i: number) => {
       if (
         val.name === x.id &&
         x.numberGroup.quantity >= val.numberGroup.quantity
       ) {
         x.numberGroup.quantity -= val.numberGroup.quantity;
-        this.items[i] = x;
+        items[i] = x;
         return true;
       } else {
         return false;
       }
     });
-    this.updateStorage();
+    this.updateStorage(items);
   }
 }
 
+
+export function localData(key:string){
+  let items;
+  if (localStorage.getItem(key)){
+    items = localStorage.getItem(key);
+    if (!items) return;
+    items = JSON.parse(items!);
+  }
+  return items;
+}
 /**
  * An observable creation function with a delay.
  *
