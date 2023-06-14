@@ -100,7 +100,7 @@ Initializes the component.
     });
   }
 
-  public getProductBackgroundColor(val: any) {
+  public getProductBackgroundColor(val: IAddItems) {
     return this.service.getProductBackgroundColor(val);
   }
 
@@ -112,6 +112,7 @@ Performs a search based on the selected item.
 */
   public searchClick(item: string): void {
     this.searchItem.value.productNameInput = ' ';
+    console.log('inside search')
     this.service.searchItem(item).subscribe({
       next: (val) => (this.products = val),
     });
@@ -122,22 +123,14 @@ Performs a search based on the selected item.
 Loads all products.
 @method
 */
-  private loadProducts(): void {
-    LoaderService.show();
-    this.service.getAllProducts().subscribe({
-      next: (data: any) => {
-        this.products = data;
-      },
-      complete: () => {
-        LoaderService.hide();
-      },
-    });
+  public loadProducts(): void {
+    this.getAllProducts();
   }
   /**
    * Fetches all products, updates the products array, and manages the loader display.
    * @returns {void}
    */
-  private getAllProducts(): void {
+  public getAllProducts(): void {
     LoaderService.show();
     this.service.getAllProducts().subscribe({
       /**
@@ -147,7 +140,9 @@ Loads all products.
        * @returns {void}
        */
       next: (data: IAddItems[]): void => {
+        console.log('all data',data)
         this.products = data;
+        console.log('products',this.products)
       },
       /**
        * Callback function to handle the completion of the observable.

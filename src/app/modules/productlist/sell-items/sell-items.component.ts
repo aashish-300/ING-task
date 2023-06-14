@@ -85,7 +85,7 @@ Initializes the component.
         .patchValue(new TotalCalulationModel(val).sum);
     });
 
-    this.service.productCount();
+    // this.service.productCount();
   }
 
   /**

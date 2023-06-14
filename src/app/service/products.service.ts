@@ -49,10 +49,10 @@ export class ProductsService implements OnInit {
    * Lifecycle hook that is called after construction and initialization of the service.
    */
   ngOnInit(): void {
-    this.getAllSoldProducts().subscribe({
-      next: (item: ISellItems[]) => {},
-      complete: () => this.productCount(),
-    });
+    // this.getAllSoldProducts().subscribe({
+    //   next: (item: ISellItems[]) => {},
+    //   // complete: () => this.productCount(),
+    // });
   }
 
   /**
@@ -81,7 +81,7 @@ export class ProductsService implements OnInit {
    *
    * @returns An observable of an array of added items.
    */
-  getAllProducts(): Observable<IAddItems[]> {
+  public getAllProducts(): Observable<IAddItems[]> {
     let items = localData('products');
     return ob<IAddItems[]>(items);
   }
@@ -196,28 +196,29 @@ export class ProductsService implements OnInit {
    *
    * @returns An object representing the count of sold products by name.
    */
-  productCount(): {} {
+  public productCount(): {} {
     let items = localData('soldItems');
     const productName:string[] = items.map((item:ISellItems) => {
       return item.name;
     });
-    this.countName = this.countElements(productName);
-    console.log('count name',this.countName)
-    return this.countName;
+    const countName = this.countElements(productName);
+    console.log('count name',countName)
+    return countName;
   }
 
-  getProductBackgroundColor(val: any): string {
-    this.productCount();
-    for (let key in this.countName) {
+  public getProductBackgroundColor(val: IAddItems | ISellItems): string {
+    const countName:any = this.productCount();
+    for (let key in countName) {
+      console.log(val.name ,key)
       if (val.name === key) {
-        if (this.countName[key] >= 10) {
+        if (countName[key] >= 10) {
           return '#009900';
         } else if (this.countName[key] <= 10 && this.countName[key] >= 5) {
           return '#E8C919';
         } else {
           return '#990000';
         }
-      }
+      }else return 'none'
     }
     return 'none';
   }
