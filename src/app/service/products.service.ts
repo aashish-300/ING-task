@@ -202,15 +202,15 @@ export class ProductsService implements OnInit {
       return item.name;
     });
     const countName = this.countElements(productName);
-    console.log('count name',countName)
     return countName;
   }
 
   public getProductBackgroundColor(val: IAddItems | ISellItems): string {
-    const countName:any = this.productCount();
+    const countName:any = this.productCount(); //for sold item
+    console.log(countName)
     for (let key in countName) {
-      console.log(val.name ,key)
       if (val.name === key) {
+        console.log(val.name,key)
         if (countName[key] >= 10) {
           return '#009900';
         } else if (this.countName[key] <= 10 && this.countName[key] >= 5) {
@@ -218,7 +218,9 @@ export class ProductsService implements OnInit {
         } else {
           return '#990000';
         }
-      }else return 'none'
+      }else{
+        alert(`${val.name},${key}`)
+      }
     }
     return 'none';
   }
