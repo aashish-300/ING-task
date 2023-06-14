@@ -31,6 +31,11 @@ const routes: Routes = [
     data: {allowedRoles: ['admin', 'supervisor']}
   },
   {
+    path: 'user',
+    redirectTo: 'admin/user',
+    pathMatch: 'full'
+  },
+  {
     path: 'product',
     loadChildren: () => import('./modules/productlist/productlist.module').then(m => m.ProductlistModule)
   },
@@ -38,11 +43,6 @@ const routes: Routes = [
     path: 'admin',
     loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminModule)
   },
-  // {
-  //   path: '**',
-  //   redirectTo: 'login',
-  //   pathMatch: 'full'
-  // }
 ];
 
 /**

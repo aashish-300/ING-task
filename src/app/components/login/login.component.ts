@@ -1,12 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import {
-  LoginModel,
-  RegisterModel,
-} from 'src/app/model/Authenticationmodel';
-import { AuthService } from 'src/app/service/auth.service';
-import { LoaderService } from 'src/app/service/loader.service';
+import {Component, OnInit,OnDestroy} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
+import {LoginModel, RegisterModel,} from '../../model';
+import {AuthService, LoaderService} from '../../service';
+import {Subject, take, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-login',
@@ -16,36 +13,39 @@ import { LoaderService } from 'src/app/service/loader.service';
 
 /**
 
-Represents the LoginComponent.
-@class
-*/
-export class LoginComponent implements OnInit {
+ Represents the LoginComponent.
+ @class
+ */
+export class LoginComponent implements OnInit, OnDestroy {
+
   private loginData!: LoginModel;
   /**
 
-Represents the login form group.
-@type {FormGroup}
-*/
+   Represents the login form group.
+   @type {FormGroup}
+   */
   public loginForm!: FormGroup;
+  private unsubscribe$ = new Subject<void>();
+
 
   /**
 
 
-Constructs a new LoginComponent.
-@constructor
-@param {FormBuilder} _formBuilder - The FormBuilder instance.
-@param {AuthService} service - The AuthService instance.
-@param {Router} router - The Router instance.
-*/
+   Constructs a new LoginComponent.
+   @constructor
+   @param {FormBuilder} _formBuilder - The FormBuilder instance.
+   @param {AuthService} service - The AuthService instance.
+   @param {Router} router - The Router instance.
+   */
   constructor(
     private formBuilder: FormBuilder,
     private service: AuthService,
     private router: Router
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     sessionStorage.clear();
-    this.service.loadAllUser();
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
@@ -73,19 +73,19 @@ Constructs a new LoginComponent.
 
   /**
 
-  Represents the login information.
-@type {RegisterModel}
-*/
+   Represents the login information.
+   @type {RegisterModel}
+   */
   public loginInfo!: RegisterModel;
 
   /**
 
-Proceeds with the login process.
-@method
-*/
+   Proceeds with the login process.
+   @method
+   */
   public proceedLogin() {
     LoaderService.show();
-    this.service.getUserById(this.loginForm.value.username).subscribe({
+    this.service.getUserById(this.loginForm.value.username).pipe(takeUntil(this.unsubscribe$)).subscribe({
       next: (data: RegisterModel) => {
         this.loginData = new LoginModel(
           this.loginForm.value.password,
@@ -97,5 +97,10 @@ Proceeds with the login process.
         LoaderService.hide();
       },
     });
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

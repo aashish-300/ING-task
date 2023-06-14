@@ -1,12 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import {
-  InvoiceNumber,
-  TotalCalulationModel,
-} from 'src/app/model/Productmodel';
-import { LoaderService } from 'src/app/service/loader.service';
-import { ProductsService } from 'src/app/service/products.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
+import {InvoiceNumber, TotalCalulationModel,} from '../../../model';
+import {LoaderService, ProductsService} from '../../../service';
+import {Subject, takeUntil} from "rxjs";
+
 
 @Component({
   selector: 'app-sell-items',
@@ -16,20 +14,23 @@ import { ProductsService } from 'src/app/service/products.service';
 
 /**
 
-Represents the SellItemsComponent.
+ Represents the SellItemsComponent.
 @class
 */
-export class SellItemsComponent implements OnInit {
+export class SellItemsComponent implements OnInit, OnDestroy  {
+
+  private unsubscribe$ = new Subject<void>();
+
   /**
 
 Constructs a new SellItemsComponent.
 @constructor
-@param {FormBuilder} _formBuilder - The FormBuilder instance.
+@param {FormBuilder} formBuilder - The FormBuilder instance.
 @param {ProductsService} service - The ProductsService instance.
 @param {Router} router - The Router instance.
 */
   constructor(
-    private _formBuilder: FormBuilder,
+    private formBuilder: FormBuilder,
     private service: ProductsService,
     private router: Router
   ) {}
@@ -53,11 +54,11 @@ Initializes the component.
 @method
 */
   ngOnInit(): void {
-    this.sellItems = this._formBuilder.group({
+    this.sellItems = this.formBuilder.group({
       id: ['', Validators.required],
       invoice: ['', Validators.required],
       name: ['', Validators.required],
-      numberGroup: this._formBuilder.group({
+      numberGroup: this.formBuilder.group({
         quantity: ['', Validators.required],
         price: ['', Validators.required],
       }),
@@ -112,6 +113,11 @@ Performs the selling of items.
         this.router.navigate(['/']);
       },
     });
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }
 

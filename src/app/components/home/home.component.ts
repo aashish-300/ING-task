@@ -1,13 +1,9 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { DatePipe } from '@angular/common';
-import { PDFExportComponent } from '@progress/kendo-angular-pdf-export';
-import {
-  ISellItems,
-  IProductSoldCounts,
-  Productmodel,
-} from 'src/app/model/Productmodel';
-import { LoaderService } from 'src/app/service/loader.service';
-import { ProductsService } from 'src/app/service/products.service';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {DatePipe} from '@angular/common';
+import {PDFExportComponent} from '@progress/kendo-angular-pdf-export';
+import {ISellItems, Productmodel,} from '../../model';
+import {LoaderService, ProductsService} from '../../service';
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-home',
@@ -16,44 +12,34 @@ import { ProductsService } from 'src/app/service/products.service';
 })
 
 /**
-Represents the HomeComponent.
-@class
-*/
-export class HomeComponent implements OnInit {
+ Represents the HomeComponent.
+ @class
+ */
+export class HomeComponent implements OnInit, OnDestroy {
   @ViewChild('pdf') pdf?: PDFExportComponent;
   @ViewChild('pdfContainer') container!: ElementRef<any>;
-  productSalesData!: Productmodel;
+  public productSalesData!: Productmodel;
 
-  /**
+  private unsubscribe$ = new Subject<void>();
 
-Constructs a new HomeComponent.
-@constructor
-@param {ProductsService} service - The ProductsService instance.
-*/
+  constructor(private service: ProductsService, private datePipe: DatePipe) {
+  }
 
-  constructor(private service: ProductsService, private datePipe: DatePipe) {}
 
-  public ProductSoldCounts!: IProductSoldCounts;
-
-  /**
-
-Initializes the component.
-@method
-*/
   ngOnInit(): void {
     this.getAllSoldProducts();
   }
 
   /**
 
-Retrieves all sold products.
-@method
-*/
+   Retrieves all sold products.
+   @method
+   */
   private getAllSoldProducts(): void {
     LoaderService.show();
-    this.service.getAllSoldProducts().subscribe({
+    this.service.getAllSoldProducts().pipe(takeUntil(this.unsubscribe$)).subscribe({
       next: (data: ISellItems[]) => {
-        this.service.productCount();
+        // this.service.productCount();
         this.productCount(data);
         LoaderService.hide();
       },
@@ -62,9 +48,9 @@ Retrieves all sold products.
 
   /**
 
-Counts the number of products.
-@method
-*/
+   Counts the number of products.
+   @method
+   */
   private productCount(data: ISellItems[]): void {
     this.productSalesData = new Productmodel(data, this.datePipe, this.service);
   }
@@ -73,5 +59,10 @@ Counts the number of products.
     this.container.nativeElement.style.display = 'block';
     this.pdf?.saveAs();
     this.container.nativeElement.style.display = 'none';
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

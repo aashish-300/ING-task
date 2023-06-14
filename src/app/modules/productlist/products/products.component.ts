@@ -1,11 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IAddItems, ISellItems } from 'src/app/model/Productmodel';
-import { AuthService } from 'src/app/service/auth.service';
-import { ExcelService } from 'src/app/service/excel.service';
-import { LoaderService } from 'src/app/service/loader.service';
-import { ProductsService } from 'src/app/service/products.service';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {IAddItems} from '../../../model';
+import {AuthService, ExcelService, LoaderService, ProductsService} from '../../../service';
 import {Router} from "@angular/router";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-products',
@@ -15,10 +13,13 @@ import {Router} from "@angular/router";
 
 /**
 
-Represents the ProductsComponent.
-@class
-*/
+ Represents the ProductsComponent.
+ @class
+ */
 export class ProductsComponent implements OnInit {
+
+  private unsubscribe$ = new Subject<void>();
+
   /**
 
    Constructs a new ProductsComponent.
@@ -35,51 +36,53 @@ export class ProductsComponent implements OnInit {
     private authService: AuthService,
     private excelService: ExcelService,
     private router: Router,
-  ) {}
+  ) {
+  }
 
   /**
 
-Represents the list of products.
-@type {IAddItems[]}
-*/
+   Represents the list of products.
+   @type {IAddItems[]}
+   */
   public products: IAddItems[] = [];
   /**
 
-Represents the user's role.
-@type {string}
-*/
+   Represents the user's role.
+   @type {string}
+   */
   public role!: string;
   /**
 
-Represents the search item form group.
-@type {FormGroup}
-*/
+   Represents the search item form group.
+   @type {FormGroup}
+   */
   public searchItem!: FormGroup;
   /**
 
-Represents the list of product names.
-@type {string[]}
-*/
-  productName: string[] = [];
+   Represents the list of product names.
+   @type {string[]}
+   */
+  public productName: string[] = [];
   /**
 
-Represents the list of search product names.
-@type {string[]}
-*/
+   Represents the list of search product names.
+   @type {string[]}
+   */
   public searchProductName: string[] = [];
 
   /**
 
-Initializes the component.
-@method
-*/
+   Initializes the component.
+   @method
+   */
   ngOnInit(): void {
-    this.authService.getUserRole().subscribe({
+    this.authService.getUserRole().pipe(takeUntil(this.unsubscribe$)).subscribe({
       next: (data: any) => (this.role = data),
     });
     this.getAllProducts();
-    this.service.getAllSoldProducts().subscribe({
-      next: () => {},
+    this.service.getAllSoldProducts().pipe(takeUntil(this.unsubscribe$)).subscribe({
+      next: () => {
+      },
       complete: () => {
         // this.countName = this.service.productCount();
       },
@@ -106,33 +109,34 @@ Initializes the component.
 
   /**
 
-Performs a search based on the selected item.
-@method
-@param {string} item - The item to search for.
-*/
+   Performs a search based on the selected item.
+   @method
+   @param {string} item - The item to search for.
+   */
   public searchClick(item: string): void {
     this.searchItem.value.productNameInput = ' ';
     console.log('inside search')
-    this.service.searchItem(item).subscribe({
+    this.service.searchItem(item).pipe(takeUntil(this.unsubscribe$)).subscribe({
       next: (val) => (this.products = val),
     });
   }
 
   /**
 
-Loads all products.
-@method
-*/
+   Loads all products.
+   @method
+   */
   public loadProducts(): void {
     this.getAllProducts();
   }
+
   /**
    * Fetches all products, updates the products array, and manages the loader display.
    * @returns {void}
    */
   public getAllProducts(): void {
     LoaderService.show();
-    this.service.getAllProducts().subscribe({
+    this.service.getAllProducts().pipe(takeUntil(this.unsubscribe$)).subscribe({
       /**
        * Callback function to handle the next value received from the observable.
        * Updates the products array with the received data.
@@ -140,9 +144,7 @@ Loads all products.
        * @returns {void}
        */
       next: (data: IAddItems[]): void => {
-        console.log('all data',data)
         this.products = data;
-        console.log('products',this.products)
       },
       /**
        * Callback function to handle the completion of the observable.
@@ -170,7 +172,7 @@ Loads all products.
    */
   public onEdit(data: IAddItems): void {
     this.service.editItem(data);
-    this.router.navigate(['product/addItems',data.id])
+    this.router.navigate(['product/addItems', data.id])
   }
 
   /**
@@ -202,5 +204,10 @@ Loads all products.
       'product-report',
       'Asis'
     );
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

@@ -1,6 +1,7 @@
-import { Injectable, OnInit } from '@angular/core';
-import { Observable, delay, of } from 'rxjs';
-import { RegisterModel } from '../model';
+import {Injectable} from '@angular/core';
+import {delay, Observable, of} from 'rxjs';
+import {RegisterModel} from '../model';
+import {obs} from "./products.service";
 
 /**
  * Service responsible for handling authentication-related operations.
@@ -11,53 +12,16 @@ import { RegisterModel } from '../model';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService implements OnInit {
-  constructor() {}
-
-  /**
-   * Lifecycle hook that is called after the service is instantiated.
-   * Loads all users from local storage.
-   */
-  ngOnInit(): void {
-    this.loadAllUser();
+export class AuthService {
+  constructor() {
   }
 
-  /**
-   * Array containing all registered users.
-   */
-  private userlist: RegisterModel[] = [];
-  /**
-   * Represents a single user.
-   */
+
   private user!: RegisterModel;
-  /**
-   * Temporary variable for storing data.
-   */
-  temp: any;
-  /**
-   * Index for iteration purposes.
-   */
-  index: number = 0;
-  /**
-   * Represents the user's role.
-   */
-  role!: string | undefined;
 
-  /**
-   * Updates the userlist in local storage.
-   */
-  updateLocalStorage(): void {
-    localStorage.setItem('userlist', JSON.stringify(this.userlist));
-  }
 
-  /**
-   * Loads all users from local storage.
-   */
-  loadAllUser(): void {
-    if (localStorage.getItem('userlist')) {
-      this.temp = localStorage.getItem('userlist');
-      this.userlist = JSON.parse(this.temp);
-    }
+  private updateLocalStorage(userlist: RegisterModel): void {
+    localStorage.setItem('userlist', JSON.stringify(userlist));
   }
 
   /**
@@ -65,9 +29,10 @@ export class AuthService implements OnInit {
    *
    * @returns An Observable that emits an array of RegisterModel objects representing the users.
    */
-  getAllUser(): Observable<RegisterModel[]> {
-    this.loadAllUser();
-    return ob<RegisterModel[]>(this.userlist);
+  public getAllUser(): Observable<RegisterModel[]> {
+    let users = localUser('userlist');
+    if (!users) return obs<RegisterModel[]>([]);
+    return ob<RegisterModel[]>(users);
   }
 
   /**
@@ -76,15 +41,17 @@ export class AuthService implements OnInit {
    * @param id - The ID of the user.
    * @returns An Observable that emits a RegisterModel object representing the user.
    */
-  getUserById(id: string): Observable<RegisterModel> {
-    this.userlist.filter((x: RegisterModel) => {
+  public getUserById(id: string): Observable<RegisterModel> {
+    let user = localUser('userlist');
+    if (!user) return obs<RegisterModel>(user);
+    user.filter((x: RegisterModel) => {
       if (x.id === id) {
         sessionStorage.setItem('user', JSON.stringify(x));
-        this.user = x;
+        user = x;
         return;
       }
     });
-    return ob<RegisterModel>(this.user);
+    return ob<RegisterModel>(user);
   }
 
   /**
@@ -93,10 +60,11 @@ export class AuthService implements OnInit {
    * @param data - The data of the user to be registered.
    * @returns An Observable that emits an array of RegisterModel objects representing the updated userlist.
    */
-  userRegister(data: RegisterModel): Observable<RegisterModel[]> {
-    this.userlist.push(data);
-    this.updateLocalStorage();
-    return ob<RegisterModel[]>(this.userlist);
+  public userRegister(data: RegisterModel): Observable<RegisterModel[]> {
+    let userlist = localUser('userlist');
+    userlist.push(data);
+    this.updateLocalStorage(userlist);
+    return ob<RegisterModel[]>(userlist);
   }
 
   /**
@@ -106,14 +74,15 @@ export class AuthService implements OnInit {
    * @param data - The updated data of the user.
    * @returns An Observable that emits an array of RegisterModel objects representing the updated userlist.
    */
-  updataUser(id: string, data: RegisterModel): Observable<RegisterModel[]> {
-    this.userlist.forEach((e: RegisterModel, i) => {
+  public updataUser(id: string, data: RegisterModel): Observable<RegisterModel[]> {
+    let userlist = localUser('userlist');
+    userlist.forEach((e: RegisterModel, i: number) => {
       if (e.id === id) {
-        this.userlist[i] = data;
-        this.updateLocalStorage();
+        userlist[i] = data;
+        this.updateLocalStorage(userlist);
       }
     });
-    return ob<RegisterModel[]>(this.userlist);
+    return ob<RegisterModel[]>(userlist);
   }
 
   /**
@@ -122,30 +91,41 @@ export class AuthService implements OnInit {
    * @param id - The ID of the user to be deleted.
    * @returns An Observable that emits an array of RegisterModel objects representing the updated userlist.
    */
-  deleteUser(id: string): Observable<RegisterModel[]> {
-    this.userlist = this.userlist.filter((e: RegisterModel) => {
+  public deleteUser(id: string): Observable<RegisterModel[]> {
+    let userlist = localUser('userlist');
+    userlist = userlist.filter((e: RegisterModel) => {
       return e.id !== id;
     });
-    this.updateLocalStorage();
-    return ob<RegisterModel[]>(this.userlist);
+    this.updateLocalStorage(userlist);
+    return ob<RegisterModel[]>(userlist);
   }
 
-  isLoggedIn() {
+  public isLoggedIn() {
     return sessionStorage.getItem('username') != null;
   }
 
-  getUserRole(): Observable<string | undefined> {
-    const role = sessionStorage.getItem('role');
-    this.role = role !== null ? role.toString() : '';
-    return of(this.role);
+  public getUserRole(): Observable<string | undefined> {
+    let role = sessionStorage.getItem('role');
+    role = role !== null ? role.toString() : '';
+    return of(role);
   }
 }
 
-export function ob<T = any>(ob: T) {
-  return of(ob).pipe(delay(delayNumber()));
+export function localUser(key: string) {
+  let items;
+  if (localStorage.getItem(key)) {
+    items = localStorage.getItem(key);
+    if (!items) return;
+    items = JSON.parse(items!);
+  }
+  return items;
 }
 
-export function delayNumber(): number {
+export function ob<T = any>(ob: T) {
+  return of(ob).pipe(delay(delayNumbers()));
+}
+
+export function delayNumbers(): number {
   const startTime = 500;
   const endTime = 2500;
   return Math.random() * (endTime - startTime + startTime);

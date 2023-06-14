@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { RegisterModel } from 'src/app/model/Authenticationmodel';
-import { AuthService } from 'src/app/service/auth.service';
-import { LoaderService } from 'src/app/service/loader.service';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {RegisterModel} from '../../../model';
+import {AuthService, LoaderService} from '../../../service';
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-userlist',
@@ -22,15 +22,17 @@ export class UserlistComponent implements OnInit {
    @type {FormGroup}
    */
   public registerForm!: FormGroup;
+  private unsubscribe$ = new Subject<void>();
 
   /**
 
    Constructs a new UserlistComponent.
    @constructor
-   @param {FormBuilder} _formBuilder - The FormBuilder instance.
+   @param {FormBuilder} formBuilder - The FormBuilder instance.
    @param {AuthService} service - The AuthService instance.
    */
-  constructor(private formBuilder: FormBuilder, private service: AuthService) {}
+  constructor(private formBuilder: FormBuilder, private service: AuthService) {
+  }
 
   /**
 
@@ -61,21 +63,11 @@ export class UserlistComponent implements OnInit {
    @type {boolean}
    */
   public popupmenu: boolean = false;
-  /**
 
-   Represents a single user.
-   @type {RegisterModel}
-   */
-  // singleuser!: RegisterModel;
 
-  /**
-
-   Loads the user data.
-   @method
-   */
-  loadUser() {
+  private loadUser() {
     LoaderService.show();
-    this.service.getAllUser().subscribe({
+    this.service.getAllUser().pipe(takeUntil(this.unsubscribe$)).subscribe({
       next: (data: RegisterModel[]) => {
         this.userlist = data;
       },
@@ -91,7 +83,7 @@ export class UserlistComponent implements OnInit {
    @param {RegisterModel} user - The selected user.
    @method
    */
-  onUpdate(user: RegisterModel) {
+  public onUpdate(user: RegisterModel) {
     const updateUser = user;
     this.popupmenu = true;
     this.registerForm.patchValue({
@@ -110,10 +102,11 @@ export class UserlistComponent implements OnInit {
    @param {RegisterModel} user - The user to be deleted.
    @method
    */
-  onDelete(user: RegisterModel) {
+  public onDelete(user: RegisterModel) {
     LoaderService.show();
-    this.service.deleteUser(user.id).subscribe({
-      next: () => {},
+    this.service.deleteUser(user.id).pipe(takeUntil(this.unsubscribe$)).subscribe({
+      next: () => {
+      },
       complete: () => {
         LoaderService.hide();
         this.loadUser();
@@ -126,7 +119,7 @@ export class UserlistComponent implements OnInit {
    Updates a user's information.
    @method
    */
-  updateUser() {
+  public updateUser() {
     LoaderService.show();
     this.popupmenu = false;
     this.registerForm.patchValue({
@@ -138,9 +131,10 @@ export class UserlistComponent implements OnInit {
       role: this.registerForm.value.role,
     });
     this.service
-      .updataUser(this.registerForm.value.id, this.registerForm.value)
+      .updataUser(this.registerForm.value.id, this.registerForm.value).pipe(takeUntil(this.unsubscribe$))
       .subscribe({
-        next: () => {},
+        next: () => {
+        },
         complete: () => {
           LoaderService.hide();
           this.loadUser();
@@ -153,8 +147,13 @@ export class UserlistComponent implements OnInit {
    Closes the popup menu.
    @method
    */
-  closepop() {
+  public closepop() {
     this.popupmenu = false;
     this.loadUser();
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

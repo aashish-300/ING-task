@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from 'src/app/service/auth.service';
-import { Router } from '@angular/router';
-import { LoaderService } from 'src/app/service/loader.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AuthService} from 'src/app/service/auth.service';
+import {Router} from '@angular/router';
+import {LoaderService} from 'src/app/service/loader.service';
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit,OnDestroy {
   public registerForm!: FormGroup;
+  private unsubscribe$ = new Subject<void>();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -40,12 +42,17 @@ export class RegisterComponent implements OnInit {
       return;
     }
     LoaderService.show();
-    this.service.userRegister(this.registerForm.getRawValue()).subscribe({
-      next: () => {},
+    this.service.userRegister(this.registerForm.getRawValue()).pipe(takeUntil(this.unsubscribe$)).subscribe({
+      next: () => {
+      },
       complete: () => {
         LoaderService.hide();
         this.router.navigate(['login']);
       },
     });
+  }
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

@@ -10,7 +10,7 @@
         </label>
         <input id="password" name="password" type="password" class=" input-back" formControlName="password"
             placeholder="Password" required />
-        <button class="bg-dark button" type="submit">Submit
+        <button class="bg-dark button" [disabled]="loginForm.invalid" type="submit">Submit
         </button>
         <div style="color:white">New User <span routerLink="/register" class="text-info">Register</span></div>
     </form>

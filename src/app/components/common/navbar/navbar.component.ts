@@ -1,6 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import { AuthService } from 'src/app/service/auth.service';
-import { ProductsService } from 'src/app/service/products.service';
+import {AuthService, ProductsService} from '../../../service';
 import {Subject, takeUntil} from "rxjs";
 
 @Component({
@@ -25,10 +24,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   /**
 
-Represents the user's role.
-@type {string}
-*/
-  role!: string;
+   Represents the user's role.
+   @type {string}
+   */
+  public role!: string;
 
   /**
 
@@ -52,17 +51,14 @@ Initializes the component.
    * It calls the productService to get all products and reloads the page after receiving the response.
    * @returns {void}
    */
-  onProduct(): void {
-    this.productservice.getAllProducts().subscribe({
+  public onProduct(): void {
+    this.productservice.getAllProducts().pipe(takeUntil(this.unsubscribe$)).subscribe({
       /**
        * Callback function to handle the next value received from the observable.
        * It reloads the page by calling `window.location.reload()` after receiving the data.
        * @returns {void}
        */
-      next: (): void => {
-
-        // window.location.reload();
-      },
+      next: (): void => {},
     });
   }
 

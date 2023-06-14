@@ -4,8 +4,7 @@ import {UserlistComponent} from "./userlist/userlist.component";
 import {HomeComponent} from "../../components/home/home.component";
 import {AddItemsComponent} from "../productlist/add-items/add-items.component";
 import {SellItemsComponent} from "../productlist/sell-items/sell-items.component";
-import {AuthGuard} from "../../guard/auth.guard";
-import {RoleGuard} from "../../guard/role.guard";
+import {AuthGuard,RoleGuard} from "../../guard";
 
 const routes: Routes = [
   {
