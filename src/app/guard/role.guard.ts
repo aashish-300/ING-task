@@ -28,11 +28,9 @@ export class RoleGuard implements CanActivate {
     const allowedRoles = route.data['allowedRoles'];
     this.userRole = this.getUserRole();
     if (allowedRoles.includes(this.userRole)) {
-      console.log("success")
       return true;
     } else {
       this.router.navigate(['login']);
-      console.log('not sjfl')
       return false;
     }
   }

@@ -39,8 +39,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     LoaderService.show();
     this.service.getAllSoldProducts().pipe(takeUntil(this.unsubscribe$)).subscribe({
       next: (data: ISellItems[]) => {
-        // this.service.productCount();
-        this.productCount(data);
+          this.productCount(data);
         LoaderService.hide();
       },
     });
@@ -52,7 +51,7 @@ export class HomeComponent implements OnInit, OnDestroy {
    @method
    */
   private productCount(data: ISellItems[]): void {
-    this.productSalesData = new Productmodel(data, this.datePipe, this.service);
+    this.productSalesData = new Productmodel(data, this.datePipe);
   }
 
   public saveAs(): void {

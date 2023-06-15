@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {InvoiceNumber, TotalCalulationModel,} from '../../../model';
+import {InvoiceNumber, ISellItems, TotalCalulationModel,} from '../../../model';
 import {LoaderService, ProductsService} from '../../../service';
 import {Subject, takeUntil} from "rxjs";
 
@@ -54,6 +54,7 @@ Initializes the component.
 @method
 */
   ngOnInit(): void {
+
     this.sellItems = this.formBuilder.group({
       id: ['', Validators.required],
       invoice: ['', Validators.required],
@@ -68,12 +69,15 @@ Initializes the component.
       remark: ['', Validators.required],
       date: ['', Validators.required],
     });
+
     this.service.getAllSoldProducts().subscribe({
       next: () => {},
     });
+
     this.sellItems.patchValue({
       invoice: new InvoiceNumber().invoice,
     });
+
     this.service.getAllProductName().subscribe({
       next: (x) => {
         this.products = x;
@@ -86,7 +90,10 @@ Initializes the component.
         .patchValue(new TotalCalulationModel(val).sum);
     });
 
-    // this.service.productCount();
+    this.sellItems.get('name')?.valueChanges.subscribe((name) => {
+      const item = this.service.getProductById(name);
+      this.sellItems.get('numberGroup.price')?.patchValue(item.numberGroup.price)
+    })
   }
 
   /**
@@ -110,7 +117,7 @@ Performs the selling of items.
       next: () => {},
       complete: () => {
         LoaderService.hide();
-        this.router.navigate(['/']);
+        this.router.navigate(['/dashboard']);
       },
     });
   }

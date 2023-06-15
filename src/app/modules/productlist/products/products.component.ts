@@ -81,11 +81,7 @@ export class ProductsComponent implements OnInit {
     });
     this.getAllProducts();
     this.service.getAllSoldProducts().pipe(takeUntil(this.unsubscribe$)).subscribe({
-      next: () => {
-      },
-      complete: () => {
-        // this.countName = this.service.productCount();
-      },
+      next: () => {},
     });
     this.service.getAllProductName().subscribe({
       next: (data: string[]) => (this.productName = data),
@@ -115,7 +111,6 @@ export class ProductsComponent implements OnInit {
    */
   public searchClick(item: string): void {
     this.searchItem.value.productNameInput = ' ';
-    console.log('inside search')
     this.service.searchItem(item).pipe(takeUntil(this.unsubscribe$)).subscribe({
       next: (val) => (this.products = val),
     });
@@ -162,7 +157,6 @@ export class ProductsComponent implements OnInit {
    * @returns {void}
    */
   public onAdd(): void {
-    this.service.edit = false;
   }
 
   /**
@@ -171,7 +165,6 @@ export class ProductsComponent implements OnInit {
    * @returns {void}
    */
   public onEdit(data: IAddItems): void {
-    this.service.editItem(data);
     this.router.navigate(['product/addItems', data.id])
   }
 

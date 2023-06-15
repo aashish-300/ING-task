@@ -68,6 +68,8 @@ export class AddItemsComponent implements OnInit, OnDestroy {
     if (id) {
       this.edit = true;
       this.loadData(item);
+    } else {
+      this.edit = false;
     }
     this.addProducts.get('numberGroup')?.valueChanges.subscribe((val) => {
       this.addProducts

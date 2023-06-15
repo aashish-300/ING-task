@@ -39,14 +39,13 @@ export type Most = {
 };
 
 export class Productmodel {
-  counts: IProductSoldCounts;
+  public counts:any = new IProductSoldCounts();
 
   constructor(
     items: ISellItems[],
     datePipe: DatePipe,
-    service: ProductsService
   ) {
-    this.counts = new IProductSoldCounts();
+
     items.forEach((item: ISellItems) => {
       if (
         datePipe.transform(item.date, 'dd-M-yyyy') ===
@@ -54,15 +53,15 @@ export class Productmodel {
       ) {
         this.counts.today.push(item);
       }
-      for (let key in service.countName) {
-        if (Number(service.countName[key]) >= 5) {
+      for (let key in this.counts) {
+        if (this.counts[key] >= 5) {
           if (item.name === key) {
             this.counts.popular.push(item);
           }
-          service.countName[key] = service.countName[key]++;
+          this.counts[key] = this.counts[key]++;
           this.counts.most.push({
             name: key,
-            count: +service.countName[key],
+            count: +this.counts[key],
           });
         }
       }
@@ -72,7 +71,7 @@ export class Productmodel {
 }
 
 export class TotalCalulationModel {
-  sum!: number;
+  public sum!: number;
   constructor(val: numberGroup) {
     if (!(val.price && val.quantity)) return;
     this.sum = val.price * val.quantity;

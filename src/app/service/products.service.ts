@@ -15,16 +15,6 @@ import {IAddItems, ISellItems} from '../model';
 export class ProductsService {
   constructor() {}
 
-  /**
-   * Flag indicating whether an item is being edited.
-   */
-  public edit: boolean = false;
-
-
-  /**
-   * Array of items representing sold products.
-   */
-  public soldItems: ISellItems[] = [];
 
   /**
    * Array to store product count by name.
@@ -119,14 +109,6 @@ export class ProductsService {
     this.updateStorage(items);
   }
 
-  /**
-   * Edits an item in the product list.
-   *
-   * @param data - The updated item data.
-   */
-  public editItem(data: IAddItems) {
-    this.edit = true;
-  }
 
   /**
    * Updates an item in the product list.
@@ -185,13 +167,11 @@ export class ProductsService {
     const countName = this.productCount(); //for sold item
     for (let key in countName) {
       if (val.name === key) {
-        console.log(val.name, typeof countName[key])
         if (countName[key] >= 10) {
           return '#009900';
         } else if (countName[key] <= 10 && countName[key] >= 5) {
           return '#E8C919';
         } else {
-          console.log('red')
           return '#990000';
         }
       }

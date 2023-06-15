@@ -3,45 +3,44 @@
     <div class="card-header">
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1">Invoice No.</span>
+                <span class="input-group-text">Invoice No.</span>
             </div>
-            <input type="number" class="form-control" id="disableInput" formControlName="invoice" [readonly]="true"
-                placeholder="Invoice Number..." aria-label="Username" aria-describedby="basic-addon1">
+          <input type="number" class="form-control" formControlName="invoice" [readonly]="true"
+                 placeholder="Invoice Number..." aria-label="Username" aria-describedby="basic-addon1">
         </div>
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1">Customer</span>
+              <span class="input-group-text">Customer</span>
             </div>
             <input type="text" class="form-control" placeholder="Customer Name..." formControlName="customerName"
                 aria-label="Username" aria-describedby="basic-addon1">
         </div>
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1">Address</span>
+              <span class="input-group-text">Address</span>
             </div>
             <input type="text" class="form-control" placeholder="Address..." formControlName="address"
                 aria-label="Username" aria-describedby="basic-addon1">
         </div>
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1">Remark</span>
+              <span class="input-group-text">Remark</span>
             </div>
             <input type="text" class="form-control" placeholder="Remark..." formControlName="remark"
                 aria-label="Username" aria-describedby="basic-addon1">
         </div>
     </div>
     <div class="card-body">
-        <table datatable class="table table-bordered">
-            <thead class="bg-dark text-white">
-                <tr>
-                    <td>S.N</td>
-                    <td>Product Name</td>
-                    <!-- <td>Description</td> -->
-                    <td>Qty</td>
-                    <td>Price</td>
-                    <td>Total</td>
-                    <td>Action</td>
-                </tr>
+      <table class="table table-bordered">
+        <thead class="bg-dark text-white">
+        <tr>
+          <td>S.N</td>
+          <td>Product Name</td>
+          <td>Qty</td>
+          <td>Price</td>
+          <td>Total</td>
+          <td>Action</td>
+        </tr>
             </thead>
             <tbody>
 
@@ -49,10 +48,10 @@
                     <td>1</td>
                     <td>
                         <div class="input-group">
-                            <select class="custom-select form-control" aria-placeholder="select" formControlName="name"
-                                id="inputGroupSelect04">
-                                <option *ngFor="let item of products" value={{item}}>{{item}}</option>
-                            </select>
+                          <select class="custom-select form-control" formControlName="name"
+                                  id="inputGroupSelect04">
+                            <option *ngFor="let item of products" value={{item}}>{{item}}</option>
+                          </select>
                         </div>
                     </td>
                     <ng-container [formGroupName]="'numberGroup'">
@@ -60,13 +59,13 @@
                         <td>
                             <div class="input-group mb-3">
                                 <input type="text" class="form-control" placeholder="quantity" aria-label="Username"
-                                    aria-describedby="basic-addon1" type="number" formControlName="quantity">
+                                    aria-describedby="basic-addon1" formControlName="quantity">
                             </div>
                         </td>
                         <td>
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control" placeholder="price" aria-label="Username"
-                                    aria-describedby="basic-addon1" type="number" formControlName="price">
+                                <input class="form-control" placeholder="price" aria-label="Username"
+                                    aria-describedby="basic-addon1"  formControlName="price">
                             </div>
                         </td>
                     </ng-container>
