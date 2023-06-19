@@ -1,5 +1,4 @@
-import { DatePipe } from '@angular/common';
-import { ProductsService } from 'src/app/service/products.service';
+import {DatePipe} from '@angular/common';
 
 export interface IAddItems {
   id: string;
@@ -30,7 +29,7 @@ export class ProductSoldCounts {
   today: ISellItems[] = [];
   popular: ISellItems[] = [];
   total: number = 0;
-  most!: Most[] ;
+  most: Most[] = [{name: '', count: 0}]
 }
 
 export type Most = {
@@ -39,7 +38,7 @@ export type Most = {
 };
 
 export class Productmodel {
-  public counts:ProductSoldCounts = new ProductSoldCounts();
+  public counts: ProductSoldCounts = new ProductSoldCounts();
 
   constructor(
     items: ISellItems[],
@@ -53,12 +52,22 @@ export class Productmodel {
       ) {
         this.counts.today.push(item);
       }
-      if(this.counts.most){
-
-      }
-        if (this.counts.today.length >= 5) {
-            this.counts.popular.push(item);
+      this.counts.most.some(obj => {
+        for(let key in obj){
+          console.log(key)
         }
+        Object.keys(obj).some(key => console.log(typeof obj))
+        console.log(Object.keys(obj)[0].toString().includes(item.name));
+        if(Object.keys(obj)[0].toString().includes(item.name)){
+          // console.log(Object.keys(obj).some(key => console.log(obj[key])))
+          // this.counts.most.push({name:item.name,count:count+1})
+        }
+        console.log(Object.keys(obj))
+      })
+
+      if (this.counts.today.length >= 5) {
+        this.counts.popular.push(item);
+      }
     });
     this.counts.total = this.counts.today.length + this.counts.popular.length;
   }
@@ -66,6 +75,7 @@ export class Productmodel {
 
 export class TotalCalulationModel {
   public sum!: number;
+
   constructor(val: numberGroup) {
     if (!(val.price && val.quantity)) return;
     this.sum = val.price * val.quantity;
@@ -74,6 +84,7 @@ export class TotalCalulationModel {
 
 export class InvoiceNumber {
   public invoice: number;
+
   constructor() {
     this.invoice = Math.floor(Math.random() * (99999 - 10000 + 10000));
   }

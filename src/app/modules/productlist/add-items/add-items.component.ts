@@ -76,10 +76,6 @@ export class AddItemsComponent implements OnInit, OnDestroy {
         .get('total')!
         .patchValue(new TotalCalulationModel(val).sum);
     });
-    this.service.getAllProducts().pipe(takeUntil(this.unsubscribe$)).subscribe({
-      next: () => {
-      },
-    });
   }
 
 

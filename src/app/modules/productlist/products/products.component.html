@@ -36,7 +36,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr [ngStyle]="{'background-color': getProductBackgroundColor(item)}" *ngFor="let item of products;let i = index">
+                <tr [ngStyle]="{'background-color': getProductBackgroundColor(item)}" *ngFor="let item of products;">
                     <td>{{item.id}}</td>
                     <td>{{item.name}}</td>
                     <td>{{item.description}}</td>

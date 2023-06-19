@@ -19,10 +19,6 @@ const routes: Routes = [
     data: {allowedRoles: ['admin']}
   },
   {
-    path: 'path',
-    loadChildren: () => import('../productlist/productlist.module').then(m => m.ProductlistModule)
-  },
-  {
     path: 'dashboard',
     component: HomeComponent,
     canActivate:[AuthGuard,RoleGuard],
