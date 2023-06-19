@@ -80,9 +80,6 @@ export class ProductsComponent implements OnInit {
       next: (data: any) => (this.role = data),
     });
     this.getAllProducts();
-    this.service.getAllSoldProducts().pipe(takeUntil(this.unsubscribe$)).subscribe({
-      next: () => {},
-    });
     this.service.getAllProductName().subscribe({
       next: (data: string[]) => (this.productName = data),
     });
@@ -113,6 +110,7 @@ export class ProductsComponent implements OnInit {
     this.searchItem.value.productNameInput = ' ';
     this.service.searchItem(item).pipe(takeUntil(this.unsubscribe$)).subscribe({
       next: (val) => (this.products = val),
+      complete:() => console.log('complete')
     });
   }
 

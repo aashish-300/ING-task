@@ -43,8 +43,6 @@ export class RegisterComponent implements OnInit,OnDestroy {
     }
     LoaderService.show();
     this.service.userRegister(this.registerForm.getRawValue()).pipe(takeUntil(this.unsubscribe$)).subscribe({
-      next: () => {
-      },
       complete: () => {
         LoaderService.hide();
         this.router.navigate(['login']);

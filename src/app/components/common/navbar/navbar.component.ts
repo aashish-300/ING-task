@@ -51,16 +51,6 @@ Initializes the component.
    * It calls the productService to get all products and reloads the page after receiving the response.
    * @returns {void}
    */
-  public onProduct(): void {
-    this.productservice.getAllProducts().pipe(takeUntil(this.unsubscribe$)).subscribe({
-      /**
-       * Callback function to handle the next value received from the observable.
-       * It reloads the page by calling `window.location.reload()` after receiving the data.
-       * @returns {void}
-       */
-      next: (): void => {},
-    });
-  }
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();

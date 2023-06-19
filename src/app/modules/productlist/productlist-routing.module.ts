@@ -22,8 +22,7 @@ const routes: Routes = [
   },
 ];
 
-// @ts-ignore
-// @ts-ignore
+
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]

@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {delay, Observable, of} from 'rxjs';
 import {IAddItems, ISellItems} from '../model';
+import {colors} from "../constants";
 
 /**
  * Service responsible for managing products and sold items.
@@ -12,18 +13,10 @@ import {IAddItems, ISellItems} from '../model';
 @Injectable({
   providedIn: 'root',
 })
+
+
 export class ProductsService {
   constructor() {}
-
-
-  /**
-   * Array to store product count by name.
-   */
-  public countName: any;
-  /**
-   * Lifecycle hook that is called after construction and initialization of the service.
-   */
-
 
   /**
    * Updates the local storage with the current item list.
@@ -35,7 +28,7 @@ export class ProductsService {
   public getProductById(id: string) {
     let item = localData('products');
     if (!item) return;
-    item = item.filter((e: IAddItems) => {
+    item = item.find((e: IAddItems) => {
       if (e.id === id) return e;
       return;
     });
@@ -168,11 +161,11 @@ export class ProductsService {
     for (let key in countName) {
       if (val.name === key) {
         if (countName[key] >= 10) {
-          return '#009900';
+          return colors.green;
         } else if (countName[key] <= 10 && countName[key] >= 5) {
-          return '#E8C919';
+          return colors.yellow;
         } else {
-          return '#990000';
+          return colors.red;
         }
       }
     }
@@ -206,11 +199,8 @@ export class ProductsService {
    * @returns An observable of an array of sold items.
    */
   public getAllSoldProducts(): Observable<ISellItems[]> {
-    let items;
-    if (localStorage.getItem('soldItems')) {
-      items = localStorage.getItem('soldItems');
-      items = JSON.parse(items!);
-    }
+    let items = localData('soldItems');
+    if (!items) return obs<ISellItems[]>([]);
     return obs<ISellItems[]>(items);
   }
 

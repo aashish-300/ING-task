@@ -26,11 +26,11 @@ export type numberGroup = {
   quantity: number;
 };
 
-export class IProductSoldCounts {
+export class ProductSoldCounts {
   today: ISellItems[] = [];
   popular: ISellItems[] = [];
   total: number = 0;
-  most: Most[] = [];
+  most!: Most[] ;
 }
 
 export type Most = {
@@ -39,7 +39,7 @@ export type Most = {
 };
 
 export class Productmodel {
-  public counts:any = new IProductSoldCounts();
+  public counts:ProductSoldCounts = new ProductSoldCounts();
 
   constructor(
     items: ISellItems[],
@@ -53,18 +53,12 @@ export class Productmodel {
       ) {
         this.counts.today.push(item);
       }
-      for (let key in this.counts) {
-        if (this.counts[key] >= 5) {
-          if (item.name === key) {
-            this.counts.popular.push(item);
-          }
-          this.counts[key] = this.counts[key]++;
-          this.counts.most.push({
-            name: key,
-            count: +this.counts[key],
-          });
-        }
+      if(this.counts.most){
+
       }
+        if (this.counts.today.length >= 5) {
+            this.counts.popular.push(item);
+        }
     });
     this.counts.total = this.counts.today.length + this.counts.popular.length;
   }

@@ -70,9 +70,6 @@ Initializes the component.
       date: ['', Validators.required],
     });
 
-    this.service.getAllSoldProducts().subscribe({
-      next: () => {},
-    });
 
     this.sellItems.patchValue({
       invoice: new InvoiceNumber().invoice,

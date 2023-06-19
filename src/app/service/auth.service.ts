@@ -44,7 +44,7 @@ export class AuthService {
   public getUserById(id: string): Observable<RegisterModel> {
     let user = localUser('userlist');
     if (!user) return obs<RegisterModel>(user);
-    user.filter((x: RegisterModel) => {
+    user.find((x: RegisterModel) => {
       if (x.id === id) {
         sessionStorage.setItem('user', JSON.stringify(x));
         user = x;

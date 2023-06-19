@@ -20,7 +20,6 @@ export class LoginModel {
     router: { navigate: (arg0: string[]) => void }
   ) {
     if (loginForm === serverData?.password) {
-      console.log('server data',serverData)
       if (serverData.isActive) {
         sessionStorage.setItem('username', serverData.id);
         sessionStorage.setItem('role', serverData.role);
