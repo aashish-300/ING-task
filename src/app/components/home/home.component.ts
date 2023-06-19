@@ -52,6 +52,7 @@ export class HomeComponent implements OnInit, OnDestroy {
    */
   private productCount(data: ISellItems[]): void {
     this.productSalesData = new Productmodel(data, this.datePipe);
+    console.log(this.productSalesData.counts)
   }
 
   public saveAs(): void {

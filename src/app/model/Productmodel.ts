@@ -29,7 +29,7 @@ export class ProductSoldCounts {
   today: ISellItems[] = [];
   popular: ISellItems[] = [];
   total: number = 0;
-  most: Most[] = [{name: '', count: 0}]
+  most: Most[] = [];
 }
 
 export type Most = {
@@ -52,23 +52,22 @@ export class Productmodel {
       ) {
         this.counts.today.push(item);
       }
-      this.counts.most.some(obj => {
-        for(let key in obj){
-          console.log(key)
+      const most = this.counts.most
+      if(most.length === 0){
+        most.push({name:item.name,count:1})
+      }else{
+        const existname:Most | undefined = most.find((e:Most) => e.name === item.name)
+        if(existname){
+          existname.count++;
+        }else{
+          most.push({name:item.name,count:1})
         }
-        Object.keys(obj).some(key => console.log(typeof obj))
-        console.log(Object.keys(obj)[0].toString().includes(item.name));
-        if(Object.keys(obj)[0].toString().includes(item.name)){
-          // console.log(Object.keys(obj).some(key => console.log(obj[key])))
-          // this.counts.most.push({name:item.name,count:count+1})
-        }
-        console.log(Object.keys(obj))
-      })
-
+      }
       if (this.counts.today.length >= 5) {
         this.counts.popular.push(item);
       }
     });
+    console.log(this.counts.most)
     this.counts.total = this.counts.today.length + this.counts.popular.length;
   }
 }
