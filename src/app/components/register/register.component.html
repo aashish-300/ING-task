@@ -1,0 +1,30 @@
+<div class="container__auth">
+
+    <form type="submit" class="form__container container__box" [formGroup]="registerForm"
+        (ngSubmit)="proceedRegistration()">
+        <div class="title">User Registration</div>
+        <label class="form__input--label">
+            Username
+        </label>
+        <input type="text" class="input-back" formControlName="id" required placeholder="Username" />
+        <label class="form__input--label">
+            Name
+        </label>
+        <input type="text" class="input-back" formControlName="name" required placeholder="Name" />
+
+        <label for="email" class="form__input--label">
+            Email
+        </label>
+        <input id="email" name="email" type="email" class="input-back" formControlName="email" placeholder="Email"
+            required />
+        <label for="password" class="form__input--label">
+            Password
+        </label>
+        <input id="password" name="password" type="password" class="input-back" formControlName="password"
+            placeholder="Password" required />
+        <button class="bg-dark button"
+                [disabled]="registerForm.invalid"
+                type="submit">Submit</button>
+        <div>Already have an account <a routerLink="/login" class="text-primary">login</a></div>
+    </form>>
+</div>

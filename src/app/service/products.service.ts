@@ -1,6 +1,7 @@
-import { Injectable, OnInit } from '@angular/core';
-import { Observable, delay, of } from 'rxjs';
-import { IAddItems, ISellItems } from '../common/model/Productmodel';
+import {Injectable} from '@angular/core';
+import {delay, Observable, of} from 'rxjs';
+import {IAddItems, ISellItems} from '../model';
+import {colors} from "../constants";
 
 /**
  * Service responsible for managing products and sold items.
@@ -12,54 +13,26 @@ import { IAddItems, ISellItems } from '../common/model/Productmodel';
 @Injectable({
   providedIn: 'root',
 })
-export class ProductsService implements OnInit {
+
+
+export class ProductsService {
   constructor() {}
-
-  /**
-   * Temporary variable to store data.
-   */
-  temp: any;
-
-  /**
-   * Array of items representing added products.
-   */
-  items: IAddItems[] = [];
-
-  /**
-   * Flag indicating whether an item is being edited.
-   */
-  edit: boolean = false;
-
-  /**
-   * Array of items representing all products.
-   */
-  allItems: IAddItems[] = [];
-
-  /**
-   * Array of items representing sold products.
-   */
-  soldItems: ISellItems[] = [];
-
-  /**
-   * Array to store product count by name.
-   */
-  // countName: {}[] = [{}];
-  countName: any;
-  /**
-   * Lifecycle hook that is called after construction and initialization of the service.
-   */
-  ngOnInit(): void {
-    this.getAllSoldProducts().subscribe({
-      next: (item: ISellItems[]) => {},
-      complete: () => this.productCount(),
-    });
-  }
 
   /**
    * Updates the local storage with the current item list.
    */
-  updateStorage(): void {
-    localStorage.setItem('products', JSON.stringify(this.items));
+  private updateStorage(items: IAddItems[]): void {
+    localStorage.setItem('products', JSON.stringify(items));
+  }
+
+  public getProductById(id: string) {
+    let item = localData('products');
+    if (!item) return;
+    item = item.find((e: IAddItems) => {
+      if (e.id === id) return e;
+      return;
+    });
+    return item[0];
   }
 
   /**
@@ -67,13 +40,9 @@ export class ProductsService implements OnInit {
    *
    * @returns An observable of an array of added items.
    */
-  getAllProducts(): Observable<IAddItems[]> {
-    if (localStorage.getItem('products')) {
-      this.temp = localStorage.getItem('products');
-      this.items = JSON.parse(this.temp);
-    }
-    this.allItems = this.items;
-    return ob<IAddItems[]>(this.items);
+  public getAllProducts(): Observable<IAddItems[]> {
+    let items = localData('products');
+    return obs<IAddItems[]>(items);
   }
 
   /**
@@ -81,15 +50,11 @@ export class ProductsService implements OnInit {
    *
    * @returns An observable of an array of product names.
    */
-  getAllProductName(): Observable<string[]> {
-    if (localStorage.getItem('products')) {
-      this.temp = localStorage.getItem('products');
-      this.temp = JSON.parse(this.temp);
-      this.temp = Array.from(this.temp).map((val: any) => {
-        return val.name;
-      });
-    }
-    return ob<string[]>(this.temp);
+  public getAllProductName(): Observable<string[]> {
+    let productName = localData('products');
+    if(!productName) return obs<string[]>([]);
+    productName = productName.map((val:IAddItems) => val.name)
+    return obs<string[]>(productName);
   }
 
   /**
@@ -98,11 +63,14 @@ export class ProductsService implements OnInit {
    * @param val - The name to search for.
    * @returns An observable of an array of matching items.
    */
-  searchItem(val: string): Observable<IAddItems[]> {
-    this.temp = this.items.filter((e) => {
-      return e.name === val;
+  public searchItem(val: string): Observable<IAddItems[]> {
+    let item = localData('products');
+    if(!item) return obs<IAddItems[]>([]);
+    item = item.filter((e: IAddItems): string => {
+      if (e.name === val) return e.name;
+      return '';
     });
-    return ob<IAddItems[]>(this.temp);
+    return obs<IAddItems[]>(item);
   }
 
   /**
@@ -111,10 +79,12 @@ export class ProductsService implements OnInit {
    * @param data - The item data to add.
    * @returns An observable of the updated array of items.
    */
-  addItems(data: IAddItems): Observable<IAddItems[]> {
-    this.items.push(data);
-    localStorage.setItem('products', JSON.stringify(this.items));
-    return ob<IAddItems[]>(this.items);
+  public addItems(data: IAddItems): Observable<IAddItems[]> {
+    let item = localData('products');
+    if(!item) return obs<IAddItems[]>([])
+    item.push(data);
+    localStorage.setItem('products', JSON.stringify(item));
+    return obs<IAddItems[]>(item);
   }
 
   /**
@@ -123,39 +93,34 @@ export class ProductsService implements OnInit {
    * @param item - The item to delete.
    */
 
-  deleteItem(item: IAddItems) {
-    this.temp = Array.from(this.items).filter((e: any) => {
+  public deleteItem(item: IAddItems): void {
+    let items = localData('products');
+    if(!items) return ;
+    items = items.filter((e: any) => {
       return e.id !== item.id;
     });
-    this.items = this.temp;
-    this.updateStorage();
+    this.updateStorage(items);
   }
 
-  /**
-   * Edits an item in the product list.
-   *
-   * @param data - The updated item data.
-   */
-  public editItem(data: IAddItems) {
-    // const temps = data;
-    this.edit = true;
-    this.temp = data;
-    console.log(this.temp);
-    // return
-  }
 
   /**
    * Updates an item in the product list.
    *
    * @param data - The updated item data.
    */
-  updateItem(data: IAddItems) {
-    this.items.forEach((val: IAddItems, i) => {
+  public updateItem(data: IAddItems) {
+    let items;
+    if (localStorage.getItem('products')) {
+      items = localStorage.getItem('products');
+      if (!items) return;
+      items = JSON.parse(items!);
+    }
+    items.forEach((val: IAddItems, i: number) => {
       if (val.id === data.id) {
-        this.items[i] = data;
-        this.updateStorage();
+        items[i] = data;
       }
     });
+    this.updateStorage(items);
   }
 
   /**
@@ -164,11 +129,17 @@ export class ProductsService implements OnInit {
    * @param data - The item data to sell.
    * @returns An observable of the updated array of sold items.
    */
-  sellItem(data: ISellItems): Observable<ISellItems[]> {
-    this.soldItems.push(data);
+  public sellItem(data: ISellItems): Observable<ISellItems[]> {
+    let items;
+    if (localStorage.getItem('soldItems')) {
+      items = localStorage.getItem('soldItems');
+      if (!items) return obs<ISellItems[]>([]);
+      items = JSON.parse(items!);
+    }
+    items.push(data);
     this.decQuantity(data);
-    localStorage.setItem('soldItems', JSON.stringify(this.soldItems));
-    return ob<ISellItems[]>(this.soldItems);
+    localStorage.setItem('soldItems', JSON.stringify(items));
+    return obs<ISellItems[]>(items);
   }
 
   /**
@@ -176,24 +147,25 @@ export class ProductsService implements OnInit {
    *
    * @returns An object representing the count of sold products by name.
    */
-  productCount(): {} {
-    const productName = this.soldItems.map((item) => {
+  public productCount() {
+    let items = localData('soldItems');
+    const productName:string[] = items.map((item:ISellItems) => {
       return item.name;
     });
-    this.countName = this.countElements(productName);
-    return this.countName;
+    const countName = this.countElements(productName);
+    return countName;
   }
 
-  getProductBackgroundColor(val: any): string {
-    this.productCount();
-    for (let key in this.countName) {
+  public getProductBackgroundColor(val: any): string {
+    const countName = this.productCount(); //for sold item
+    for (let key in countName) {
       if (val.name === key) {
-        if (this.countName[key] >= 10) {
-          return '#009900';
-        } else if (this.countName[key] <= 10 && this.countName[key] >= 5) {
-          return '#E8C919';
+        if (countName[key] >= 10) {
+          return colors.green;
+        } else if (countName[key] <= 10 && countName[key] >= 5) {
+          return colors.yellow;
         } else {
-          return '#990000';
+          return colors.red;
         }
       }
     }
@@ -206,7 +178,7 @@ export class ProductsService implements OnInit {
    * @param arr - The array to count elements from.
    * @returns An object representing the count of elements.
    */
-  countElements(arr: any) {
+  public countElements(arr: string[]) {
     let counts: any = {};
 
     for (let i = 0; i < arr.length; i++) {
@@ -226,12 +198,10 @@ export class ProductsService implements OnInit {
    *
    * @returns An observable of an array of sold items.
    */
-  getAllSoldProducts(): Observable<ISellItems[]> {
-    if (localStorage.getItem('soldItems')) {
-      this.temp = localStorage.getItem('soldItems');
-      this.soldItems = JSON.parse(this.temp);
-    }
-    return ob<ISellItems[]>(this.soldItems);
+  public getAllSoldProducts(): Observable<ISellItems[]> {
+    let items = localData('soldItems');
+    if (!items) return obs<ISellItems[]>([]);
+    return obs<ISellItems[]>(items);
   }
 
   /**
@@ -239,31 +209,47 @@ export class ProductsService implements OnInit {
    *
    * @param val - The sold item data.
    */
-  decQuantity(val: ISellItems) {
-    this.items.forEach((x: any, i) => {
+  public decQuantity(val: ISellItems) {
+    let items;
+    if (localStorage.getItem('products')) {
+      items = localStorage.getItem('products');
+      if (!items) return;
+      items = JSON.parse(items!);
+    }
+    items.forEach((x: IAddItems, i: number) => {
       if (
         val.name === x.id &&
         x.numberGroup.quantity >= val.numberGroup.quantity
       ) {
         x.numberGroup.quantity -= val.numberGroup.quantity;
-        this.items[i] = x;
+        items[i] = x;
         return true;
       } else {
         return false;
       }
     });
-    this.updateStorage();
+    this.updateStorage(items);
   }
 }
 
+
+export function localData(key:string){
+  let items;
+  if (localStorage.getItem(key)){
+    items = localStorage.getItem(key);
+    if (!items) return;
+    items = JSON.parse(items!);
+  }
+  return items;
+}
 /**
  * An observable creation function with a delay.
  *
  * @param ob - The value to be emitted as an observable.
  * @returns An observable of the given value with a delay.
  */
-export function ob<T = any>(ob: T) {
-  return of(ob).pipe(delay(delayNumber()));
+export function obs<T = any>(obs: T) {
+  return of(obs).pipe(delay(delayNumber()));
 }
 
 /**

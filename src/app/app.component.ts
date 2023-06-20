@@ -5,7 +5,7 @@
 
 import { Component, DoCheck } from '@angular/core';
 import { Router } from '@angular/router';
-import { LoaderService } from './service/loader.service';
+import { LoaderService } from './service';
 
 /**
  * Root component that represents the Angular application.

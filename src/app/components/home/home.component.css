@@ -1,0 +1,23 @@
+.dashboard {
+    display: flex;
+    width: 80%;
+    border: 1px solid grey;
+    margin: 30px auto;
+}
+
+.data {
+    font-size: 80px;
+    margin: auto;
+}
+
+.card-container {
+    color: white;
+    width: 80vw;
+    margin: 50px auto;
+    background-color: transparent;
+}
+
+.card-flex{
+    display: flex;
+    justify-content: space-between;
+}
